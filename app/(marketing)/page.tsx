@@ -1,15 +1,27 @@
+import { FeaturedProviders } from "@/components/home/FeaturedProviders";
+import { FaqPreview } from "@/components/home/FaqPreview";
+import { Hero } from "@/components/home/Hero";
+import { HomeCta } from "@/components/home/HomeCta";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { PopularServices } from "@/components/home/PopularServices";
+import { TrustSection } from "@/components/home/TrustSection";
+
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <div className="text-center">
-        <p className="text-text-secondary mb-2 text-sm font-medium">
-          LocalServe
-        </p>
+    <main>
+      <Hero />
 
-        <h1 className="text-4xl font-bold tracking-tight">
-          Find trusted professionals near you
-        </h1>
-      </div>
+      <PopularServices />
+
+      <FeaturedProviders />
+
+      <HowItWorks />
+
+      <TrustSection />
+
+      <FaqPreview />
+
+      <HomeCta />
     </main>
   );
 }
