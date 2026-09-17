@@ -35,17 +35,19 @@ export function FeaturedProviders() {
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredProviders.map((provider) => (
-            <Card key={provider.id} className="border-border bg-surface border">
+            <Card
+              key={provider.id}
+              className="border-border bg-surface flex flex-col border"
+            >
               <Card.Content className="p-0">
-                <Image
-                  src={provider.imageUrl}
-                  alt={`${provider.name} professional`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  className="object-cover"
-                />
-
                 <div className="p-6">
+                  <Image
+                    src={provider.imageUrl}
+                    alt={`${provider.name} professional`}
+                    fill
+                    // sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-coverc"
+                  />
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-center gap-3">
                       <Avatar>
