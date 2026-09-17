@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Button } from "@heroui/react";
+import Image from "next/image";
 
 const navigation = [
   { label: "Services", href: "/services" },
@@ -14,9 +15,15 @@ export function Header() {
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
         <Link
           href="/"
-          className="text-text-primary text-xl font-bold tracking-tight"
+          className="text-text-primary flex items-center justify-center gap-3 text-xl font-bold tracking-tight"
         >
-          Local<span className="text-brand-600">Serve</span>
+          <Image
+            src="/Logo/LogoWithBrandName.svg"
+            alt=""
+            width={200}
+            height={200}
+          />
+          {/* Local<span className="text-brand-600">Serve</span> */}
         </Link>
 
         <nav
