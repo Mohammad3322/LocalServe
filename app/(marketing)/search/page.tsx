@@ -1,5 +1,5 @@
-function page() {
-  return <div>page</div>;
-}
+import { SearchPage } from "@/components/search/SearchPage";
 
-export default page;
+export default function Page() {
+  return <SearchPage />;
+}

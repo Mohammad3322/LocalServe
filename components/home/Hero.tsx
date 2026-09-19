@@ -1,5 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
-import { HomeSearch } from "@/components/search/HomeSearch";
+import { HomeSearch } from "@/components/home/HomeSearch";
 
 export function Hero() {
   return (

@@ -1,8 +1,9 @@
+import { z } from "zod";
 
-const ReviewSchema = () => {
-    return (
-        {}
-    );
-}
+export const reviewShema = z.object({
+  providerSlug: z.string(),
+  customerId: z.string(),
+  content: z.string(),
+});
 
-export default ReviewSchema;
+export type Review = z.infer<typeof reviewShema>;
