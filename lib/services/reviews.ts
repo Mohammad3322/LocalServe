@@ -1,6 +1,6 @@
-import { reviews } from "../data/seed/reviews";
-import { Review } from "../validation/review.schema";
+import { reviews } from "@/lib/data/seed/reviews";
+import type { Review } from "@/lib/validation/review.schema";
 
-export function getReviews(slug: string): Review | undefined {
-  return reviews.find((review) => review.providerSlug === slug);
+export function getReviewsByProviderId(providerId: string): Review[] {
+  return reviews.filter((review) => review.providerId === providerId);
 }

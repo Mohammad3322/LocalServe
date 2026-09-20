@@ -13,68 +13,46 @@ export type SearchResult = {
   totalPages: number;
 };
 
-export function searchProviders(
-  params: SearchParams,
-): SearchResult {
+export function searchProviders(params: SearchParams): SearchResult {
   let results = [...featuredProviders];
 
-  // Filter by service
-  if (params.service) {
+  // Filter by category
+  if (params.category) {
     const providerIds = new Set(
       services
-        .filter(
-          (service) =>
-            service.category === params.service,
-        )
+        .filter((service) => service.category === params.category)
         .map((service) => service.providerId),
     );
 
-    results = results.filter((provider) =>
-      providerIds.has(provider.id),
-    );
+    results = results.filter((provider) => providerIds.has(provider.id));
   }
 
   // Filter by rating
   if (params.rating) {
-    results = results.filter(
-      (provider) => provider.rating >= params.rating!,
-    );
+    results = results.filter((provider) => provider.rating >= params.rating!);
   }
 
   // Filter by availability
   if (params.availability === "true") {
-    results = results.filter(
-      (provider) => provider.available,
-    );
+    results = results.filter((provider) => provider.available);
   }
 
   // Sort
   switch (params.sort) {
     case "rating":
-      results.sort(
-        (a, b) => b.rating - a.rating,
-      );
+      results.sort((a, b) => b.rating - a.rating);
       break;
 
     case "price-low":
-      results.sort(
-        (a, b) =>
-          a.startingPrice - b.startingPrice,
-      );
+      results.sort((a, b) => a.startingPrice - b.startingPrice);
       break;
 
     case "price-high":
-      results.sort(
-        (a, b) =>
-          b.startingPrice - a.startingPrice,
-      );
+      results.sort((a, b) => b.startingPrice - a.startingPrice);
       break;
 
     case "availability":
-      results.sort(
-        (a, b) =>
-          Number(b.available) - Number(a.available),
-      );
+      results.sort((a, b) => Number(b.available) - Number(a.available));
       break;
   }
 
@@ -85,10 +63,7 @@ export function searchProviders(
   const startIndex = (page - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
 
-  const items = results.slice(
-    startIndex,
-    endIndex,
-  );
+  const items = results.slice(startIndex, endIndex);
 
   return {
     items,

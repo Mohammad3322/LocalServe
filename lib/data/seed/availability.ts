@@ -1,0 +1,51 @@
+export const availability = [
+  {
+    id: "slot-1",
+    providerId: "solar-tech-pro",
+    date: "2026-09-21",
+    time: "09:00",
+    available: true,
+  },
+  {
+    id: "slot-2",
+    providerId: "solar-tech-pro",
+    date: "2026-09-21",
+    time: "11:00",
+    available: true,
+  },
+  {
+    id: "slot-3",
+    providerId: "solar-tech-pro",
+    date: "2026-09-21",
+    time: "14:00",
+    available: false,
+  },
+  {
+    id: "slot-4",
+    providerId: "solar-tech-pro",
+    date: "2026-09-22",
+    time: "10:00",
+    available: true,
+  },
+  {
+    id: "slot-5",
+    providerId: "solar-tech-pro",
+    date: "2026-09-22",
+    time: "13:00",
+    available: true,
+  },
+  {
+    id: "slot-6",
+    providerId: "securevision",
+    date: "2026-09-21",
+    time: "10:00",
+    available: true,
+  },
+  {
+    id: "slot-7",
+    providerId: "securevision",
+    date: "2026-09-22",
+    time: "15:00",
+    available: true,
+  },
+];

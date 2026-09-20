@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Button } from "@heroui/react";
 import Image from "next/image";
+import MyButton from "../ui/MyButton";
 
 const navigation = [
   { label: "Services", href: "/services" },
@@ -42,7 +42,9 @@ export function Header() {
         </nav>
 
         <Link href="/search">
-          <Button variant="primary">Find a Professional</Button>
+          <MyButton variant="primary" className="">
+            Find a Professional
+          </MyButton>
         </Link>
 
         <Link

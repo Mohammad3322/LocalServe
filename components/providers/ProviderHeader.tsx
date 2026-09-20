@@ -1,15 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BadgeCheck, CalendarDays, MapPin, Star } from "lucide-react";
-import { Button } from "@heroui/react";
 
 import type { Provider } from "@/lib/validation/provider.schema";
+import { getReviewsByProviderId } from "@/lib/services/reviews";
+import MyButton from "../ui/MyButton";
 
 type ProviderHeaderProps = {
   provider: Provider;
 };
 
 export function ProviderHeader({ provider }: ProviderHeaderProps) {
+  const providerReviews = getReviewsByProviderId(provider.id);
+
+  const averageRating =
+    providerReviews.length > 0
+      ? providerReviews.reduce((total, review) => total + review.rating, 0) /
+        providerReviews.length
+      : 0;
+
   return (
     <section className="border-border bg-surface border-b">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -51,9 +60,7 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
           </ol>
         </nav>
 
-        {/* Provider Hero */}
         <div className="grid gap-8 lg:grid-cols-[220px_1fr_auto] lg:items-center">
-          {/* Image */}
           <div className="bg-background relative mx-auto aspect-square w-full max-w-56 overflow-hidden rounded-2xl lg:mx-0">
             <Image
               src={provider.imageUrl}
@@ -65,7 +72,6 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
             />
           </div>
 
-          {/* Information */}
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
               <h1 className="text-text-primary text-2xl font-semibold tracking-tight sm:text-3xl">
@@ -84,17 +90,17 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
               {provider.headline}
             </p>
 
-            {/* Rating */}
             <div className="mt-5 flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-1.5">
                 <Star className="size-5 fill-current text-amber-500" />
 
                 <span className="text-text-primary font-semibold">
-                  {provider.rating.toFixed(1)}
+                  {averageRating.toFixed(1)}
                 </span>
 
                 <span className="text-text-secondary text-sm">
-                  ({provider.reviewCount} reviews)
+                  {providerReviews.length}
+                  {providerReviews.length === 1 ? "review" : "reviews"}
                 </span>
               </div>
 
@@ -119,9 +125,13 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
           {/* CTA */}
           <div className="lg:self-center">
             <Link href="#services">
-              <Button variant="primary" size="lg" className="w-full sm:w-auto">
-                Book a Service
-              </Button>
+              <MyButton
+                variant="secondary"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                Choose a Service
+              </MyButton>
             </Link>
           </div>
         </div>

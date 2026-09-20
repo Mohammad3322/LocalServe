@@ -1,11 +1,14 @@
 "use client";
 
-import { Button, ComboBox, Input, Label, ListBox } from "@heroui/react";
+import { ComboBox, Label, ListBox } from "@heroui/react";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { locations } from "@/lib/data/seed/locations";
+import MyButton from "../ui/MyButton";
+import MyInput from "../ui/MyInput";
+import { services } from "@/lib/data/seed/services";
 
 export function SearchHeader() {
   const router = useRouter();
@@ -54,27 +57,39 @@ export function SearchHeader() {
         </div>
 
         <div className="mt-6 grid gap-3 md:grid-cols-[1fr_1fr_auto]">
-          <div>
-            <Label
-              htmlFor="service-search"
-              className="text-text-primary mb-2 block text-sm font-medium"
-            >
+          <ComboBox
+            className="w-full"
+            inputValue={service}
+            onInputChange={setService}
+            allowsCustomValue
+            menuTrigger="input"
+          >
+            <Label className="text-text-primary mb-2 block text-sm font-medium">
               Service
             </Label>
 
-            <Input
-              id="service-search"
-              value={service}
-              onChange={(event) => setService(event.target.value)}
-              placeholder="Search services..."
-              className="w-full"
-              onKeyDown={(event) => {
-                if (event.key === "Enter") {
-                  handleSearch();
-                }
-              }}
-            />
-          </div>
+            <ComboBox.InputGroup>
+              <MyInput placeholder="Search services..." />
+
+              <ComboBox.Trigger />
+            </ComboBox.InputGroup>
+
+            <ComboBox.Popover>
+              <ListBox>
+                {services.map((service) => (
+                  <ListBox.Item
+                    key={service.id}
+                    id={service.id}
+                    textValue={service.title}
+                  >
+                    <Label>{service.title}</Label>
+
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </ComboBox.Popover>
+          </ComboBox>
 
           <ComboBox
             className="w-full"
@@ -88,7 +103,7 @@ export function SearchHeader() {
             </Label>
 
             <ComboBox.InputGroup>
-              <Input placeholder="Search location..." />
+              <MyInput placeholder="Search location..." />
 
               <ComboBox.Trigger />
             </ComboBox.InputGroup>
@@ -111,14 +126,14 @@ export function SearchHeader() {
           </ComboBox>
 
           <div className="flex items-end">
-            <Button
+            <MyButton
               variant="primary"
               className="w-full md:w-auto"
               onPress={handleSearch}
             >
               <Search className="size-4" />
               Search
-            </Button>
+            </MyButton>
           </div>
         </div>
       </div>

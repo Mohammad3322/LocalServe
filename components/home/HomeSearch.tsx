@@ -3,37 +3,34 @@
 import { useState } from "react";
 import type { SubmitEvent } from "react";
 import type { Key } from "@heroui/react";
-import {
-  Button,
-  Input,
-  Label,
-  ListBox,
-  Select,
-  TextField,
-} from "@heroui/react";
+import { ComboBox, Label, ListBox, Select, TextField } from "@heroui/react";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
+import MyButton from "../ui/MyButton";
+import MyInput from "../ui/MyInput";
+import { locations } from "@/lib/data/seed/locations";
+import { services } from "@/lib/data/seed/services";
 
-const services = [
-  {
-    value: "solar-energy",
-    label: "Solar Energy",
-  },
-  {
-    value: "security-surveillance",
-    label: "Security & Surveillance",
-  },
-  {
-    value: "electronic-services",
-    label: "Electronic Services",
-  },
-];
+// const services = [
+//   {
+//     value: "solar-energy",
+//     label: "Solar Energy",
+//   },
+//   {
+//     value: "security-surveillance",
+//     label: "Security & Surveillance",
+//   },
+//   {
+//     value: "electronic-services",
+//     label: "Electronic Services",
+//   },
+// ];
 
 export function HomeSearch() {
   const router = useRouter();
 
-  const [service, setService] = useState<Key | null>(null);
-  const [location, setLocation] = useState("");
+  const [service, setService] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
 
   function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,8 +56,7 @@ export function HomeSearch() {
       className="border-border bg-surface rounded-2xl border p-3 shadow-lg"
     >
       <div className="grid items-center gap-3 md:grid-cols-[2fr_1fr_auto]">
-        {/* Service */}
-        <Select
+        {/* <Select
           value={service}
           variant="primary"
           onChange={setService}
@@ -89,23 +85,80 @@ export function HomeSearch() {
               ))}
             </ListBox>
           </Select.Popover>
-        </Select>
+        </Select> */}
+
+        {/* Service */}
+        <ComboBox
+          className="w-full"
+          inputValue={service}
+          onInputChange={setService}
+          allowsCustomValue
+          menuTrigger="input"
+        >
+          <Label className="text-text-primary mb-2 block text-sm font-medium">
+            What service do you need?
+          </Label>
+
+          <ComboBox.InputGroup>
+            <MyInput placeholder="Search Service..." />
+
+            <ComboBox.Trigger />
+          </ComboBox.InputGroup>
+
+          <ComboBox.Popover>
+            <ListBox>
+              {services.map((service) => (
+                <ListBox.Item
+                  key={service.id}
+                  id={service.id}
+                  textValue={service.title}
+                >
+                  <Label>{service.title}</Label>
+
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+              ))}
+            </ListBox>
+          </ComboBox.Popover>
+        </ComboBox>
 
         {/* Location */}
-        <TextField className="w-full">
-          <Label>Where?</Label>
+        <ComboBox
+          className="w-full"
+          inputValue={location}
+          onInputChange={setLocation}
+          allowsCustomValue
+          menuTrigger="input"
+        >
+          <Label className="text-text-primary mb-2 block text-sm font-medium">
+            Location
+          </Label>
 
-          <Input
-            placeholder="City or service area"
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
-            // variant="primary"
-            className="focus:border-brand-500!"
-          />
-        </TextField>
+          <ComboBox.InputGroup>
+            <MyInput placeholder="Search location..." />
+
+            <ComboBox.Trigger />
+          </ComboBox.InputGroup>
+
+          <ComboBox.Popover>
+            <ListBox>
+              {locations.map((location) => (
+                <ListBox.Item
+                  key={location.id}
+                  id={location.id}
+                  textValue={location.name}
+                >
+                  <Label>{location.name}</Label>
+
+                  <ListBox.ItemIndicator />
+                </ListBox.Item>
+              ))}
+            </ListBox>
+          </ComboBox.Popover>
+        </ComboBox>
 
         {/* Submit */}
-        <Button
+        <MyButton
           type="submit"
           variant="primary"
           size="sm"
@@ -113,7 +166,7 @@ export function HomeSearch() {
         >
           <Search className="size-4" />
           Search
-        </Button>
+        </MyButton>
       </div>
     </form>
   );

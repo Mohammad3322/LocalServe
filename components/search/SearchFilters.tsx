@@ -3,8 +3,9 @@
 import type { Key } from "@heroui/react";
 import { Checkbox, Label, ListBox, Select } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import MyButton from "../ui/MyButton";
 
-const services = [
+const categories = [
   {
     id: "solar-energy",
     label: "Solar Energy",
@@ -71,30 +72,32 @@ export function SearchFilters() {
   }
 
   return (
-    <aside className="hidden lg:block">
+    <aside className="">
       <div className="border-border bg-surface sticky top-24 rounded-xl border p-5">
         {/* Header */}
         <div className="flex items-center justify-between">
           <h2 className="text-text-primary text-base font-semibold">Filters</h2>
 
-          <button
+          <MyButton
+            variant="secondary"
             type="button"
+            size="sm"
             onClick={clearFilters}
-            className="text-brand-600 hover:text-brand-700 text-sm font-medium transition-colors"
+            className="text-sm font-medium"
           >
             Clear all
-          </button>
+          </MyButton>
         </div>
 
-        <div className="mt-6 space-y-7">
+        <div className="my-6 flex gap-5 lg:flex-col">
           {/* Service */}
           <Select
-            className="w-full"
+            className="h-full w-full"
             placeholder="All services"
             value={selectedService || null}
             onChange={(value) => updateParam("service", value)}
           >
-            <Label>Service</Label>
+            <Label>Category</Label>
 
             <Select.Trigger>
               <Select.Value />
@@ -103,13 +106,13 @@ export function SearchFilters() {
 
             <Select.Popover>
               <ListBox>
-                {services.map((service) => (
+                {categories.map((category) => (
                   <ListBox.Item
-                    key={service.id}
-                    id={service.id}
-                    textValue={service.label}
+                    key={category.id}
+                    id={category.id}
+                    textValue={category.label}
                   >
-                    <Label>{service.label}</Label>
+                    <Label>{category.label}</Label>
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
                 ))}
@@ -146,31 +149,25 @@ export function SearchFilters() {
               </ListBox>
             </Select.Popover>
           </Select>
+        </div>
 
-          {/* Availability */}
-          <div>
-            <p className="text-text-primary mb-3 text-sm font-medium">
-              Availability
-            </p>
+        {/* Availability */}
+        <div>
+          <Checkbox
+            id="available"
+            isSelected={availability}
+            onChange={(isSelected) =>
+              updateParam("availability", isSelected ? "true" : null)
+            }
+          >
+            <Checkbox.Content>
+              <Checkbox.Control>
+                <Checkbox.Indicator />
+              </Checkbox.Control>
 
-            <Checkbox
-              id="available"
-              isSelected={availability}
-              onChange={(isSelected) =>
-                updateParam("availability", isSelected ? "true" : null)
-              }
-            >
-              <Checkbox.Content>
-                <Checkbox.Control>
-                  <Checkbox.Indicator />
-                </Checkbox.Control>
-
-                <span className="text-text-secondary text-sm">
-                  Available for booking
-                </span>
-              </Checkbox.Content>
-            </Checkbox>
-          </div>
+              <span className="text-text-secondary text-sm">Available</span>
+            </Checkbox.Content>
+          </Checkbox>
         </div>
       </div>
     </aside>

@@ -1,7 +1,7 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import MyButton from "../ui/MyButton";
 
 type PaginationProps = {
   currentPage: number;
@@ -32,18 +32,18 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
       className="mt-8 flex items-center justify-center gap-2"
       aria-label="Pagination"
     >
-      <Button
+      <MyButton
         variant="secondary"
         size="sm"
         isDisabled={currentPage === 1}
         onPress={() => goToPage(currentPage - 1)}
       >
         Previous
-      </Button>
+      </MyButton>
 
       <div className="flex items-center gap-1">
         {pages.map((page) => (
-          <Button
+          <MyButton
             key={page}
             variant={page === currentPage ? "primary" : "secondary"}
             size="sm"
@@ -52,18 +52,18 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
             onPress={() => goToPage(page)}
           >
             {page}
-          </Button>
+          </MyButton>
         ))}
       </div>
 
-      <Button
+      <MyButton
         variant="secondary"
         size="sm"
         isDisabled={currentPage === totalPages}
         onPress={() => goToPage(currentPage + 1)}
       >
         Next
-      </Button>
+      </MyButton>
     </nav>
   );
 }

@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { Avatar, Button, Card, Chip } from "@heroui/react";
+import { Avatar, Card, Chip } from "@heroui/react";
 import { ArrowRight, MapPin, Star, BadgeCheck } from "lucide-react";
 
 import { featuredProviders } from "@/lib/data/seed/providers";
+import MyButton from "../ui/MyButton";
 
 function getInitials(name: string) {
   return name
@@ -35,14 +36,13 @@ export function FeaturedProviders() {
           </div>
 
           <Link href="/search">
-            <Button variant="tertiary">
+            <MyButton variant="secondary">
               View all professionals
               <ArrowRight className="size-4" />
-            </Button>
+            </MyButton>
           </Link>
         </div>
 
-        {/* Providers */}
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {featuredProviders.map((provider) => (
             <Card
@@ -51,7 +51,6 @@ export function FeaturedProviders() {
               className="h-full overflow-hidden transition-shadow duration-200 hover:shadow-lg"
             >
               <Card.Content className="flex h-full flex-col p-6">
-                {/* Provider identity */}
                 <div className="flex items-start gap-4">
                   <Avatar size="lg" color="accent">
                     <Avatar.Image src={provider.imageUrl} alt={provider.name} />
@@ -81,7 +80,6 @@ export function FeaturedProviders() {
                   </div>
                 </div>
 
-                {/* Rating */}
                 <div className="mt-6 flex items-center gap-2">
                   <div className="flex items-center gap-1">
                     <Star className="size-4 fill-current text-amber-500" />
@@ -96,14 +94,12 @@ export function FeaturedProviders() {
                   </span>
                 </div>
 
-                {/* Service area */}
                 <div className="text-text-secondary mt-4 flex items-center gap-2 text-sm">
                   <MapPin className="size-4 shrink-0" />
 
                   <span>{provider.serviceArea}</span>
                 </div>
 
-                {/* Price */}
                 <div className="border-border mt-6 border-t pt-5">
                   <p className="text-text-secondary text-xs">Starting from</p>
 
@@ -112,12 +108,11 @@ export function FeaturedProviders() {
                   </p>
                 </div>
 
-                {/* Action */}
                 <Link href={`/providers/${provider.slug}`} className="mt-6">
-                  <Button variant="outline" fullWidth>
+                  <MyButton variant="secondary" fullWidth>
                     View Profile
                     <ArrowRight className="size-4" />
-                  </Button>
+                  </MyButton>
                 </Link>
               </Card.Content>
             </Card>

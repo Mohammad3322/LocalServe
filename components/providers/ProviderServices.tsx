@@ -1,8 +1,9 @@
 import { Clock3 } from "lucide-react";
-import { Button, Card } from "@heroui/react";
+import { Card } from "@heroui/react";
 import Link from "next/link";
 
 import { services } from "@/lib/data/seed/services";
+import MyButton from "../ui/MyButton";
 
 type ProviderServicesProps = {
   providerId: string;
@@ -68,9 +69,9 @@ export function ProviderServices({ providerId }: ProviderServicesProps) {
                       href={`/book/${providerId}?service=${service.id}`}
                       className="shrink-0"
                     >
-                      <Button variant="primary" className="w-full lg:w-auto">
-                        Select Service
-                      </Button>
+                      <MyButton variant="primary" className="w-full lg:w-auto">
+                        Book Service
+                      </MyButton>
                     </Link>
                   </div>
                 </Card.Content>
