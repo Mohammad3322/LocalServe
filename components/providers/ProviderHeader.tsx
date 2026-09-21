@@ -3,7 +3,10 @@ import Link from "next/link";
 import { BadgeCheck, CalendarDays, MapPin, Star } from "lucide-react";
 
 import type { Provider } from "@/lib/validation/provider.schema";
-import { getReviewsByProviderId } from "@/lib/services/reviews";
+import {
+  getReviewsByProviderId,
+  getTotalRatingByProviderId,
+} from "@/lib/services/reviews";
 import MyButton from "../ui/MyButton";
 
 type ProviderHeaderProps = {
@@ -13,11 +16,7 @@ type ProviderHeaderProps = {
 export function ProviderHeader({ provider }: ProviderHeaderProps) {
   const providerReviews = getReviewsByProviderId(provider.id);
 
-  const averageRating =
-    providerReviews.length > 0
-      ? providerReviews.reduce((total, review) => total + review.rating, 0) /
-        providerReviews.length
-      : 0;
+  const averageRating = getTotalRatingByProviderId(provider.id);
 
   return (
     <section className="border-border bg-surface border-b">
