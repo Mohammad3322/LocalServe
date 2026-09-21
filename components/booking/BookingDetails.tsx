@@ -31,8 +31,7 @@ export function BookingDetails({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const selectedService = services.find(
-    (service) =>
-      service.id === selectedServiceId && service.providerId === provider.id,
+    (service) => service.id === selectedServiceId,
   );
 
   if (!selectedService || !selectedDate || !selectedTime) {

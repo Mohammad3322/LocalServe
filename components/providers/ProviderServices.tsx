@@ -2,17 +2,15 @@ import { Clock3 } from "lucide-react";
 import { Card } from "@heroui/react";
 import Link from "next/link";
 
-import { services } from "@/lib/data/seed/services";
 import MyButton from "../ui/MyButton";
+import { getProviderServices } from "@/lib/services/providerServices";
 
 type ProviderServicesProps = {
   providerId: string;
 };
 
 export function ProviderServices({ providerId }: ProviderServicesProps) {
-  const providerServices = services.filter(
-    (service) => service.providerId === providerId,
-  );
+  const providerServices = getProviderServices(providerId);
 
   return (
     <section id="services" className="border-border border-b py-12">
@@ -25,7 +23,7 @@ export function ProviderServices({ providerId }: ProviderServicesProps) {
           </p>
         </div>
 
-        {providerServices.length > 0 ? (
+        {providerServices ? (
           <div className="mt-6 grid gap-4">
             {providerServices.map((service) => (
               <Card

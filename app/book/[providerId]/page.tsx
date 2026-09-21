@@ -8,7 +8,7 @@ type BookingRouteProps = {
     providerId: string;
   }>;
   searchParams: Promise<{
-    service?: string;
+    serviceId?: string;
     date?: string;
     time?: string;
   }>;
@@ -20,7 +20,7 @@ export default async function BookingRoute({
 }: BookingRouteProps) {
   const { providerId } = await params;
 
-  const { service, date, time } = await searchParams;
+  const { serviceId, date, time } = await searchParams;
 
   const provider = getProviderById(providerId);
 
@@ -31,7 +31,7 @@ export default async function BookingRoute({
   return (
     <BookingDetails
       provider={provider}
-      selectedServiceId={service}
+      selectedServiceId={serviceId}
       selectedDate={date}
       selectedTime={time}
     />
