@@ -29,8 +29,7 @@ export function BookingDateTime({
   selectedServiceId,
 }: BookingDateTimeProps) {
   const selectedService = services.find(
-    (service) =>
-      service.id === selectedServiceId && service.providerId === provider.id,
+    (service) => service.id === selectedServiceId,
   );
 
   const providerSlots = useMemo(
