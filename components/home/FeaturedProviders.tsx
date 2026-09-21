@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Avatar, Card, Chip } from "@heroui/react";
 import { ArrowRight, MapPin, Star, BadgeCheck } from "lucide-react";
 
-import { featuredProviders } from "@/lib/data/seed/providers";
+import { providers } from "@/lib/data/seed/providers";
 import MyButton from "../ui/MyButton";
 
 function getInitials(name: string) {
@@ -44,7 +44,7 @@ export function FeaturedProviders() {
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {featuredProviders.map((provider) => (
+          {providers.map((provider) => (
             <Card
               key={provider.id}
               variant="default"

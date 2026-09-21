@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 export const searchParamsSchema = z.object({
+  service: z.string().trim().optional(),
   category: z.string().trim().optional(),
 
   location: z.string().trim().optional(),

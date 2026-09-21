@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { string, z } from "zod";
 
 export const credentialSchema = z.object({
   title: z.string(),
@@ -15,6 +15,7 @@ export const providerSchema = z.object({
   rating: z.number().min(0).max(5),
   reviewCount: z.number().int().nonnegative(),
 
+  servicesIds: z.array(string()),
   serviceArea: z.string(),
   verified: z.boolean(),
 
@@ -29,11 +30,8 @@ export const providerSchema = z.object({
   languages: z.array(z.string()),
 });
 
-export const providersSchema =
-  z.array(providerSchema);
+export const providersSchema = z.array(providerSchema);
 
-export type Credential =
-  z.infer<typeof credentialSchema>;
+export type Credential = z.infer<typeof credentialSchema>;
 
-export type Provider =
-  z.infer<typeof providerSchema>;
+export type Provider = z.infer<typeof providerSchema>;

@@ -1,18 +1,18 @@
 export const locations = [
   {
-    id: "cambridge",
-    name: "Cambridge",
+    id: "paris",
+    name: "Paris",
   },
   {
-    id: "london",
-    name: "London",
+    id: "marsilia",
+    name: "Marsilia",
   },
   {
-    id: "oxford",
+    id: "Lion",
     name: "Oxford",
   },
   {
-    id: "manchester",
-    name: "Manchester",
+    id: "lil",
+    name: "Lil",
   },
 ];

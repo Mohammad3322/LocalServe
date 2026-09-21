@@ -40,7 +40,7 @@ export function SearchFilters() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const selectedService = searchParams.get("service") ?? "";
+  const selectedService = searchParams.get("category") ?? "";
   const selectedRating = searchParams.get("rating") ?? "";
 
   const availability = searchParams.get("availability") === "true";
@@ -95,7 +95,7 @@ export function SearchFilters() {
             className="h-full w-full"
             placeholder="All services"
             value={selectedService || null}
-            onChange={(value) => updateParam("service", value)}
+            onChange={(value) => updateParam("category", value)}
           >
             <Label>Category</Label>
 

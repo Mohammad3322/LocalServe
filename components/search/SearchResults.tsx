@@ -69,6 +69,8 @@ export function SearchResults() {
     router.push(`${pathname}?${nextParams.toString()}`);
   }
 
+  // console.log(pathname);
+
   return (
     <section>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">

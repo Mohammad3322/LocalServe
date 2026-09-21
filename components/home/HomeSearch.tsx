@@ -56,37 +56,6 @@ export function HomeSearch() {
       className="border-border bg-surface rounded-2xl border p-3 shadow-lg"
     >
       <div className="grid items-center gap-3 md:grid-cols-[2fr_1fr_auto]">
-        {/* <Select
-          value={service}
-          variant="primary"
-          onChange={setService}
-          placeholder="Select a service"
-          className="w-full"
-        >
-          <Label>What service do you need?</Label>
-
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-
-          <Select.Popover>
-            <ListBox>
-              {services.map((item) => (
-                <ListBox.Item
-                  key={item.value}
-                  id={item.value}
-                  textValue={item.label}
-                >
-                  {item.label}
-
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select> */}
-
         {/* Service */}
         <ComboBox
           className="w-full"

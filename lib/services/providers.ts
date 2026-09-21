@@ -1,10 +1,10 @@
-import { featuredProviders } from "@/lib/data/seed/providers";
+import { providers } from "@/lib/data/seed/providers";
 import type { Provider } from "@/lib/validation/provider.schema";
 
 export function getProviderBySlug(slug: string): Provider | undefined {
-  return featuredProviders.find((provider) => provider.slug === slug);
+  return providers.find((provider) => provider.slug === slug);
 }
 
 export function getProviderById(id: string): Provider | undefined {
-  return featuredProviders.find((provider) => provider.id === id);
+  return providers.find((provider) => provider.id === id);
 }

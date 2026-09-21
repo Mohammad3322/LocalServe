@@ -1,4 +1,4 @@
-import { featuredProviders } from "@/lib/data/seed/providers";
+import { providers } from "@/lib/data/seed/providers";
 import { services } from "@/lib/data/seed/services";
 import type { Provider } from "@/lib/validation/provider.schema";
 import type { SearchParams } from "@/lib/validation/search.schema";
@@ -14,14 +14,61 @@ export type SearchResult = {
 };
 
 export function searchProviders(params: SearchParams): SearchResult {
-  let results = [...featuredProviders];
+  let results = [...providers];
+
+  // Filter by location
+  if (params.location) {
+    const providerIds = new Set(
+      providers
+        .filter((provider) =>
+          provider.serviceArea
+            .toLowerCase()
+            .includes(String(params.location).toLowerCase()),
+        )
+        .map((provider) => provider.id),
+    );
+    results = results.filter((provider) => providerIds.has(provider.id));
+  }
+
+  // Filter by Servics
+  if (params.service) {
+    const filterdServicesIds = services
+      .filter((service) =>
+        service.title
+          .toLowerCase()
+          .includes(String(params.service).toLowerCase()),
+      )
+      .map((service) => service.id);
+
+    // console.log(filterdServicesIds);
+
+    const providerIds = new Set(
+      providers
+        .filter((provider) =>
+          provider.servicesIds.some((item) =>
+            filterdServicesIds.includes(item),
+          ),
+        )
+        .map((provider) => provider.id),
+    );
+
+    results = results.filter((provider) => providerIds.has(provider.id));
+  }
 
   // Filter by category
   if (params.category) {
+    const filterdServicesIds = services
+      .filter((service) => service.category === params.category)
+      .map((service) => service.id);
+
     const providerIds = new Set(
-      services
-        .filter((service) => service.category === params.category)
-        .map((service) => service.providerId),
+      providers
+        .filter((provider) =>
+          provider.servicesIds.some((item) =>
+            filterdServicesIds.includes(item),
+          ),
+        )
+        .map((provider) => provider.id),
     );
 
     results = results.filter((provider) => providerIds.has(provider.id));
