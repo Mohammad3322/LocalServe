@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { Card, Label, TextArea } from "@heroui/react";
@@ -33,6 +34,8 @@ export function BookingDetails({
   const selectedService = services.find(
     (service) => service.id === selectedServiceId,
   );
+
+  const router = useRouter();
 
   if (!selectedService || !selectedDate || !selectedTime) {
     return (
@@ -110,7 +113,7 @@ export function BookingDetails({
       params.set("notes", result.data.notes);
     }
 
-    window.location.href = `/book/${provider.id}/review?${params.toString()}`;
+    router.push(`/book/${provider.id}/review?${params.toString()}`);
   };
 
   const backUrl =

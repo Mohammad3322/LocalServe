@@ -5,9 +5,9 @@ import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
-import { locations } from "@/lib/data/seed/locations";
 import MyButton from "../ui/MyButton";
 import MyInput from "../ui/MyInput";
+import { locations } from "@/lib/data/seed/locations";
 import { services } from "@/lib/data/seed/services";
 
 export function SearchHeader() {

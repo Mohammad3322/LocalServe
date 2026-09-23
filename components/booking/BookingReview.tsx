@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { Button, Card } from "@heroui/react";
@@ -47,6 +48,8 @@ export function BookingReview({
   notes,
 }: BookingReviewProps) {
   const [bookingState, setBookingState] = useState<BookingState>("idle");
+
+  const router = useRouter();
 
   const selectedService = services.find(
     (service) => service.id === selectedServiceId,
@@ -127,9 +130,10 @@ export function BookingReview({
 
       confirmationParams.set("reference", booking.reference);
 
-      window.location.href =
+      router.push(
         `/booking/confirmation/${booking.id}` +
-        `?${confirmationParams.toString()}`;
+          `?${confirmationParams.toString()}`,
+      );
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 409) {
         setBookingState("slot-unavailable");

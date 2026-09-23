@@ -10,8 +10,6 @@ import {
 export async function createBooking(
   input: CreateBookingInput,
 ): Promise<BookingResponse> {
-  console.log("========== CREATE BOOKING ==========");
-
   console.log("INPUT:", input);
 
   const validatedInput = createBookingSchema.parse(input);
@@ -21,16 +19,12 @@ export async function createBooking(
   const response = await apiClient.post("/bookings", validatedInput);
 
   console.log("RESPONSE STATUS:", response.status);
-
   console.log("RESPONSE DATA:", response.data);
-
   console.log("RESPONSE URL:", response.config.url);
 
   const booking = bookingResponseSchema.parse(response.data);
 
   console.log("VALIDATED BOOKING:", booking);
-
-  console.log("====================================");
 
   return booking;
 }

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
-// import { services } from "@/lib/data/seed/services";
 import { availability } from "@/lib/data/seed/availability";
 import { createBookingSchema } from "@/lib/validation/booking.schema";
-import { providers } from "@/lib/data/seed/providers";
+// import { providers } from "@/lib/data/seed/providers";
+import { services } from "@/lib/data/seed/services";
 
 export async function POST(request: Request) {
   try {
@@ -25,9 +25,7 @@ export async function POST(request: Request) {
 
     const booking = result.data;
 
-    const service = providers.find((item) =>
-      item.servicesIds.some((s) => s.includes(booking.serviceId)),
-    );
+    const service = services.find((item) => item.id === booking.serviceId);
 
     if (!service) {
       return NextResponse.json(

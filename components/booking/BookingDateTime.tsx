@@ -10,7 +10,6 @@ import { services } from "@/lib/data/seed/services";
 import type { Provider } from "@/lib/validation/provider.schema";
 import { BookingSummary } from "./BookingSummary";
 import MyButton from "../ui/MyButton";
-// import { ChooseDates } from "../ui/Calendar";
 import type { DateValue } from "@internationalized/date";
 import { parseDate } from "@internationalized/date";
 
@@ -68,7 +67,6 @@ export function BookingDateTime({
     (slot) => slot.date === formatDateToString(selectedDate),
   );
 
-  // const { locale } = useLocale();
   const availableDatesSet = new Set(
     providerSlots.filter((slot) => slot.available).map((slot) => slot.date),
   );
@@ -264,13 +262,14 @@ export function BookingDateTime({
           </Card>
         </div>
 
-        {/* Booking Summary */}
-        <BookingSummary
-          provider={provider}
-          service={selectedService}
-          selectedDate={formatDateToString(selectedDate)}
-          selectedTime={selectedTime}
-        />
+        {
+          <BookingSummary
+            provider={provider}
+            service={selectedService}
+            selectedDate={formatDateToString(selectedDate)}
+            selectedTime={selectedTime}
+          />
+        }
       </div>
     </div>
   );

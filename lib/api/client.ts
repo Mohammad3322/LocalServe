@@ -1,17 +1,11 @@
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-if (!API_URL) {
-  throw new Error("NEXT_PUBLIC_API_URL is not defined.");
-}
+const baseURL = process.env.NEXT_PUBLIC_API_URL ?? "/api";
 
 export const apiClient = axios.create({
-  baseURL: API_URL,
+  baseURL,
   timeout: 10_000,
   headers: {
     "Content-Type": "application/json",
   },
 });
-
-console.log("API Base URL:", process.env.NEXT_PUBLIC_API_URL);
