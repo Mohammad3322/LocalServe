@@ -120,7 +120,7 @@ export function BookingDateTime({
           {/* Selected Service */}
           <Card
             variant="default"
-            className="border-border bg-surface border shadow-sm"
+            className="border-border bg-surface w-full border shadow-sm"
           >
             <Card.Content className="p-5 sm:p-6">
               <div className="flex items-start justify-between gap-4">
@@ -162,7 +162,13 @@ export function BookingDateTime({
             // value={selectedDate}
             onChange={setSelectedDate}
           /> */}
-          <div className="flex gap-5">
+          <div className="flex flex-col gap-5 lg:flex-row">
+            <div className="text-info-600 flex gap-3 lg:w-50">
+              <NotepadTextIcon />
+              <p className="">
+                Notes: Available days are marked with a dot on the calendar.
+              </p>
+            </div>
             <Calendar
               aria-label="Booking date"
               value={selectedDate}
@@ -204,18 +210,12 @@ export function BookingDateTime({
                 </Calendar.GridBody>
               </Calendar.Grid>
             </Calendar>
-            <div className="text-info-600 flex gap-3">
-              <NotepadTextIcon />
-              <p className="">
-                Notes: Available days are marked with a dot on the calendar.
-              </p>
-            </div>
           </div>
 
           {/* Time Selection */}
           <Card
             variant="default"
-            className="border-border bg-surface border shadow-sm"
+            className="border-border bg-surface w-full border shadow-sm"
           >
             <Card.Content className="p-5 sm:p-6">
               <div className="flex items-center gap-2">

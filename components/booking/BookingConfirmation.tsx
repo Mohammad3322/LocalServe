@@ -29,11 +29,6 @@ export function BookingConfirmation({
   reference,
 }: BookingConfirmationProps) {
   const [booking] = useState<BookingResponse | null | undefined>(() => {
-    // حماية من SSR
-    if (typeof window === "undefined") {
-      return undefined;
-    }
-
     try {
       const storedBooking = sessionStorage.getItem(
         `localserve:booking:${bookingId}`,

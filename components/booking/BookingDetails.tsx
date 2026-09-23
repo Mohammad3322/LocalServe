@@ -123,7 +123,6 @@ export function BookingDetails({
         <BookingProgress />
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_320px]">
-          {/* Main Form */}
           <section>
             <div className="mb-8">
               <p className="text-brand-600 text-sm font-medium">Step 3 of 4</p>

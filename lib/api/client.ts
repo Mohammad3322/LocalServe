@@ -7,3 +7,5 @@ export const apiClient = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+console.log("API Base URL:", process.env.NEXT_PUBLIC_API_URL);

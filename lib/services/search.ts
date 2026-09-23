@@ -57,18 +57,10 @@ export function searchProviders(params: SearchParams): SearchResult {
 
   // Filter by category
   if (params.category) {
-    const filterdServicesIds = services
-      .filter((service) => service.category === params.category)
-      .map((service) => service.id);
-
     const providerIds = new Set(
-      providers
-        .filter((provider) =>
-          provider.servicesIds.some((item) =>
-            filterdServicesIds.includes(item),
-          ),
-        )
-        .map((provider) => provider.id),
+      services
+        .filter((service) => service.category === params.category)
+        .map((service) => service.providerId),
     );
 
     results = results.filter((provider) => providerIds.has(provider.id));
