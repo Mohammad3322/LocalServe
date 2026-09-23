@@ -131,16 +131,6 @@ export function BookingReview({
         `/booking/confirmation/${booking.id}` +
         `?${confirmationParams.toString()}`;
     } catch (error) {
-      console.error("❌ Booking creation failed:", error);
-
-      if (axios.isAxiosError(error)) {
-        console.error("Axios status:", error.response?.status);
-
-        console.error("Axios response:", error.response?.data);
-
-        console.error("Axios URL:", error.config?.url);
-      }
-
       if (axios.isAxiosError(error) && error.response?.status === 409) {
         setBookingState("slot-unavailable");
         return;

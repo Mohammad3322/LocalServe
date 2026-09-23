@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import {
   AlertCircle,
@@ -12,7 +12,7 @@ import {
   User,
 } from "lucide-react";
 
-import { Button, Card } from "@heroui/react";
+import { Card } from "@heroui/react";
 
 import type { BookingResponse } from "@/lib/validation/booking.schema";
 import { services } from "@/lib/data/seed/services";
@@ -80,7 +80,6 @@ export function BookingConfirmation({
 
   return (
     <section className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-      {/* Success Header */}
       <div className="text-center">
         <div className="bg-brand-50 mx-auto flex size-16 items-center justify-center rounded-full">
           <CheckCircle2 className="text-brand-600 size-9" />
@@ -244,9 +243,9 @@ export function BookingConfirmation({
           </Link>
 
           <Link href="/" className="flex-1">
-            <Button variant="secondary" size="lg" className="w-full">
+            <MyButton variant="secondary" size="lg" className="w-full">
               Back Home
-            </Button>
+            </MyButton>
           </Link>
         </div>
       </div>

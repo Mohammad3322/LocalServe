@@ -10,19 +10,27 @@ import {
 export async function createBooking(
   input: CreateBookingInput,
 ): Promise<BookingResponse> {
-  console.log("1. Booking input:", input);
+  console.log("========== CREATE BOOKING ==========");
+
+  console.log("INPUT:", input);
 
   const validatedInput = createBookingSchema.parse(input);
 
-  console.log("2. Validated input:", validatedInput);
+  console.log("VALIDATED INPUT:", validatedInput);
 
   const response = await apiClient.post("/bookings", validatedInput);
 
-  console.log("3. API response:", response.status, response.data);
+  console.log("RESPONSE STATUS:", response.status);
+
+  console.log("RESPONSE DATA:", response.data);
+
+  console.log("RESPONSE URL:", response.config.url);
 
   const booking = bookingResponseSchema.parse(response.data);
 
-  console.log("4. Validated booking:", booking);
+  console.log("VALIDATED BOOKING:", booking);
+
+  console.log("====================================");
 
   return booking;
 }

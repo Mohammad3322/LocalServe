@@ -143,7 +143,6 @@ export function BookingDetails({
             >
               <Card.Content className="p-5 sm:p-6">
                 <div className="space-y-6">
-                  {/* Full Name */}
                   <div className="">
                     <Label
                       htmlFor="customerName"
@@ -168,7 +167,6 @@ export function BookingDetails({
                     )}
                   </div>
 
-                  {/* Email */}
                   <div>
                     <Label
                       htmlFor="customerEmail"
@@ -194,7 +192,6 @@ export function BookingDetails({
                     )}
                   </div>
 
-                  {/* Phone */}
                   <div>
                     <Label
                       htmlFor="customerPhone"
@@ -222,7 +219,6 @@ export function BookingDetails({
                     )}
                   </div>
 
-                  {/* Notes */}
                   <div>
                     <Label
                       htmlFor="notes"
@@ -259,7 +255,6 @@ export function BookingDetails({
               </Card.Content>
             </Card>
 
-            {/* Actions */}
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
               <Link href={backUrl}>
                 <MyButton variant="secondary" className="w-full sm:w-auto">
@@ -278,7 +273,6 @@ export function BookingDetails({
             </div>
           </section>
 
-          {/* Booking Summary */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <Card
               variant="default"
@@ -326,7 +320,6 @@ export function BookingDetails({
                     </div>
                   </div>
 
-                  {/* Time */}
                   <div className="flex items-start gap-3">
                     <div className="bg-brand-50 flex size-9 shrink-0 items-center justify-center rounded-full">
                       <Clock3 className="text-brand-600 size-4" />

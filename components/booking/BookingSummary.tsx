@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { Button, Card } from "@heroui/react";
+import { Card } from "@heroui/react";
 import { CalendarDays, Clock3 } from "lucide-react";
 
 import type { Provider } from "@/lib/validation/provider.schema";
 import type { Service } from "@/lib/validation/service.schema";
+import MyButton from "../ui/MyButton";
 
 type BookingSummaryProps = {
   provider: Provider;
@@ -105,14 +106,14 @@ export function BookingSummary({
             aria-disabled={!canContinue}
             className={!canContinue ? "pointer-events-none" : undefined}
           >
-            <Button
-              variant="primary"
+            <MyButton
+              variant="secondary"
               size="lg"
               className="w-full"
               isDisabled={!canContinue}
             >
               Continue
-            </Button>
+            </MyButton>
           </Link>
 
           <p className="text-text-secondary mt-3 text-center text-xs leading-5">
