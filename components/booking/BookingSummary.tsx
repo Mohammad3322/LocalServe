@@ -20,7 +20,11 @@ export function BookingSummary({
 }: BookingSummaryProps) {
   const canContinue = Boolean(selectedDate) && Boolean(selectedTime);
 
-  const nextUrl = `/book/${provider.id}?service=${service.id}&date=${selectedDate}&time=${selectedTime}`;
+  const nextUrl =
+    `/book/${provider.id}/details` +
+    `?service=${service.id}` +
+    `&date=${selectedDate}` +
+    `&time=${selectedTime}`;
 
   return (
     <aside className="lg:sticky lg:top-24">

@@ -1,7 +1,7 @@
 export const providers = [
   {
     id: "pro-1",
-    slug: "solar-tech-pro",
+    slug: "pro-1",
     name: "John Smith",
     headline: "Solar installation & energy solutions",
     imageUrl: "/images/providers/solar-tech-pro.jpg",
@@ -41,7 +41,7 @@ export const providers = [
 
   {
     id: "pro-2",
-    slug: "securevision",
+    slug: "pro-2",
     name: "Mikel philip",
     headline: "CCTV & security installation",
     imageUrl: "/images/providers/securevision.jpg",
@@ -72,7 +72,7 @@ export const providers = [
 
   {
     id: "pro-3",
-    slug: "smart-electro",
+    slug: "pro-3",
     name: "Joney terry",
     headline: "Smart home & electronic services",
     imageUrl: "/images/providers/smart-electro.jpg",
@@ -105,7 +105,7 @@ export const providers = [
 
   {
     id: "pro-4",
-    slug: "solar-tech-pro",
+    slug: "pro-4",
     name: "Jod Belengham",
     headline: "Solar installation & energy solutions",
     imageUrl: "/images/providers/solar-tech-pro.jpg",
@@ -145,7 +145,7 @@ export const providers = [
 
   {
     id: "pro-5",
-    slug: "securevision",
+    slug: "pro-5",
     name: "Bokayo saya",
     headline: "CCTV & security installation",
     imageUrl: "/images/providers/securevision.jpg",
@@ -176,7 +176,7 @@ export const providers = [
 
   {
     id: "pro-6",
-    slug: "smart-electro",
+    slug: "pro-6",
     name: "Harry Kane",
     headline: "Smart home & electronic services",
     imageUrl: "/images/providers/smart-electro.jpg",

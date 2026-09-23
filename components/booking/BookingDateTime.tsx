@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Card } from "@heroui/react";
-import { CalendarDays, Check, Clock3 } from "lucide-react";
+import { Calendar, Card, useLocale } from "@heroui/react";
+import { Clock3, NotepadTextIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 
 import { availability } from "@/lib/data/seed/availability";
@@ -10,18 +10,31 @@ import { services } from "@/lib/data/seed/services";
 import type { Provider } from "@/lib/validation/provider.schema";
 import { BookingSummary } from "./BookingSummary";
 import MyButton from "../ui/MyButton";
+// import { ChooseDates } from "../ui/Calendar";
+import type { DateValue } from "@internationalized/date";
+import { isWeekend, parseDate } from "@internationalized/date";
 
 type BookingDateTimeProps = {
   provider: Provider;
   selectedServiceId?: string;
 };
 
-function formatDate(date: string) {
-  return new Date(`${date}T00:00:00`).toLocaleDateString("en", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-  });
+// function formatDate(date: string) {
+//   return new Date(`${date}T00:00:00`).toLocaleDateString("en", {
+//     weekday: "long",
+//     month: "long",
+//     day: "numeric",
+//   });
+// }
+
+function formatToDate(date: string) {
+  if (!date) return null;
+  return parseDate(date);
+}
+
+function formatDateToString(date: DateValue | null | undefined): string {
+  if (!date) return "";
+  return date.toString();
 }
 
 export function BookingDateTime({
@@ -29,7 +42,8 @@ export function BookingDateTime({
   selectedServiceId,
 }: BookingDateTimeProps) {
   const selectedService = services.find(
-    (service) => service.id === selectedServiceId,
+    (service) =>
+      service.id === selectedServiceId && service.providerId === provider.id,
   );
 
   const providerSlots = useMemo(
@@ -44,19 +58,25 @@ export function BookingDateTime({
     return Array.from(new Set(providerSlots.map((slot) => slot.date)));
   }, [providerSlots]);
 
-  const [selectedDate, setSelectedDate] = useState<string>(dates[0] ?? "");
+  const [selectedDate, setSelectedDate] = useState<
+    DateValue | null | undefined
+  >(formatToDate(dates[0]));
 
   const [selectedTime, setSelectedTime] = useState<string>("");
 
-  const timeSlots = providerSlots.filter((slot) => slot.date === selectedDate);
-
-  const morningSlots = timeSlots.filter(
-    (slot) => Number(slot.time.slice(0, 2)) < 12,
+  const timeSlots = providerSlots.filter(
+    (slot) => slot.date === formatDateToString(selectedDate),
   );
 
-  const afternoonSlots = timeSlots.filter(
-    (slot) => Number(slot.time.slice(0, 2)) >= 12,
+  // const { locale } = useLocale();
+  const availableDatesSet = new Set(
+    providerSlots.filter((slot) => slot.available).map((slot) => slot.date),
   );
+
+  const isDateUnavailable = (date: DateValue) => {
+    const dateString = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
+    return !availableDatesSet.has(dateString);
+  };
 
   if (!selectedService) {
     return (
@@ -136,60 +156,61 @@ export function BookingDateTime({
           </Card>
 
           {/* Date Selection */}
-          <Card
-            variant="default"
-            className="border-border bg-surface border shadow-sm"
-          >
-            <Card.Content className="p-5 sm:p-6">
-              <div className="flex items-center gap-2">
-                <CalendarDays className="text-brand-600 size-5" />
 
-                <h2 className="text-text-primary font-semibold">
-                  Select a date
-                </h2>
-              </div>
+          {/* <ChooseDates
+            aria-label="Booking date"
+            // value={selectedDate}
+            onChange={setSelectedDate}
+          /> */}
+          <div className="flex gap-5">
+            <Calendar
+              aria-label="Booking date"
+              value={selectedDate}
+              onChange={setSelectedDate}
 
-              {dates.length > 0 ? (
-                <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-                  {dates.map((date) => {
-                    const isSelected = date === selectedDate;
-
-                    return (
-                      <button
-                        key={date}
-                        type="button"
-                        onClick={() => {
-                          setSelectedDate(date);
-                          setSelectedTime("");
-                        }}
-                        className={[
-                          "rounded-xl border p-4 text-left transition",
-                          isSelected
-                            ? "border-brand-500 bg-brand-50 ring-brand-500 ring-1"
-                            : "border-border bg-background hover:border-brand-300",
-                        ].join(" ")}
-                      >
-                        <p className="text-text-primary text-sm font-medium">
-                          {formatDate(date)}
-                        </p>
-
-                        {isSelected && (
-                          <span className="text-brand-700 mt-2 inline-flex items-center gap-1 text-xs font-medium">
-                            <Check className="size-3.5" />
-                            Selected
-                          </span>
-                        )}
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <p className="text-text-secondary mt-5 text-sm">
-                  No available dates at the moment.
-                </p>
-              )}
-            </Card.Content>
-          </Card>
+              isDateUnavailable={isDateUnavailable}
+              className="border-border/80 bg-surface ring-accent/5 dark:border-border/90 dark:ring-accent/10 w-63 rounded-2xl border p-3 shadow-sm ring-1"
+            >
+              <Calendar.Header className="px-0.5 pb-4">
+                <Calendar.Heading className="text-foreground text-sm font-medium" />
+                <Calendar.NavButton
+                  className="text-accent-soft-foreground hover:bg-default hover:text-accent-soft-foreground active:scale-95"
+                  slot="previous"
+                />
+                <Calendar.NavButton
+                  className="text-accent-soft-foreground hover:bg-default hover:text-accent-soft-foreground active:scale-95"
+                  slot="next"
+                />
+              </Calendar.Header>
+              <Calendar.Grid>
+                <Calendar.GridHeader>
+                  {(day) => (
+                    <Calendar.HeaderCell className="text-muted pb-2 text-xs font-medium">
+                      {day}
+                    </Calendar.HeaderCell>
+                  )}
+                </Calendar.GridHeader>
+                <Calendar.GridBody>
+                  {(date) => (
+                    <Calendar.Cell date={date}>
+                      {({ formattedDate, isUnavailable }) => (
+                        <>
+                          {formattedDate}
+                          {!isUnavailable && <Calendar.CellIndicator />}
+                        </>
+                      )}
+                    </Calendar.Cell>
+                  )}
+                </Calendar.GridBody>
+              </Calendar.Grid>
+            </Calendar>
+            <div className="text-info-600 flex gap-3">
+              <NotepadTextIcon />
+              <p className="">
+                Notes: Available days are marked with a dot on the calendar.
+              </p>
+            </div>
+          </div>
 
           {/* Time Selection */}
           <Card
@@ -207,45 +228,28 @@ export function BookingDateTime({
 
               {selectedDate ? (
                 <div className="mt-5 space-y-6">
-                  {morningSlots.length > 0 && (
+                  {timeSlots && (
                     <div>
                       <h3 className="text-text-primary mb-3 text-sm font-medium">
-                        Morning
+                        Available Times
                       </h3>
 
                       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                        {morningSlots.map((slot) => (
+                        {timeSlots.map((slot) => (
                           <TimeSlot
                             key={slot.id}
                             time={slot.time}
                             selected={selectedTime === slot.time}
-                            onSelect={() => setSelectedTime(slot.time)}
+                            onSelect={() => {
+                              setSelectedTime(slot.time);
+                            }}
                           />
                         ))}
                       </div>
                     </div>
                   )}
 
-                  {afternoonSlots.length > 0 && (
-                    <div>
-                      <h3 className="text-text-primary mb-3 text-sm font-medium">
-                        Afternoon
-                      </h3>
-
-                      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                        {afternoonSlots.map((slot) => (
-                          <TimeSlot
-                            key={slot.id}
-                            time={slot.time}
-                            selected={selectedTime === slot.time}
-                            onSelect={() => setSelectedTime(slot.time)}
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {timeSlots.length === 0 && (
+                  {timeSlots && (
                     <p className="text-text-secondary text-sm">
                       No available times for this date.
                     </p>
@@ -264,7 +268,7 @@ export function BookingDateTime({
         <BookingSummary
           provider={provider}
           service={selectedService}
-          selectedDate={selectedDate}
+          selectedDate={formatDateToString(selectedDate)}
           selectedTime={selectedTime}
         />
       </div>

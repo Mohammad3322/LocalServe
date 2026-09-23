@@ -2,31 +2,11 @@ import { Card } from "@heroui/react";
 import { Star } from "lucide-react";
 
 import { getReviewsByProviderId } from "@/lib/services/reviews";
+import RatingStars from "../ui/RatingStars";
 
 type ProviderReviewsProps = {
   providerId: string;
 };
-
-function RatingStars({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-1">
-      {Array.from({ length: 5 }).map((_, index) => {
-        const starNumber = index + 1;
-
-        return (
-          <Star
-            key={starNumber}
-            className={`size-4 ${
-              starNumber <= rating
-                ? "fill-current text-amber-500"
-                : "text-border"
-            }`}
-          />
-        );
-      })}
-    </div>
-  );
-}
 
 export function ProviderReviews({ providerId }: ProviderReviewsProps) {
   const providerReviews = getReviewsByProviderId(providerId);

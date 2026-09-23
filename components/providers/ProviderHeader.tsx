@@ -21,7 +21,6 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
   return (
     <section className="border-border bg-surface border-b">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
         <nav aria-label="Breadcrumb" className="mb-8">
           <ol className="flex items-center gap-2 text-sm">
             <li>
@@ -78,10 +77,10 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
               </h1>
 
               {provider.verified && (
-                <span className="bg-brand-50 text-brand-700 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium">
+                <p className="bg-brand-50 text-brand-700 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium">
                   <BadgeCheck className="size-4" />
                   Verified
-                </span>
+                </p>
               )}
             </div>
 
@@ -97,27 +96,25 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
                   {averageRating.toFixed(1)}
                 </span>
 
-                <span className="text-text-secondary text-sm">
+                <p className="text-text-secondary text-sm">
                   {providerReviews.length}
                   {providerReviews.length === 1 ? "review" : "reviews"}
-                </span>
+                </p>
               </div>
 
               <div className="bg-border hidden h-4 w-px sm:block" />
 
-              {/* Service Area */}
               <div className="text-text-secondary flex items-center gap-1.5 text-sm">
                 <MapPin className="size-4 shrink-0" />
 
-                <span>{provider.serviceArea}</span>
+                <p>{provider.serviceArea}</p>
               </div>
             </div>
 
-            {/* Experience */}
             <div className="text-text-secondary mt-4 flex items-center gap-1.5 text-sm">
               <CalendarDays className="size-4 shrink-0" />
 
-              <span>{provider.experienceYears} years of experience</span>
+              <p>{provider.experienceYears} years of experience</p>
             </div>
           </div>
 

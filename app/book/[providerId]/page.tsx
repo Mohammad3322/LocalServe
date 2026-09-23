@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 
-import { BookingDetails } from "@/components/booking/BookingDetails";
+import { BookingPage } from "@/components/booking/BookingPage";
 import { getProviderById } from "@/lib/services/providers";
 
 type BookingRouteProps = {
@@ -8,9 +8,7 @@ type BookingRouteProps = {
     providerId: string;
   }>;
   searchParams: Promise<{
-    serviceId?: string;
-    date?: string;
-    time?: string;
+    service?: string;
   }>;
 };
 
@@ -19,8 +17,7 @@ export default async function BookingRoute({
   searchParams,
 }: BookingRouteProps) {
   const { providerId } = await params;
-
-  const { serviceId, date, time } = await searchParams;
+  const { service } = await searchParams;
 
   const provider = getProviderById(providerId);
 
@@ -28,12 +25,5 @@ export default async function BookingRoute({
     notFound();
   }
 
-  return (
-    <BookingDetails
-      provider={provider}
-      selectedServiceId={serviceId}
-      selectedDate={date}
-      selectedTime={time}
-    />
-  );
+  return <BookingPage provider={provider} selectedServiceId={service} />;
 }

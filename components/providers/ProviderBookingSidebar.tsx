@@ -24,7 +24,7 @@ export function ProviderBookingSidebar({
     <aside className="">
       <Card
         variant="default"
-        className="border-border bg-brand-500 h-screen border shadow-sm lg:sticky lg:top-0"
+        className="border-border bg-brand-500 border shadow-sm lg:sticky lg:top-10"
       >
         <Card.Content className="p-5 sm:p-6">
           {selectedService ? (
