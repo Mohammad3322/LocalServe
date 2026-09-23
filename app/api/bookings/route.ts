@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { services } from "@/lib/data/seed/services";
+// import { services } from "@/lib/data/seed/services";
 import { availability } from "@/lib/data/seed/availability";
 import { createBookingSchema } from "@/lib/validation/booking.schema";
 import { providers } from "@/lib/data/seed/providers";
