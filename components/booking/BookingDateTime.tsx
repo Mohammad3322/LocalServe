@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Calendar, Card, useLocale } from "@heroui/react";
+import { Calendar, Card } from "@heroui/react";
 import { Clock3, NotepadTextIcon } from "lucide-react";
 import { useMemo, useState } from "react";
 
@@ -12,7 +12,7 @@ import { BookingSummary } from "./BookingSummary";
 import MyButton from "../ui/MyButton";
 // import { ChooseDates } from "../ui/Calendar";
 import type { DateValue } from "@internationalized/date";
-import { isWeekend, parseDate } from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 
 type BookingDateTimeProps = {
   provider: Provider;
