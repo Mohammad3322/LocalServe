@@ -1,7 +1,5 @@
-import React from "react";
+import { ServicesPage } from "@/components/services/ServicesPage";
 
-const Page = () => {
-  return <div>Service</div>;
-};
-
-export default Page;
+export default function Page() {
+  return <ServicesPage />;
+}
