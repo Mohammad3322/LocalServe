@@ -36,7 +36,7 @@ export default async function ProviderPage({
       <ProviderHeader provider={provider} />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-[320px_1fr]">
+        <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
           <div>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <ProviderAbout provider={provider} />

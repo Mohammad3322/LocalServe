@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Card } from "@heroui/react";
 import { CalendarDays, Clock3 } from "lucide-react";
 
@@ -28,12 +27,6 @@ export function BookingSummary({
 
   const canContinue =
     Boolean(selectedDate) && Boolean(selectedTime) && Boolean(service);
-
-  const nextUrl =
-    `/book/${provider.id}/details` +
-    `?service=${service.id}` +
-    `&date=${selectedDate}` +
-    `&time=${selectedTime}`;
 
   const handleContinue = () => {
     if (!service || !selectedDate || !selectedTime) {
@@ -124,21 +117,15 @@ export function BookingSummary({
             </span>
           </div>
 
-          <Link
-            href={canContinue ? nextUrl : "#"}
-            aria-disabled={!canContinue}
-            className={!canContinue ? "pointer-events-none" : undefined}
+          <MyButton
+            variant="secondary"
+            onPress={handleContinue}
+            size="lg"
+            className="w-full"
+            isDisabled={!canContinue}
           >
-            <MyButton
-              variant="secondary"
-              onPress={handleContinue}
-              size="lg"
-              className="w-full"
-              isDisabled={!canContinue}
-            >
-              Continue
-            </MyButton>
-          </Link>
+            Continue
+          </MyButton>
 
           <p className="text-text-secondary mt-3 text-center text-xs leading-5">
             You will review your details before confirming the booking.

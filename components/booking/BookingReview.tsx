@@ -27,33 +27,13 @@ import { useBookingStore } from "@/lib/store/booking-store";
 
 type BookingReviewProps = {
   provider: Provider;
-  // selectedServiceId: string;
-  // selectedDate: string;
-  // selectedTime: string;
-  // customerName: string;
-  // customerEmail: string;
-  // customerPhone?: string;
-  // notes?: string;
 };
 
 type BookingState = "idle" | "submitting" | "slot-unavailable" | "error";
 
-export function BookingReview({
-  provider,
-  // selectedServiceId,
-  // selectedDate,
-  // selectedTime,
-  // customerName,
-  // customerEmail,
-  // customerPhone,
-  // notes,
-}: BookingReviewProps) {
-  const { serviceId, date, time, customer } = useBookingStore();
+export function BookingReview({ provider }: BookingReviewProps) {
+  const { serviceId, date, time, customer, hasHydrated } = useBookingStore();
 
-  const selectedServiceId = serviceId;
-
-  const selectedDate = date;
-  const selectedTime = time;
   const customerName = customer?.customerName;
   const customerEmail = customer?.customerEmail;
   const customerPhone = customer?.customerPhone;
@@ -62,55 +42,122 @@ export function BookingReview({
 
   const router = useRouter();
 
-  const selectedService = services.find(
-    (service) => service.id === selectedServiceId,
-  );
-
-  if (!selectedService) {
+  if (!hasHydrated) {
     return (
       <main className="bg-background min-h-screen">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <BookingProgress />
-
-          <div className="mx-auto mt-8 max-w-2xl">
-            <Card
-              variant="default"
-              className="border-border bg-surface border shadow-sm"
-            >
-              <Card.Content className="p-6 text-center sm:p-8">
-                <h1 className="text-text-primary text-xl font-semibold">
-                  Service not found
-                </h1>
-
-                <p className="text-text-secondary mt-2 text-sm leading-6">
-                  The selected service is no longer available for this
-                  professional.
-                </p>
-
-                <Link
-                  href={`/providers/${provider.slug}`}
-                  className="mt-6 inline-block"
-                >
-                  <Button variant="primary">Back to Provider</Button>
-                </Link>
-              </Card.Content>
-            </Card>
-          </div>
-        </div>
+        <h3>Loading ...</h3>
       </main>
     );
   }
 
+  if (!serviceId || !date || !time || !customer) {
+    console.log("!serviceId || !date || !time || !customer");
+
+    router.replace(`/book/${provider.id}`);
+    return null;
+  }
+
+  // if (!selectedService) {
+  //   return (
+  //     <main className="bg-background min-h-screen">
+  //       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  //         <BookingProgress />
+
+  //         <div className="mx-auto mt-8 max-w-2xl">
+  //           <Card
+  //             variant="default"
+  //             className="border-border bg-surface border shadow-sm"
+  //           >
+  //             <Card.Content className="p-6 text-center sm:p-8">
+  //               <h1 className="text-text-primary text-xl font-semibold">
+  //                 Service not found
+  //               </h1>
+
+  //               <p className="text-text-secondary mt-2 text-sm leading-6">
+  //                 The selected service is no longer available for this
+  //                 professional.
+  //               </p>
+
+  //               <Link
+  //                 href={`/providers/${provider.slug}`}
+  //                 className="mt-6 inline-block"
+  //               >
+  //                 <Button variant="primary">Back to Provider</Button>
+  //               </Link>
+  //             </Card.Content>
+  //           </Card>
+  //         </div>
+  //       </div>
+  //     </main>
+  //   );
+  // }
+  // if (!date || !time) {
+  //   return (
+  //     <main className="bg-background min-h-screen">
+  //       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  //         <BookingProgress />
+
+  //         <div className="mx-auto mt-8 max-w-2xl">
+  //           <Card
+  //             variant="default"
+  //             className="border-border bg-surface border shadow-sm"
+  //           >
+  //             <Card.Content className="p-6 text-center sm:p-8">
+  //               <h1 className="text-text-primary text-xl font-semibold">
+  //                 Didn{"'"}t select Date and Time
+  //               </h1>
+  //               <Link href={`/providers/booking`} className="mt-6 inline-block">
+  //                 <Button variant="primary">Back to Date and Time</Button>
+  //               </Link>
+  //             </Card.Content>
+  //           </Card>
+  //         </div>
+  //       </div>
+  //     </main>
+  //   );
+  // }
+  // if (!customer) {
+  //   return (
+  //     <main className="bg-background min-h-screen">
+  //       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+  //         <BookingProgress />
+
+  //         <div className="mx-auto mt-8 max-w-2xl">
+  //           <Card
+  //             variant="default"
+  //             className="border-border bg-surface border shadow-sm"
+  //           >
+  //             <Card.Content className="p-6 text-center sm:p-8">
+  //               <h1 className="text-text-primary text-xl font-semibold">
+  //                 Didn{"'"}t Inter your Details
+  //               </h1>
+  //               <Link href={`/providers/booking`} className="mt-6 inline-block">
+  //                 <Button variant="primary">Back to Your Details</Button>
+  //               </Link>
+  //             </Card.Content>
+  //           </Card>
+  //         </div>
+  //       </div>
+  //     </main>
+  //   );
+  // }
+
+  const selectedService = services.find(
+    (service) => service.id === serviceId && service.providerId === provider.id,
+  );
+
+  if (!selectedService) {
+    console.log("!selectedService");
+    router.replace(`/book/${provider.id}`);
+    return null;
+  }
+
   const editDetailsUrl = buildDetailsUrl({
     providerId: provider.id,
-    serviceId: selectedService.id,
-    date: selectedDate,
-    time: selectedTime,
   });
 
   const editDateTimeUrl = buildDateTimeUrl({
     providerId: provider.id,
-    serviceId: selectedService.id,
   });
 
   const handleConfirmBooking = async () => {
@@ -122,11 +169,11 @@ export function BookingReview({
     try {
       const booking = await createBooking({
         providerId: provider.id,
-        serviceId: selectedService.id,
-        date: selectedDate,
-        time: selectedTime,
-        customerName,
-        customerEmail,
+        serviceId: serviceId,
+        date: date,
+        time: time,
+        customerName: customer.customerName,
+        customerEmail: customer.customerEmail,
         customerPhone: customerPhone || undefined,
         notes: notes || undefined,
       });
@@ -160,7 +207,6 @@ export function BookingReview({
         <BookingProgress />
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_320px]">
-          {/* Main Review */}
           <section>
             <div className="mb-8">
               <p className="text-brand-600 text-sm font-medium">Step 4 of 4</p>
@@ -175,7 +221,6 @@ export function BookingReview({
             </div>
 
             <div className="space-y-5">
-              {/* Provider */}
               <Card
                 variant="default"
                 className="border-border bg-surface border shadow-sm"
@@ -207,7 +252,6 @@ export function BookingReview({
                 </Card.Content>
               </Card>
 
-              {/* Appointment */}
               <Card
                 variant="default"
                 className="border-border bg-surface border shadow-sm"
@@ -225,7 +269,14 @@ export function BookingReview({
                     </div>
 
                     <Link href={editDateTimeUrl}>
-                      <Button variant="ghost" size="sm" className="shrink-0">
+                      <Button
+                        variant="ghost"
+                        onPress={() => {
+                          router.push(`/book/${provider.id}`);
+                        }}
+                        size="sm"
+                        className="shrink-0"
+                      >
                         <Pencil className="size-4" />
                         Edit
                       </Button>
@@ -236,13 +287,13 @@ export function BookingReview({
                     <InfoItem
                       icon={<CalendarDays className="size-4" />}
                       label="Date"
-                      value={formatBookingDate(selectedDate)}
+                      value={formatBookingDate(date)}
                     />
 
                     <InfoItem
                       icon={<Clock3 className="size-4" />}
                       label="Time"
-                      value={formatBookingTime(selectedTime)}
+                      value={formatBookingTime(time)}
                     />
 
                     <InfoItem
@@ -254,7 +305,6 @@ export function BookingReview({
                 </Card.Content>
               </Card>
 
-              {/* Customer Information */}
               <Card
                 variant="default"
                 className="border-border bg-surface border shadow-sm"
@@ -272,7 +322,14 @@ export function BookingReview({
                     </div>
 
                     <Link href={editDetailsUrl}>
-                      <Button variant="ghost" size="sm" className="shrink-0">
+                      <Button
+                        variant="ghost"
+                        onPress={() => {
+                          router.push(`/book/${provider.id}/details`);
+                        }}
+                        size="sm"
+                        className="shrink-0"
+                      >
                         <Pencil className="size-4" />
                         Edit
                       </Button>
@@ -321,7 +378,6 @@ export function BookingReview({
               )}
             </div>
 
-            {/* Error State */}
             {bookingState === "error" && (
               <div
                 role="alert"
@@ -347,7 +403,6 @@ export function BookingReview({
               </div>
             )}
 
-            {/* Slot Unavailable State */}
             {bookingState === "slot-unavailable" && (
               <div
                 role="alert"
@@ -369,7 +424,6 @@ export function BookingReview({
               </div>
             )}
 
-            {/* Actions */}
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
               <Link href={editDetailsUrl}>
                 <MyButton
@@ -395,7 +449,6 @@ export function BookingReview({
             </div>
           </section>
 
-          {/* Summary Sidebar */}
           <aside className="lg:sticky lg:top-24 lg:self-start">
             <Card
               variant="default"
@@ -438,7 +491,7 @@ export function BookingReview({
                       </p>
 
                       <p className="text-text-primary mt-1 text-sm font-medium">
-                        {formatBookingDate(selectedDate)}
+                        {formatBookingDate(date)}
                       </p>
                     </div>
                   </div>
@@ -454,7 +507,7 @@ export function BookingReview({
                       </p>
 
                       <p className="text-text-primary mt-1 text-sm font-medium">
-                        {formatBookingTime(selectedTime)}
+                        {formatBookingTime(time)}
                       </p>
                     </div>
                   </div>
@@ -546,8 +599,8 @@ function BookingProgress() {
 
 type InfoItemProps = {
   icon: React.ReactNode;
-  label: string;
-  value: string;
+  label: string | undefined;
+  value: string | undefined;
 };
 
 function InfoItem({ icon, label, value }: InfoItemProps) {
@@ -572,36 +625,36 @@ function InfoItem({ icon, label, value }: InfoItemProps) {
 
 function buildDetailsUrl({
   providerId,
-  serviceId,
-  date,
-  time,
+  // serviceId,
+  // date,
+  // time,
 }: {
   providerId: string;
-  serviceId: string;
-  date: string;
-  time: string;
+  // serviceId: string;
+  // date: string;
+  // time: string;
 }) {
   const params = new URLSearchParams();
 
-  params.set("service", serviceId);
-  params.set("date", date);
-  params.set("time", time);
+  // params.set("service", serviceId);
+  // params.set("date", date);
+  // params.set("time", time);
 
   return `/book/${providerId}?${params.toString()}`;
 }
 
 function buildDateTimeUrl({
   providerId,
-  serviceId,
+  // serviceId,
 }: {
   providerId: string;
-  serviceId: string;
+  // serviceId: string;
 }) {
-  const params = new URLSearchParams();
+  // const params = new URLSearchParams();
 
-  params.set("service", serviceId);
+  // params.set("service", serviceId);
 
-  return `/book/${providerId}?${params.toString()}`;
+  return `/book/${providerId}`;
 }
 
 function formatBookingDate(date: string): string {

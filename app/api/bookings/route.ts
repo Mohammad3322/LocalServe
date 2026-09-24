@@ -25,7 +25,10 @@ export async function POST(request: Request) {
 
     const booking = result.data;
 
-    const service = services.find((item) => item.id === booking.serviceId);
+    const service = services.find(
+      (item) =>
+        item.id === booking.serviceId && item.providerId === booking.providerId,
+    );
 
     if (!service) {
       return NextResponse.json(

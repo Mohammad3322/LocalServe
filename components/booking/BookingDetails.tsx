@@ -16,22 +16,13 @@ import { useBookingStore } from "@/lib/store/booking-store";
 
 type BookingDetailsProps = {
   provider: Provider;
-  selectedServiceId?: string;
-  selectedDate?: string;
-  selectedTime?: string;
 };
 
-export function BookingDetails({
-  provider,
-  selectedServiceId,
-  selectedDate,
-  selectedTime,
-}: BookingDetailsProps) {
-  const setAppointment = useBookingStore((state) => state.setAppointment);
+export function BookingDetails({ provider }: BookingDetailsProps) {
+  const router = useRouter();
 
-  const setCustomer = useBookingStore((state) => state.setCustomer);
-
-  const customer = useBookingStore((state) => state.customer);
+  const { serviceId, date, time, customer, hasHydrated, setCustomer } =
+    useBookingStore();
 
   const [customerName, setCustomerName] = useState(
     customer?.customerName ?? "",
@@ -50,12 +41,33 @@ export function BookingDetails({
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const selectedService = services.find(
-    (service) => service.id === selectedServiceId,
+    (service) => service.id === serviceId && service.providerId === provider.id,
   );
 
-  const router = useRouter();
+  if (!hasHydrated) {
+    return (
+      <main className="bg-background min-h-screen">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <BookingProgress />
 
-  if (!selectedService || !selectedDate || !selectedTime) {
+          <div className="mx-auto mt-8 max-w-2xl">
+            <Card
+              variant="default"
+              className="border-border bg-surface border shadow-sm"
+            >
+              <Card.Content className="p-6 text-center sm:p-8">
+                <p className="text-text-secondary text-sm">
+                  Loading booking information...
+                </p>
+              </Card.Content>
+            </Card>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  if (!selectedService || !date || !time) {
     return (
       <main className="bg-background min-h-screen">
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
@@ -99,12 +111,16 @@ export function BookingDetails({
     });
 
     if (!result.success) {
+      console.log("!result.success");
+
       const fieldErrors: Record<string, string> = {};
 
       for (const issue of result.error.issues) {
         const field = issue.path[0];
 
         if (typeof field === "string" && !fieldErrors[field]) {
+          console.log("typeof field === string && !fieldErrors[field]");
+
           fieldErrors[field] = issue.message;
         }
       }
@@ -113,30 +129,14 @@ export function BookingDetails({
       return;
     }
 
+    setCustomer(result.data);
     setErrors({});
 
-    const params = new URLSearchParams();
-
-    params.set("service", selectedService.id);
-    params.set("date", selectedDate);
-    params.set("time", selectedTime);
-    params.set("customerName", result.data.customerName);
-    params.set("customerEmail", result.data.customerEmail);
-
-    if (result.data.customerPhone) {
-      params.set("customerPhone", result.data.customerPhone);
-    }
-
-    if (result.data.notes) {
-      params.set("notes", result.data.notes);
-    }
-
-    router.push(`/book/${provider.id}/review?${params.toString()}`);
+    router.push(`/book/${provider.id}/review`);
+    console.log("customerDetails handleSubmit done");
   };
 
-  const backUrl =
-    `/book/${provider.id}?service=${selectedService.id}` +
-    `&date=${selectedDate}&time=${selectedTime}`;
+  const backUrl = `/book/${provider.id}`;
 
   return (
     <main className="bg-background min-h-screen">
@@ -336,7 +336,7 @@ export function BookingDetails({
                       </p>
 
                       <p className="text-surface mt-1 text-sm font-medium">
-                        {formatBookingDate(selectedDate)}
+                        {formatBookingDate(date)}
                       </p>
                     </div>
                   </div>
@@ -352,7 +352,7 @@ export function BookingDetails({
                       </p>
 
                       <p className="text-surface mt-1 text-sm font-medium">
-                        {formatBookingTime(selectedTime)}
+                        {formatBookingTime(time)}
                       </p>
                     </div>
                   </div>

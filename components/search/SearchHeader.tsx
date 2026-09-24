@@ -1,14 +1,13 @@
 "use client";
 
-import { ComboBox, Label, ListBox } from "@heroui/react";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import MyButton from "../ui/MyButton";
-import MyInput from "../ui/MyInput";
 import { locations } from "@/lib/data/seed/locations";
 import { services } from "@/lib/data/seed/services";
+import SearchInput from "../ui/SearchInput";
 
 export function SearchHeader() {
   const router = useRouter();
@@ -23,6 +22,7 @@ export function SearchHeader() {
   const [location, setLocation] = useState(initialLocation);
 
   const servicesSet = [...new Set(services.map((s) => s.title))];
+  const locationsSet = [...new Set(locations.map((s) => s.name))];
 
   function handleSearch() {
     const params = new URLSearchParams(searchParams.toString());
@@ -59,73 +59,17 @@ export function SearchHeader() {
         </div>
 
         <div className="mt-6 grid gap-3 md:grid-cols-[1fr_1fr_auto]">
-          <ComboBox
-            className="w-full"
+          <SearchInput
+            List={servicesSet}
             inputValue={service}
             onInputChange={setService}
-            allowsCustomValue
-            menuTrigger="input"
-          >
-            <Label className="text-text-primary mb-2 block text-sm font-medium">
-              Service
-            </Label>
+          />
 
-            <ComboBox.InputGroup>
-              <MyInput placeholder="Search services..." />
-
-              <ComboBox.Trigger />
-            </ComboBox.InputGroup>
-
-            <ComboBox.Popover>
-              <ListBox>
-                {servicesSet.map((serviceTitle) => (
-                  <ListBox.Item
-                    key={serviceTitle}
-                    id={serviceTitle}
-                    textValue={serviceTitle}
-                  >
-                    <Label>{serviceTitle}</Label>
-
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </ComboBox.Popover>
-          </ComboBox>
-
-          <ComboBox
-            className="w-full"
+          <SearchInput
+            List={locationsSet}
             inputValue={location}
             onInputChange={setLocation}
-            allowsCustomValue
-            menuTrigger="input"
-          >
-            <Label className="text-text-primary mb-2 block text-sm font-medium">
-              Location
-            </Label>
-
-            <ComboBox.InputGroup>
-              <MyInput placeholder="Search location..." />
-
-              <ComboBox.Trigger />
-            </ComboBox.InputGroup>
-
-            <ComboBox.Popover>
-              <ListBox>
-                {locations.map((location) => (
-                  <ListBox.Item
-                    key={location.id}
-                    id={location.id}
-                    textValue={location.name}
-                  >
-                    <Label>{location.name}</Label>
-
-                    <ListBox.ItemIndicator />
-                  </ListBox.Item>
-                ))}
-              </ListBox>
-            </ComboBox.Popover>
-          </ComboBox>
+          />
 
           <div className="flex items-end">
             <MyButton

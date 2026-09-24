@@ -24,15 +24,8 @@ export default async function ReviewPage({
 }: ReviewPageProps) {
   const { providerId } = await params;
 
-  const {
-    service,
-    date,
-    time,
-    customerName,
-    customerEmail,
-    customerPhone,
-    notes,
-  } = await searchParams;
+  const { service, date, time, customerName, customerEmail } =
+    await searchParams;
 
   const provider = getProviderById(providerId);
 
@@ -40,20 +33,18 @@ export default async function ReviewPage({
     notFound();
   }
 
-  if (!service || !date || !time || !customerName || !customerEmail) {
-    redirect(`/book/${providerId}`);
-  }
+  // if (!service) {
+  //   console.log("!service");
+  //   redirect(`/book/${providerId}`);
+  // }
+  // if (!date || !time) {
+  //   console.log(" !date || !time ");
+  //   redirect(`/book/${providerId}`);
+  // }
+  // if (!customerName || !customerEmail) {
+  //   console.log("!customerName || !customerEmail");
+  //   redirect(`/book/${providerId}`);
+  // }
 
-  return (
-    <BookingReview
-      provider={provider}
-      selectedServiceId={service}
-      selectedDate={date}
-      selectedTime={time}
-      customerName={customerName}
-      customerEmail={customerEmail}
-      customerPhone={customerPhone}
-      notes={notes}
-    />
-  );
+  return <BookingReview provider={provider} />;
 }

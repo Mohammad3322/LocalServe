@@ -8,6 +8,7 @@ type BookingState = {
   serviceId?: string;
   date?: string;
   time?: string;
+  hasHydrated: boolean;
 
   customer?: CustomerDetails;
 
@@ -17,6 +18,8 @@ type BookingState = {
     date: string;
     time: string;
   }) => void;
+
+  setHasHydrated: (value: boolean) => void;
 
   setCustomer: (customer: CustomerDetails) => void;
 
@@ -31,6 +34,12 @@ export const useBookingStore = create<BookingState>()(
       date: undefined,
       time: undefined,
       customer: undefined,
+      hasHydrated: false,
+
+      setHasHydrated: (value) =>
+        set({
+          hasHydrated: value,
+        }),
 
       setAppointment: (data) =>
         set({
@@ -82,6 +91,10 @@ export const useBookingStore = create<BookingState>()(
 
           sessionStorage.removeItem(name);
         },
+      },
+
+      onRehydrateStorage: () => (state) => {
+        state?.setHasHydrated(true);
       },
     },
   ),
