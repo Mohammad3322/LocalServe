@@ -10,16 +10,16 @@ export const services = [
     category: "solar-energy",
   },
 
-  // {
-  //   id: "solar-panel-installation-2",
-  //   providerId: "pro-4",
-  //   slug: "solar-panel-installation",
-  //   title: "Solar Panel Installation",
-  //   description: "Professional solar panel installation services.",
-  //   durationMinutes: 180,
-  //   priceCents: 85000,
-  //   category: "solar-energy",
-  // },
+  {
+    id: "solar-panel-installation-2",
+    providerId: "pro-4",
+    slug: "solar-panel-installation",
+    title: "Solar Panel Installation",
+    description: "Professional solar panel installation services.",
+    durationMinutes: 180,
+    priceCents: 85000,
+    category: "solar-energy",
+  },
 
   {
     id: "cctv-installation",
@@ -33,17 +33,17 @@ export const services = [
     category: "security-surveillance",
   },
 
-  // {
-  //   id: "cctv-installation-2",
-  //   providerId: "pro-5",
+  {
+    id: "cctv-installation-2",
+    providerId: "pro-5",
 
-  //   slug: "cctv-installation",
-  //   title: "CCTV Installation",
-  //   description: "Professional CCTV installation and setup.",
-  //   durationMinutes: 120,
-  //   priceCents: 32000,
-  //   category: "security-surveillance",
-  // },
+    slug: "cctv-installation",
+    title: "CCTV Installation",
+    description: "Professional CCTV installation and setup.",
+    durationMinutes: 120,
+    priceCents: 32000,
+    category: "security-surveillance",
+  },
 
   {
     id: "smart-home",

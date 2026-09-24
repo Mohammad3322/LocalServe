@@ -37,10 +37,6 @@ export default async function ProviderPage({
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[320px_1fr]">
-          <ProviderBookingSidebar
-            provider={provider}
-            selectedServiceId={service}
-          />
           <div>
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <ProviderAbout provider={provider} />
@@ -58,6 +54,10 @@ export default async function ProviderPage({
               <ProviderReviews providerId={provider.id} />
             </div>
           </div>
+          <ProviderBookingSidebar
+            provider={provider}
+            selectedServiceId={service}
+          />
         </div>
       </div>
     </main>

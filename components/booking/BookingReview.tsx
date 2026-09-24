@@ -23,30 +23,41 @@ import { createBooking } from "@/lib/api/bookings";
 // import type { BookingResponse } from "@/lib/validation/booking.schema";
 
 import MyButton from "../ui/MyButton";
+import { useBookingStore } from "@/lib/store/booking-store";
 
 type BookingReviewProps = {
   provider: Provider;
-  selectedServiceId: string;
-  selectedDate: string;
-  selectedTime: string;
-  customerName: string;
-  customerEmail: string;
-  customerPhone?: string;
-  notes?: string;
+  // selectedServiceId: string;
+  // selectedDate: string;
+  // selectedTime: string;
+  // customerName: string;
+  // customerEmail: string;
+  // customerPhone?: string;
+  // notes?: string;
 };
 
 type BookingState = "idle" | "submitting" | "slot-unavailable" | "error";
 
 export function BookingReview({
   provider,
-  selectedServiceId,
-  selectedDate,
-  selectedTime,
-  customerName,
-  customerEmail,
-  customerPhone,
-  notes,
+  // selectedServiceId,
+  // selectedDate,
+  // selectedTime,
+  // customerName,
+  // customerEmail,
+  // customerPhone,
+  // notes,
 }: BookingReviewProps) {
+  const { serviceId, date, time, customer } = useBookingStore();
+
+  const selectedServiceId = serviceId;
+
+  const selectedDate = date;
+  const selectedTime = time;
+  const customerName = customer?.customerName;
+  const customerEmail = customer?.customerEmail;
+  const customerPhone = customer?.customerPhone;
+  const notes = customer?.notes;
   const [bookingState, setBookingState] = useState<BookingState>("idle");
 
   const router = useRouter();
@@ -106,7 +117,6 @@ export function BookingReview({
     if (bookingState === "submitting") {
       return;
     }
-
     setBookingState("submitting");
 
     try {

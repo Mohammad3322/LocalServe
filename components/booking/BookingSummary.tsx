@@ -6,6 +6,9 @@ import type { Provider } from "@/lib/validation/provider.schema";
 import type { Service } from "@/lib/validation/service.schema";
 import MyButton from "../ui/MyButton";
 
+import { useRouter } from "next/navigation";
+import { useBookingStore } from "@/lib/store/booking-store";
+
 type BookingSummaryProps = {
   provider: Provider;
   service: Service;
@@ -19,13 +22,33 @@ export function BookingSummary({
   selectedDate,
   selectedTime,
 }: BookingSummaryProps) {
-  const canContinue = Boolean(selectedDate) && Boolean(selectedTime);
+  const router = useRouter();
+
+  const setAppointment = useBookingStore((state) => state.setAppointment);
+
+  const canContinue =
+    Boolean(selectedDate) && Boolean(selectedTime) && Boolean(service);
 
   const nextUrl =
     `/book/${provider.id}/details` +
     `?service=${service.id}` +
     `&date=${selectedDate}` +
     `&time=${selectedTime}`;
+
+  const handleContinue = () => {
+    if (!service || !selectedDate || !selectedTime) {
+      return;
+    }
+
+    setAppointment({
+      providerId: provider.id,
+      serviceId: service.id,
+      date: selectedDate,
+      time: selectedTime,
+    });
+
+    router.push(`/book/${provider.id}/details`);
+  };
 
   return (
     <aside className="lg:sticky lg:top-24">
@@ -108,6 +131,7 @@ export function BookingSummary({
           >
             <MyButton
               variant="secondary"
+              onPress={handleContinue}
               size="lg"
               className="w-full"
               isDisabled={!canContinue}

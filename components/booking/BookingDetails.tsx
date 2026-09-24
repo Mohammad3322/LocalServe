@@ -12,6 +12,8 @@ import type { Provider } from "@/lib/validation/provider.schema";
 import MyInput from "../ui/MyInput";
 import MyButton from "../ui/MyButton";
 
+import { useBookingStore } from "@/lib/store/booking-store";
+
 type BookingDetailsProps = {
   provider: Provider;
   selectedServiceId?: string;
@@ -25,10 +27,26 @@ export function BookingDetails({
   selectedDate,
   selectedTime,
 }: BookingDetailsProps) {
-  const [customerName, setCustomerName] = useState("");
-  const [customerEmail, setCustomerEmail] = useState("");
-  const [customerPhone, setCustomerPhone] = useState("");
-  const [notes, setNotes] = useState("");
+  const setAppointment = useBookingStore((state) => state.setAppointment);
+
+  const setCustomer = useBookingStore((state) => state.setCustomer);
+
+  const customer = useBookingStore((state) => state.customer);
+
+  const [customerName, setCustomerName] = useState(
+    customer?.customerName ?? "",
+  );
+
+  const [customerEmail, setCustomerEmail] = useState(
+    customer?.customerEmail ?? "",
+  );
+
+  const [customerPhone, setCustomerPhone] = useState(
+    customer?.customerPhone ?? "",
+  );
+
+  const [notes, setNotes] = useState(customer?.notes ?? "");
+
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const selectedService = services.find(

@@ -62,7 +62,7 @@ export function SearchFilters() {
   function clearFilters() {
     const params = new URLSearchParams(searchParams.toString());
 
-    params.delete("service");
+    params.delete("category");
     params.delete("rating");
     params.delete("availability");
 

@@ -22,6 +22,8 @@ export function SearchHeader() {
 
   const [location, setLocation] = useState(initialLocation);
 
+  const servicesSet = [...new Set(services.map((s) => s.title))];
+
   function handleSearch() {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -76,13 +78,13 @@ export function SearchHeader() {
 
             <ComboBox.Popover>
               <ListBox>
-                {services.map((service) => (
+                {servicesSet.map((serviceTitle) => (
                   <ListBox.Item
-                    key={service.id}
-                    id={service.id}
-                    textValue={service.title}
+                    key={serviceTitle}
+                    id={serviceTitle}
+                    textValue={serviceTitle}
                   >
-                    <Label>{service.title}</Label>
+                    <Label>{serviceTitle}</Label>
 
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
