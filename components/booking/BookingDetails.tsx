@@ -13,6 +13,7 @@ import MyInput from "../ui/MyInput";
 import MyButton from "../ui/MyButton";
 
 import { useBookingStore } from "@/lib/store/booking-store";
+import { formatBookingDate, formatBookingTime } from "@/lib/utils/formatters";
 
 type BookingDetailsProps = {
   provider: Provider;
@@ -436,35 +437,4 @@ function BookingProgress() {
       </ol>
     </nav>
   );
-}
-
-function formatBookingDate(date: string): string {
-  const parsedDate = new Date(`${date}T00:00:00`);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return date;
-  }
-
-  return new Intl.DateTimeFormat("en", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  }).format(parsedDate);
-}
-
-function formatBookingTime(time: string): string {
-  const [hours, minutes] = time.split(":").map(Number);
-
-  if (Number.isNaN(hours) || Number.isNaN(minutes)) {
-    return time;
-  }
-
-  const date = new Date();
-  date.setHours(hours, minutes, 0, 0);
-
-  return new Intl.DateTimeFormat("en", {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
 }

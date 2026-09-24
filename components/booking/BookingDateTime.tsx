@@ -10,31 +10,13 @@ import { services } from "@/lib/data/seed/services";
 import type { Provider } from "@/lib/validation/provider.schema";
 import { BookingSummary } from "./BookingSummary";
 import MyButton from "../ui/MyButton";
+import { formatDateToString, formatStringToDate } from "@/lib/utils/formatters";
 import type { DateValue } from "@internationalized/date";
-import { parseDate } from "@internationalized/date";
 
 type BookingDateTimeProps = {
   provider: Provider;
   selectedServiceId?: string;
 };
-
-// function formatDate(date: string) {
-//   return new Date(`${date}T00:00:00`).toLocaleDateString("en", {
-//     weekday: "long",
-//     month: "long",
-//     day: "numeric",
-//   });
-// }
-
-function formatToDate(date: string) {
-  if (!date) return null;
-  return parseDate(date);
-}
-
-function formatDateToString(date: DateValue | null | undefined): string {
-  if (!date) return "";
-  return date.toString();
-}
 
 export function BookingDateTime({
   provider,
@@ -59,7 +41,7 @@ export function BookingDateTime({
 
   const [selectedDate, setSelectedDate] = useState<
     DateValue | null | undefined
-  >(formatToDate(dates[0]));
+  >(formatStringToDate(dates[0]));
 
   const [selectedTime, setSelectedTime] = useState<string>("");
 

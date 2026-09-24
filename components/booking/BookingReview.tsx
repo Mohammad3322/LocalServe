@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
 import { Button, Card } from "@heroui/react";
+import MyButton from "../ui/MyButton";
 import {
   CalendarDays,
   CheckCircle2,
@@ -17,14 +18,11 @@ import {
 import { services } from "@/lib/data/seed/services";
 import type { Provider } from "@/lib/validation/provider.schema";
 
-import axios from "axios";
 import { createBooking } from "@/lib/api/bookings";
 
-// import type { BookingResponse } from "@/lib/validation/booking.schema";
-
-import MyButton from "../ui/MyButton";
 import { useBookingStore } from "@/lib/store/booking-store";
-
+import axios from "axios";
+import { formatBookingDate, formatBookingTime } from "@/lib/utils/formatters";
 type BookingReviewProps = {
   provider: Provider;
 };
@@ -33,6 +31,7 @@ type BookingState = "idle" | "submitting" | "slot-unavailable" | "error";
 
 export function BookingReview({ provider }: BookingReviewProps) {
   const { serviceId, date, time, customer, hasHydrated } = useBookingStore();
+  const clearBooking = useBookingStore((state) => state.clearBooking);
 
   const customerName = customer?.customerName;
   const customerEmail = customer?.customerEmail;
@@ -152,14 +151,6 @@ export function BookingReview({ provider }: BookingReviewProps) {
     return null;
   }
 
-  const editDetailsUrl = buildDetailsUrl({
-    providerId: provider.id,
-  });
-
-  const editDateTimeUrl = buildDateTimeUrl({
-    providerId: provider.id,
-  });
-
   const handleConfirmBooking = async () => {
     if (bookingState === "submitting") {
       return;
@@ -182,6 +173,8 @@ export function BookingReview({ provider }: BookingReviewProps) {
         `localserve:booking:${booking.id}`,
         JSON.stringify(booking),
       );
+
+      clearBooking();
 
       const confirmationParams = new URLSearchParams();
 
@@ -268,19 +261,19 @@ export function BookingReview({ provider }: BookingReviewProps) {
                       </h2>
                     </div>
 
-                    <Link href={editDateTimeUrl}>
-                      <Button
-                        variant="ghost"
-                        onPress={() => {
-                          router.push(`/book/${provider.id}`);
-                        }}
-                        size="sm"
-                        className="shrink-0"
-                      >
-                        <Pencil className="size-4" />
-                        Edit
-                      </Button>
-                    </Link>
+                    <Button
+                      variant="ghost"
+                      onPress={() => {
+                        router.push(
+                          `/book/${provider.id}?service=${serviceId}`,
+                        );
+                      }}
+                      size="sm"
+                      className="shrink-0"
+                    >
+                      <Pencil className="size-4" />
+                      Edit
+                    </Button>
                   </div>
 
                   <div className="mt-5 grid gap-4 sm:grid-cols-3">
@@ -321,19 +314,17 @@ export function BookingReview({ provider }: BookingReviewProps) {
                       </h2>
                     </div>
 
-                    <Link href={editDetailsUrl}>
-                      <Button
-                        variant="ghost"
-                        onPress={() => {
-                          router.push(`/book/${provider.id}/details`);
-                        }}
-                        size="sm"
-                        className="shrink-0"
-                      >
-                        <Pencil className="size-4" />
-                        Edit
-                      </Button>
-                    </Link>
+                    <Button
+                      variant="ghost"
+                      onPress={() => {
+                        router.push(`/book/${provider.id}/details`);
+                      }}
+                      size="sm"
+                      className="shrink-0"
+                    >
+                      <Pencil className="size-4" />
+                      Edit
+                    </Button>
                   </div>
 
                   <div className="mt-5 space-y-4">
@@ -416,7 +407,10 @@ export function BookingReview({ provider }: BookingReviewProps) {
                   Please choose another available date and time.
                 </p>
 
-                <Link href={editDateTimeUrl} className="mt-4 inline-block">
+                <Link
+                  href={`/book/${provider.id}`}
+                  className="mt-4 inline-block"
+                >
                   <MyButton variant="secondary" size="sm">
                     Choose Another Time
                   </MyButton>
@@ -425,7 +419,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
             )}
 
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
-              <Link href={editDetailsUrl}>
+              <Link href={`/book/${provider.id}/details`}>
                 <MyButton
                   variant="secondary"
                   className="w-full sm:w-auto"
@@ -621,70 +615,4 @@ function InfoItem({ icon, label, value }: InfoItemProps) {
       </div>
     </div>
   );
-}
-
-function buildDetailsUrl({
-  providerId,
-  // serviceId,
-  // date,
-  // time,
-}: {
-  providerId: string;
-  // serviceId: string;
-  // date: string;
-  // time: string;
-}) {
-  const params = new URLSearchParams();
-
-  // params.set("service", serviceId);
-  // params.set("date", date);
-  // params.set("time", time);
-
-  return `/book/${providerId}?${params.toString()}`;
-}
-
-function buildDateTimeUrl({
-  providerId,
-  // serviceId,
-}: {
-  providerId: string;
-  // serviceId: string;
-}) {
-  // const params = new URLSearchParams();
-
-  // params.set("service", serviceId);
-
-  return `/book/${providerId}`;
-}
-
-function formatBookingDate(date: string): string {
-  const parsedDate = new Date(`${date}T00:00:00`);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return date;
-  }
-
-  return new Intl.DateTimeFormat("en", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  }).format(parsedDate);
-}
-
-function formatBookingTime(time: string): string {
-  const [hours, minutes] = time.split(":").map(Number);
-
-  if (Number.isNaN(hours) || Number.isNaN(minutes)) {
-    return time;
-  }
-
-  const date = new Date();
-
-  date.setHours(hours, minutes, 0, 0);
-
-  return new Intl.DateTimeFormat("en", {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
 }

@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 
 import { availability } from "@/lib/data/seed/availability";
 import { createBookingSchema } from "@/lib/validation/booking.schema";
-// import { providers } from "@/lib/data/seed/providers";
 import { services } from "@/lib/data/seed/services";
 
 export async function POST(request: Request) {
