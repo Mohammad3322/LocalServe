@@ -20,7 +20,7 @@ function formatDate(date: string) {
 export function ProviderAvailability({
   providerId,
 }: ProviderAvailabilityProps) {
-  const availableSlots = getProviderAvailability(providerId);
+  const availableSlots = getProviderAvailability({ providerId });
 
   return (
     <section id="availability" className="border-border border-b py-12">
