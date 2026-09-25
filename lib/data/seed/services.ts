@@ -56,16 +56,4 @@ export const services = [
     priceCents: 18000,
     category: "electronic-services",
   },
-
-  // {
-  //   id: "smart-home-2",
-  //   providerId: "pro-6",
-
-  //   slug: "smart-home",
-  //   title: "Smart Home Installation",
-  //   description: "Smart home installation and configuration.",
-  //   durationMinutes: 150,
-  //   priceCents: 18000,
-  //   category: "electronic-services",
-  // },
 ];
