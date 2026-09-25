@@ -1,8 +1,13 @@
 import { NextResponse } from "next/server";
 
 import { availability } from "@/lib/data/seed/availability";
-import { createBookingSchema } from "@/lib/validation/booking.schema";
+import {
+  BookingResponse,
+  createBookingSchema,
+} from "@/lib/validation/booking.schema";
 import { services } from "@/lib/data/seed/services";
+
+import { saveBooking } from "@/lib/data/mock-bookings";
 
 export async function POST(request: Request) {
   try {
@@ -66,42 +71,33 @@ export async function POST(request: Request) {
       .slice(0, 8)
       .toUpperCase()}`;
 
-    return NextResponse.json(
-      {
-        id: bookingId,
+    const createdBooking: BookingResponse = {
+      id: bookingId,
+      reference,
+      providerId: booking.providerId,
+      serviceId: booking.serviceId,
+      date: booking.date,
+      time: booking.time,
+      customerName: booking.customerName,
+      customerEmail: booking.customerEmail,
+      ...(booking.customerPhone
+        ? {
+            customerPhone: booking.customerPhone,
+          }
+        : {}),
+      ...(booking.notes
+        ? {
+            notes: booking.notes,
+          }
+        : {}),
+      status: "confirmed",
+    };
 
-        reference,
+    saveBooking(createdBooking);
 
-        providerId: booking.providerId,
-
-        serviceId: booking.serviceId,
-
-        date: booking.date,
-
-        time: booking.time,
-
-        customerName: booking.customerName,
-
-        customerEmail: booking.customerEmail,
-
-        ...(booking.customerPhone
-          ? {
-              customerPhone: booking.customerPhone,
-            }
-          : {}),
-
-        ...(booking.notes
-          ? {
-              notes: booking.notes,
-            }
-          : {}),
-
-        status: "confirmed",
-      },
-      {
-        status: 201,
-      },
-    );
+    return NextResponse.json(createdBooking, {
+      status: 201,
+    });
   } catch {
     return NextResponse.json(
       {
