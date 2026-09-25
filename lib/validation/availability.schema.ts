@@ -4,8 +4,6 @@ export const availabilitySlotSchema = z.object({
   id: z.string(),
   providerId: z.string(),
   serviceId: z.string(),
-  // startsAt: z.string(),
-  // endsAt: z.string(),
 
   date: z.string(),
   time: z.string(),

@@ -2,29 +2,15 @@
 
 import { useState } from "react";
 import type { SubmitEvent } from "react";
-import type { Key } from "@heroui/react";
-import { ComboBox, Label, ListBox, Select, TextField } from "@heroui/react";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import MyButton from "../ui/MyButton";
-import MyInput from "../ui/MyInput";
 import { locations } from "@/lib/data/seed/locations";
 import { services } from "@/lib/data/seed/services";
+import SearchInput from "../ui/SearchInput";
 
-// const services = [
-//   {
-//     value: "solar-energy",
-//     label: "Solar Energy",
-//   },
-//   {
-//     value: "security-surveillance",
-//     label: "Security & Surveillance",
-//   },
-//   {
-//     value: "electronic-services",
-//     label: "Electronic Services",
-//   },
-// ];
+const servicesSet = [...new Set(services.map((s) => s.title))];
+const locationsSet = [...new Set(locations.map((s) => s.name))];
 
 export function HomeSearch() {
   const router = useRouter();
@@ -57,74 +43,18 @@ export function HomeSearch() {
     >
       <div className="grid items-center gap-3 md:grid-cols-[2fr_1fr_auto]">
         {/* Service */}
-        <ComboBox
-          className="w-full"
+        <SearchInput
+          List={servicesSet}
           inputValue={service}
           onInputChange={setService}
-          allowsCustomValue
-          menuTrigger="input"
-        >
-          <Label className="text-text-primary mb-2 block text-sm font-medium">
-            What service do you need?
-          </Label>
-
-          <ComboBox.InputGroup>
-            <MyInput placeholder="Search Service..." />
-
-            <ComboBox.Trigger />
-          </ComboBox.InputGroup>
-
-          <ComboBox.Popover>
-            <ListBox>
-              {services.map((service) => (
-                <ListBox.Item
-                  key={service.id}
-                  id={service.id}
-                  textValue={service.title}
-                >
-                  <Label>{service.title}</Label>
-
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </ComboBox.Popover>
-        </ComboBox>
+        />
 
         {/* Location */}
-        <ComboBox
-          className="w-full"
+        <SearchInput
+          List={locationsSet}
           inputValue={location}
           onInputChange={setLocation}
-          allowsCustomValue
-          menuTrigger="input"
-        >
-          <Label className="text-text-primary mb-2 block text-sm font-medium">
-            Location
-          </Label>
-
-          <ComboBox.InputGroup>
-            <MyInput placeholder="Search location..." />
-
-            <ComboBox.Trigger />
-          </ComboBox.InputGroup>
-
-          <ComboBox.Popover>
-            <ListBox>
-              {locations.map((location) => (
-                <ListBox.Item
-                  key={location.id}
-                  id={location.id}
-                  textValue={location.name}
-                >
-                  <Label>{location.name}</Label>
-
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </ComboBox.Popover>
-        </ComboBox>
+        />
 
         {/* Submit */}
         <MyButton

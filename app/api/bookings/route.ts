@@ -1,9 +1,13 @@
 import { NextResponse } from "next/server";
 
 import { availability } from "@/lib/data/seed/availability";
-import { createBookingSchema } from "@/lib/validation/booking.schema";
-// import { providers } from "@/lib/data/seed/providers";
+import {
+  BookingResponse,
+  createBookingSchema,
+} from "@/lib/validation/booking.schema";
 import { services } from "@/lib/data/seed/services";
+
+import { saveBooking, hasBookingForSlot } from "@/lib/data/mock-bookings";
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +29,10 @@ export async function POST(request: Request) {
 
     const booking = result.data;
 
-    const service = services.find((item) => item.id === booking.serviceId);
+    const service = services.find(
+      (item) =>
+        item.id === booking.serviceId && item.providerId === booking.providerId,
+    );
 
     if (!service) {
       return NextResponse.json(
@@ -57,6 +64,36 @@ export async function POST(request: Request) {
       );
     }
 
+    const alreadyBooked = hasBookingForSlot({
+      providerId: booking.providerId,
+      date: booking.date,
+      time: booking.time,
+    });
+
+    if (alreadyBooked) {
+      return NextResponse.json(
+        {
+          message: "This time slot is no longer available.",
+          code: "SLOT_UNAVAILABLE",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
+
+    if (!slot || !slot.available) {
+      return NextResponse.json(
+        {
+          message: "This time slot is no longer available.",
+          code: "SLOT_UNAVAILABLE",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
+
     const bookingId = crypto.randomUUID();
 
     const reference = `LS-${bookingId
@@ -64,42 +101,33 @@ export async function POST(request: Request) {
       .slice(0, 8)
       .toUpperCase()}`;
 
-    return NextResponse.json(
-      {
-        id: bookingId,
+    const createdBooking: BookingResponse = {
+      id: bookingId,
+      reference,
+      providerId: booking.providerId,
+      serviceId: booking.serviceId,
+      date: booking.date,
+      time: booking.time,
+      customerName: booking.customerName,
+      customerEmail: booking.customerEmail,
+      ...(booking.customerPhone
+        ? {
+            customerPhone: booking.customerPhone,
+          }
+        : {}),
+      ...(booking.notes
+        ? {
+            notes: booking.notes,
+          }
+        : {}),
+      status: "confirmed",
+    };
 
-        reference,
+    saveBooking(createdBooking);
 
-        providerId: booking.providerId,
-
-        serviceId: booking.serviceId,
-
-        date: booking.date,
-
-        time: booking.time,
-
-        customerName: booking.customerName,
-
-        customerEmail: booking.customerEmail,
-
-        ...(booking.customerPhone
-          ? {
-              customerPhone: booking.customerPhone,
-            }
-          : {}),
-
-        ...(booking.notes
-          ? {
-              notes: booking.notes,
-            }
-          : {}),
-
-        status: "confirmed",
-      },
-      {
-        status: 201,
-      },
-    );
+    return NextResponse.json(createdBooking, {
+      status: 201,
+    });
   } catch {
     return NextResponse.json(
       {

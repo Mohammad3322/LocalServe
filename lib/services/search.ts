@@ -40,8 +40,6 @@ export function searchProviders(params: SearchParams): SearchResult {
       )
       .map((service) => service.id);
 
-    // console.log(filterdServicesIds);
-
     const providerIds = new Set(
       providers
         .filter((provider) =>

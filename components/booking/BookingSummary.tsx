@@ -1,10 +1,12 @@
-import Link from "next/link";
 import { Card } from "@heroui/react";
 import { CalendarDays, Clock3 } from "lucide-react";
 
 import type { Provider } from "@/lib/validation/provider.schema";
 import type { Service } from "@/lib/validation/service.schema";
 import MyButton from "../ui/MyButton";
+
+import { useRouter } from "next/navigation";
+import { useBookingStore } from "@/lib/store/booking-store";
 
 type BookingSummaryProps = {
   provider: Provider;
@@ -19,13 +21,27 @@ export function BookingSummary({
   selectedDate,
   selectedTime,
 }: BookingSummaryProps) {
-  const canContinue = Boolean(selectedDate) && Boolean(selectedTime);
+  const router = useRouter();
 
-  const nextUrl =
-    `/book/${provider.id}/details` +
-    `?service=${service.id}` +
-    `&date=${selectedDate}` +
-    `&time=${selectedTime}`;
+  const setAppointment = useBookingStore((state) => state.setAppointment);
+
+  const canContinue =
+    Boolean(selectedDate) && Boolean(selectedTime) && Boolean(service);
+
+  const handleContinue = () => {
+    if (!service || !selectedDate || !selectedTime) {
+      return;
+    }
+
+    setAppointment({
+      providerId: provider.id,
+      serviceId: service.id,
+      date: selectedDate,
+      time: selectedTime,
+    });
+
+    router.push(`/book/${provider.id}/details`);
+  };
 
   return (
     <aside className="lg:sticky lg:top-24">
@@ -101,20 +117,15 @@ export function BookingSummary({
             </span>
           </div>
 
-          <Link
-            href={canContinue ? nextUrl : "#"}
-            aria-disabled={!canContinue}
-            className={!canContinue ? "pointer-events-none" : undefined}
+          <MyButton
+            variant="secondary"
+            onPress={handleContinue}
+            size="lg"
+            className="w-full"
+            isDisabled={!canContinue}
           >
-            <MyButton
-              variant="secondary"
-              size="lg"
-              className="w-full"
-              isDisabled={!canContinue}
-            >
-              Continue
-            </MyButton>
-          </Link>
+            Continue
+          </MyButton>
 
           <p className="text-text-secondary mt-3 text-center text-xs leading-5">
             You will review your details before confirming the booking.
