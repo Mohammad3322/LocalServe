@@ -18,6 +18,7 @@ import type { BookingResponse } from "@/lib/validation/booking.schema";
 import { services } from "@/lib/data/seed/services";
 import { providers } from "@/lib/data/seed/providers";
 import MyButton from "../ui/MyButton";
+import { formatBookingDate, formatBookingTime } from "@/lib/utils/formatters";
 
 type BookingConfirmationProps = {
   bookingId: string;
@@ -29,6 +30,9 @@ export function BookingConfirmation({
   reference,
 }: BookingConfirmationProps) {
   const [booking] = useState<BookingResponse | null | undefined>(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
     try {
       const storedBooking = sessionStorage.getItem(
         `localserve:booking:${bookingId}`,
@@ -335,39 +339,4 @@ function ConnectionLostState({
       </div>
     </section>
   );
-}
-
-function formatBookingDate(date: string) {
-  const parsedDate = new Date(`${date}T00:00:00`);
-
-  if (Number.isNaN(parsedDate.getTime())) {
-    return date;
-  }
-
-  return new Intl.DateTimeFormat("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  }).format(parsedDate);
-}
-
-function formatBookingTime(time: string) {
-  const [hours, minutes] = time.split(":");
-
-  const parsedHours = Number(hours);
-  const parsedMinutes = Number(minutes);
-
-  if (Number.isNaN(parsedHours) || Number.isNaN(parsedMinutes)) {
-    return time;
-  }
-
-  const date = new Date();
-
-  date.setHours(parsedHours, parsedMinutes, 0, 0);
-
-  return new Intl.DateTimeFormat("en-US", {
-    hour: "numeric",
-    minute: "2-digit",
-  }).format(date);
 }

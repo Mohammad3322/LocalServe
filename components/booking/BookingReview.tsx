@@ -2,9 +2,17 @@
 
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card } from "@heroui/react";
+
+import { services } from "@/lib/data/seed/services";
+import type { Provider } from "@/lib/validation/provider.schema";
+
+import axios from "axios";
+import { createBooking } from "@/lib/api/bookings";
+
 import MyButton from "../ui/MyButton";
+import { useBookingStore } from "@/lib/store/booking-store";
 import {
   CalendarDays,
   CheckCircle2,
@@ -14,15 +22,8 @@ import {
   Phone,
   User,
 } from "lucide-react";
-
-import { services } from "@/lib/data/seed/services";
-import type { Provider } from "@/lib/validation/provider.schema";
-
-import { createBooking } from "@/lib/api/bookings";
-
-import { useBookingStore } from "@/lib/store/booking-store";
-import axios from "axios";
 import { formatBookingDate, formatBookingTime } from "@/lib/utils/formatters";
+
 type BookingReviewProps = {
   provider: Provider;
 };
@@ -30,124 +31,73 @@ type BookingReviewProps = {
 type BookingState = "idle" | "submitting" | "slot-unavailable" | "error";
 
 export function BookingReview({ provider }: BookingReviewProps) {
+  const router = useRouter();
   const { serviceId, date, time, customer, hasHydrated } = useBookingStore();
-  const clearBooking = useBookingStore((state) => state.clearBooking);
+
+  // const clearBooking = useBookingStore((state) => state.clearBooking);
+
+  const [bookingState, setBookingState] = useState<BookingState>("idle");
+
+  const selectedService = services.find(
+    (service) => service.id === serviceId && service.providerId === provider.id,
+  );
+  useEffect(() => {
+    if (!hasHydrated) {
+      return;
+    }
+
+    if (!serviceId || !date || !time || !customer) {
+      console.log("useEffect: !serviceId || !date || !time || !customer");
+      router.replace(`/book/${provider.id}`);
+      return;
+    }
+
+    if (!selectedService) {
+      console.log("useEffect: !selectedService");
+      router.replace(`/book/${provider.id}`);
+    }
+  }, [
+    hasHydrated,
+    serviceId,
+    date,
+    time,
+    customer,
+    selectedService,
+    provider.id,
+    router,
+  ]);
+  if (!hasHydrated) {
+    return (
+      <main className="bg-background min-h-screen">
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <p className="text-text-secondary text-sm">
+            Loading booking information...
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   const customerName = customer?.customerName;
   const customerEmail = customer?.customerEmail;
   const customerPhone = customer?.customerPhone;
   const notes = customer?.notes;
-  const [bookingState, setBookingState] = useState<BookingState>("idle");
 
-  const router = useRouter();
-
-  if (!hasHydrated) {
-    return (
-      <main className="bg-background min-h-screen">
-        <h3>Loading ...</h3>
-      </main>
-    );
+  if (!serviceId) {
+    console.log("BookingReview: !serviceId ");
+    return null;
   }
-
-  if (!serviceId || !date || !time || !customer) {
-    console.log("!serviceId || !date || !time || !customer");
-
-    router.replace(`/book/${provider.id}`);
+  if (!date || !time) {
+    console.log("BookingReview:  !date || !time");
+    return null;
+  }
+  if (!customer) {
+    console.log("BookingReview:!customer");
     return null;
   }
 
-  // if (!selectedService) {
-  //   return (
-  //     <main className="bg-background min-h-screen">
-  //       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-  //         <BookingProgress />
-
-  //         <div className="mx-auto mt-8 max-w-2xl">
-  //           <Card
-  //             variant="default"
-  //             className="border-border bg-surface border shadow-sm"
-  //           >
-  //             <Card.Content className="p-6 text-center sm:p-8">
-  //               <h1 className="text-text-primary text-xl font-semibold">
-  //                 Service not found
-  //               </h1>
-
-  //               <p className="text-text-secondary mt-2 text-sm leading-6">
-  //                 The selected service is no longer available for this
-  //                 professional.
-  //               </p>
-
-  //               <Link
-  //                 href={`/providers/${provider.slug}`}
-  //                 className="mt-6 inline-block"
-  //               >
-  //                 <Button variant="primary">Back to Provider</Button>
-  //               </Link>
-  //             </Card.Content>
-  //           </Card>
-  //         </div>
-  //       </div>
-  //     </main>
-  //   );
-  // }
-  // if (!date || !time) {
-  //   return (
-  //     <main className="bg-background min-h-screen">
-  //       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-  //         <BookingProgress />
-
-  //         <div className="mx-auto mt-8 max-w-2xl">
-  //           <Card
-  //             variant="default"
-  //             className="border-border bg-surface border shadow-sm"
-  //           >
-  //             <Card.Content className="p-6 text-center sm:p-8">
-  //               <h1 className="text-text-primary text-xl font-semibold">
-  //                 Didn{"'"}t select Date and Time
-  //               </h1>
-  //               <Link href={`/providers/booking`} className="mt-6 inline-block">
-  //                 <Button variant="primary">Back to Date and Time</Button>
-  //               </Link>
-  //             </Card.Content>
-  //           </Card>
-  //         </div>
-  //       </div>
-  //     </main>
-  //   );
-  // }
-  // if (!customer) {
-  //   return (
-  //     <main className="bg-background min-h-screen">
-  //       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-  //         <BookingProgress />
-
-  //         <div className="mx-auto mt-8 max-w-2xl">
-  //           <Card
-  //             variant="default"
-  //             className="border-border bg-surface border shadow-sm"
-  //           >
-  //             <Card.Content className="p-6 text-center sm:p-8">
-  //               <h1 className="text-text-primary text-xl font-semibold">
-  //                 Didn{"'"}t Inter your Details
-  //               </h1>
-  //               <Link href={`/providers/booking`} className="mt-6 inline-block">
-  //                 <Button variant="primary">Back to Your Details</Button>
-  //               </Link>
-  //             </Card.Content>
-  //           </Card>
-  //         </div>
-  //       </div>
-  //     </main>
-  //   );
-  // }
-
-  const selectedService = services.find(
-    (service) => service.id === serviceId && service.providerId === provider.id,
-  );
-
   if (!selectedService) {
     console.log("!selectedService");
-    router.replace(`/book/${provider.id}`);
     return null;
   }
 
@@ -174,15 +124,11 @@ export function BookingReview({ provider }: BookingReviewProps) {
         JSON.stringify(booking),
       );
 
-      clearBooking();
-
-      const confirmationParams = new URLSearchParams();
-
-      confirmationParams.set("reference", booking.reference);
+      // clearBooking();
 
       router.push(
         `/booking/confirmation/${booking.id}` +
-          `?${confirmationParams.toString()}`,
+          `?reference=${encodeURIComponent(booking.reference)}`,
       );
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 409) {
