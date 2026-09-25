@@ -7,7 +7,7 @@ import {
 } from "@/lib/validation/booking.schema";
 import { services } from "@/lib/data/seed/services";
 
-import { saveBooking } from "@/lib/data/mock-bookings";
+import { saveBooking, hasBookingForSlot } from "@/lib/data/mock-bookings";
 
 export async function POST(request: Request) {
   try {
@@ -51,6 +51,36 @@ export async function POST(request: Request) {
         item.date === booking.date &&
         item.time === booking.time,
     );
+
+    if (!slot || !slot.available) {
+      return NextResponse.json(
+        {
+          message: "This time slot is no longer available.",
+          code: "SLOT_UNAVAILABLE",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
+
+    const alreadyBooked = hasBookingForSlot({
+      providerId: booking.providerId,
+      date: booking.date,
+      time: booking.time,
+    });
+
+    if (alreadyBooked) {
+      return NextResponse.json(
+        {
+          message: "This time slot is no longer available.",
+          code: "SLOT_UNAVAILABLE",
+        },
+        {
+          status: 409,
+        },
+      );
+    }
 
     if (!slot || !slot.available) {
       return NextResponse.json(

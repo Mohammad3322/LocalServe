@@ -3,15 +3,18 @@
 import Link from "next/link";
 import { Calendar, Card } from "@heroui/react";
 import { Clock3, NotepadTextIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState, useEffect } from "react";
 
-import { availability } from "@/lib/data/seed/availability";
+import { getAvailability } from "@/lib/api/availability";
+import type { AvailabilitySlot } from "@/lib/validation/availability.schema";
+
 import { services } from "@/lib/data/seed/services";
 import type { Provider } from "@/lib/validation/provider.schema";
 import { BookingSummary } from "./BookingSummary";
 import MyButton from "../ui/MyButton";
 import { formatDateToString, formatStringToDate } from "@/lib/utils/formatters";
 import type { DateValue } from "@internationalized/date";
+import { TimeSlot } from "../ui/TimeSlot";
 
 type BookingDateTimeProps = {
   provider: Provider;
@@ -27,21 +30,49 @@ export function BookingDateTime({
       service.id === selectedServiceId && service.providerId === provider.id,
   );
 
-  const providerSlots = useMemo(
-    () =>
-      availability.filter(
-        (slot) => slot.providerId === provider.id && slot.available,
-      ),
-    [provider.id],
-  );
+  const [providerSlots, setProviderSlots] = useState<AvailabilitySlot[]>([]);
 
-  const dates = useMemo(() => {
-    return Array.from(new Set(providerSlots.map((slot) => slot.date)));
-  }, [providerSlots]);
+  const [isLoadingAvailability, setIsLoadingAvailability] = useState(true);
+
+  const [availabilityError, setAvailabilityError] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const loadAvailability = async () => {
+      setIsLoadingAvailability(true);
+      setAvailabilityError(false);
+
+      try {
+        const slots = await getAvailability({
+          providerId: provider.id,
+        });
+
+        if (!cancelled) {
+          setProviderSlots(slots);
+        }
+      } catch {
+        if (!cancelled) {
+          setProviderSlots([]);
+          setAvailabilityError(true);
+        }
+      } finally {
+        if (!cancelled) {
+          setIsLoadingAvailability(false);
+        }
+      }
+    };
+
+    loadAvailability();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [provider.id]);
 
   const [selectedDate, setSelectedDate] = useState<
     DateValue | null | undefined
-  >(formatStringToDate(dates[0]));
+  >(null);
 
   const [selectedTime, setSelectedTime] = useState<string>("");
 
@@ -136,61 +167,86 @@ export function BookingDateTime({
           </Card>
 
           {/* Date Selection */}
-
-          {/* <ChooseDates
-            aria-label="Booking date"
-            // value={selectedDate}
-            onChange={setSelectedDate}
-          /> */}
-          <div className="flex flex-col gap-5 lg:flex-row">
-            <div className="text-info-600 flex gap-3 lg:w-50">
-              <NotepadTextIcon />
-              <p className="">
-                Notes: Available days are marked with a dot on the calendar.
-              </p>
-            </div>
-            <Calendar
-              aria-label="Booking date"
-              value={selectedDate}
-              onChange={setSelectedDate}
-
-              isDateUnavailable={isDateUnavailable}
-              className="border-border/80 bg-surface ring-accent/5 dark:border-border/90 dark:ring-accent/10 w-63 rounded-2xl border p-3 shadow-sm ring-1"
+          {isLoadingAvailability ? (
+            <Card
+              variant="default"
+              className="border-border bg-surface border shadow-sm"
             >
-              <Calendar.Header className="px-0.5 pb-4">
-                <Calendar.Heading className="text-foreground text-sm font-medium" />
-                <Calendar.NavButton
-                  className="text-accent-soft-foreground hover:bg-default hover:text-accent-soft-foreground active:scale-95"
-                  slot="previous"
-                />
-                <Calendar.NavButton
-                  className="text-accent-soft-foreground hover:bg-default hover:text-accent-soft-foreground active:scale-95"
-                  slot="next"
-                />
-              </Calendar.Header>
-              <Calendar.Grid>
-                <Calendar.GridHeader>
-                  {(day) => (
-                    <Calendar.HeaderCell className="text-muted pb-2 text-xs font-medium">
-                      {day}
-                    </Calendar.HeaderCell>
-                  )}
-                </Calendar.GridHeader>
-                <Calendar.GridBody>
-                  {(date) => (
-                    <Calendar.Cell date={date}>
-                      {({ formattedDate, isUnavailable }) => (
-                        <>
-                          {formattedDate}
-                          {!isUnavailable && <Calendar.CellIndicator />}
-                        </>
-                      )}
-                    </Calendar.Cell>
-                  )}
-                </Calendar.GridBody>
-              </Calendar.Grid>
-            </Calendar>
-          </div>
+              <Card.Content className="p-6">
+                <p className="text-text-secondary text-sm">
+                  Loading available dates...
+                </p>
+              </Card.Content>
+            </Card>
+          ) : availabilityError ? (
+            <Card
+              variant="default"
+              className="border-border bg-surface border shadow-sm"
+            >
+              <Card.Content className="p-6">
+                <h2 className="text-text-primary font-semibold">
+                  Availability unavailable
+                </h2>
+
+                <p className="text-text-secondary mt-2 text-sm">
+                  We couldn&apos;t load the available dates and times.
+                </p>
+              </Card.Content>
+            </Card>
+          ) : (
+            <div className="flex flex-col gap-5 lg:flex-row">
+              <div className="text-info-600 flex gap-3 lg:w-50">
+                <NotepadTextIcon />
+                <p className="">
+                  Notes: Available days are marked with a dot on the calendar.
+                </p>
+              </div>
+              <Calendar
+                aria-label="Booking date"
+                value={selectedDate}
+                onChange={(date) => {
+                  setSelectedDate(date);
+                  setSelectedTime("");
+                }}
+
+                isDateUnavailable={isDateUnavailable}
+                className="border-border/80 bg-surface ring-accent/5 dark:border-border/90 dark:ring-accent/10 w-63 rounded-2xl border p-3 shadow-sm ring-1"
+              >
+                <Calendar.Header className="px-0.5 pb-4">
+                  <Calendar.Heading className="text-foreground text-sm font-medium" />
+                  <Calendar.NavButton
+                    className="text-accent-soft-foreground hover:bg-default hover:text-accent-soft-foreground active:scale-95"
+                    slot="previous"
+                  />
+                  <Calendar.NavButton
+                    className="text-accent-soft-foreground hover:bg-default hover:text-accent-soft-foreground active:scale-95"
+                    slot="next"
+                  />
+                </Calendar.Header>
+                <Calendar.Grid>
+                  <Calendar.GridHeader>
+                    {(day) => (
+                      <Calendar.HeaderCell className="text-muted pb-2 text-xs font-medium">
+                        {day}
+                      </Calendar.HeaderCell>
+                    )}
+                  </Calendar.GridHeader>
+                  <Calendar.GridBody>
+                    {(date) => (
+                      <Calendar.Cell date={date}>
+                        {({ formattedDate, isUnavailable }) => (
+                          <>
+                            {formattedDate}
+                            {!isUnavailable && <Calendar.CellIndicator />}
+                          </>
+                        )}
+                      </Calendar.Cell>
+                    )}
+                  </Calendar.GridBody>
+                </Calendar.Grid>
+              </Calendar>
+            </div>
+          )}
 
           {/* Time Selection */}
           <Card
@@ -208,7 +264,7 @@ export function BookingDateTime({
 
               {selectedDate ? (
                 <div className="mt-5 space-y-6">
-                  {timeSlots && (
+                  {timeSlots.length > 0 ? (
                     <div>
                       <h3 className="text-text-primary mb-3 text-sm font-medium">
                         Available Times
@@ -220,16 +276,19 @@ export function BookingDateTime({
                             key={slot.id}
                             time={slot.time}
                             selected={selectedTime === slot.time}
+                            available={slot.available}
                             onSelect={() => {
+                              if (!slot.available) {
+                                return;
+                              }
+
                               setSelectedTime(slot.time);
                             }}
                           />
                         ))}
                       </div>
                     </div>
-                  )}
-
-                  {timeSlots && (
+                  ) : (
                     <p className="text-text-secondary text-sm">
                       No available times for this date.
                     </p>
@@ -254,30 +313,5 @@ export function BookingDateTime({
         }
       </div>
     </div>
-  );
-}
-
-function TimeSlot({
-  time,
-  selected,
-  onSelect,
-}: {
-  time: string;
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onSelect}
-      className={[
-        "rounded-xl border px-4 py-3 text-sm font-medium transition",
-        selected
-          ? "border-brand-500 bg-brand-50 text-brand-700 ring-brand-500 ring-1"
-          : "border-border bg-background text-text-primary hover:border-brand-300",
-      ].join(" ")}
-    >
-      {time}
-    </button>
   );
 }

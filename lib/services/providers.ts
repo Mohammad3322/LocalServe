@@ -8,3 +8,10 @@ export function getProviderBySlug(slug: string): Provider | undefined {
 export function getProviderById(id: string): Provider | undefined {
   return providers.find((provider) => provider.id === id);
 }
+
+export function getProviderSlug(providerId: string | null): string | undefined {
+  if (providerId) {
+    const provider = getProviderById(providerId);
+    return provider ? provider.slug : undefined;
+  }
+}
