@@ -14,6 +14,7 @@ import { createBooking } from "@/lib/api/bookings";
 import MyButton from "../ui/MyButton";
 import { useBookingStore } from "@/lib/store/booking-store";
 import {
+  AlertTriangle,
   CalendarDays,
   CheckCircle2,
   Clock3,
@@ -23,6 +24,7 @@ import {
   User,
 } from "lucide-react";
 import { formatBookingDate, formatBookingTime } from "@/lib/utils/formatters";
+import { InfoItem } from "../ui/InfoItem";
 
 type BookingReviewProps = {
   provider: Provider;
@@ -341,27 +343,38 @@ export function BookingReview({ provider }: BookingReviewProps) {
             )}
 
             {bookingState === "slot-unavailable" && (
-              <div
-                role="alert"
-                className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-4"
+              <Card
+                variant="default"
+                className="border-warning/30 bg-warning/5 border"
               >
-                <h2 className="font-medium text-amber-800">
-                  This time slot is no longer available
-                </h2>
+                <Card.Content className="p-5 sm:p-6">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-warning/10 flex size-10 shrink-0 items-center justify-center rounded-full">
+                      <AlertTriangle className="text-warning size-5" />
+                    </div>
 
-                <p className="mt-1 text-sm leading-6 text-amber-700">
-                  Please choose another available date and time.
-                </p>
+                    <div>
+                      <h3 className="text-text-primary font-semibold">
+                        This time slot is no longer available
+                      </h3>
 
-                <Link
-                  href={`/book/${provider.id}`}
-                  className="mt-4 inline-block"
-                >
-                  <MyButton variant="secondary" size="sm">
-                    Choose Another Time
-                  </MyButton>
-                </Link>
-              </div>
+                      <p className="text-text-secondary mt-1 text-sm leading-6">
+                        Someone else may have booked this appointment while you
+                        were completing your booking. Please choose another
+                        available time.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5">
+                    <Link href={`/book/${provider.id}`}>
+                      <MyButton variant="secondary">
+                        Choose Another Time
+                      </MyButton>
+                    </Link>
+                  </div>
+                </Card.Content>
+              </Card>
             )}
 
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
@@ -534,31 +547,5 @@ function BookingProgress() {
         })}
       </ol>
     </nav>
-  );
-}
-
-type InfoItemProps = {
-  icon: React.ReactNode;
-  label: string | undefined;
-  value: string | undefined;
-};
-
-function InfoItem({ icon, label, value }: InfoItemProps) {
-  return (
-    <div className="flex items-start gap-3">
-      <div className="bg-brand-50 text-brand-600 flex size-9 shrink-0 items-center justify-center rounded-full">
-        {icon}
-      </div>
-
-      <div className="min-w-0">
-        <p className="text-text-secondary text-xs font-medium tracking-wide uppercase">
-          {label}
-        </p>
-
-        <p className="text-text-primary mt-1 text-sm font-medium wrap-break-word">
-          {value}
-        </p>
-      </div>
-    </div>
   );
 }

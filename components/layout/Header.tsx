@@ -28,7 +28,7 @@ export function Header() {
 
         <nav
           aria-label="Main navigation"
-          className="hidden items-center gap-8 lg:flex"
+          className="hidden items-center gap-8 md:flex"
         >
           {navigation.map((item) => (
             <Link
@@ -42,7 +42,7 @@ export function Header() {
         </nav>
 
         <Link href="/search">
-          <MyButton variant="primary" className="">
+          <MyButton variant="primary" className="hidden lg:block">
             Find a Professional
           </MyButton>
         </Link>

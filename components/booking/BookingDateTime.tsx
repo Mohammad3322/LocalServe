@@ -12,7 +12,7 @@ import { services } from "@/lib/data/seed/services";
 import type { Provider } from "@/lib/validation/provider.schema";
 import { BookingSummary } from "./BookingSummary";
 import MyButton from "../ui/MyButton";
-import { formatDateToString, formatStringToDate } from "@/lib/utils/formatters";
+import { formatDateToString } from "@/lib/utils/formatters";
 import type { DateValue } from "@internationalized/date";
 import { TimeSlot } from "../ui/TimeSlot";
 

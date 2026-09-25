@@ -4,7 +4,7 @@ export const availability = [
     providerId: "pro-1",
     serviceId: "solar-panel-installation",
 
-    date: "2026-09-25",
+    date: "2026-09-28",
     time: "09:00",
     available: true,
   },
@@ -13,7 +13,7 @@ export const availability = [
     providerId: "pro-1",
     serviceId: "cctv-installation",
 
-    date: "2026-09-26",
+    date: "2026-09-29",
     time: "10:00",
     available: true,
   },
@@ -31,7 +31,7 @@ export const availability = [
     providerId: "pro-3",
     serviceId: "smart-home",
 
-    date: "2026-09-25",
+    date: "2026-09-28",
     time: "11:00",
     available: false,
   },
@@ -40,7 +40,7 @@ export const availability = [
     providerId: "pro-4",
     serviceId: "solar-panel-installation",
 
-    date: "2026-09-26",
+    date: "2026-09-29",
     time: "12:00",
     available: true,
   },
@@ -49,7 +49,7 @@ export const availability = [
     providerId: "pro-5",
     serviceId: "cctv-installation",
 
-    date: "2026-09-26",
+    date: "2026-09-28",
     time: "10:00",
     available: true,
   },
@@ -58,7 +58,7 @@ export const availability = [
     providerId: "pro-6",
     serviceId: "smart-home",
 
-    date: "2026-09-25",
+    date: "2026-09-29",
     time: "09:00",
     available: true,
   },
@@ -67,7 +67,7 @@ export const availability = [
     providerId: "pro-7",
     serviceId: "solar-panel-installation",
 
-    date: "2026-09-26",
+    date: "2026-09-29",
     time: "10:00",
     available: true,
   },
