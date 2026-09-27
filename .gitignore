@@ -12,6 +12,11 @@
 
 # testing
 /coverage
+# playwright (traces, screenshots, HTML report)
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
 
 # next.js
 /.next/

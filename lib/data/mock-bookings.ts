@@ -1,6 +1,19 @@
 import type { BookingResponse } from "@/lib/validation/booking.schema";
 
-const bookings = new Map<string, BookingResponse>();
+const BOOKINGS_STORE_KEY = "__localserve_bookings__";
+
+type BookingsStore = Map<string, BookingResponse>;
+
+type GlobalWithBookings = typeof globalThis & {
+  [BOOKINGS_STORE_KEY]?: BookingsStore;
+};
+
+const globalStore = globalThis as GlobalWithBookings;
+
+const bookings: BookingsStore =
+  globalStore[BOOKINGS_STORE_KEY] ?? new Map<string, BookingResponse>();
+
+globalStore[BOOKINGS_STORE_KEY] = bookings;
 
 export function saveBooking(booking: BookingResponse) {
   bookings.set(booking.id, booking);

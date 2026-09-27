@@ -25,6 +25,24 @@ export const serviceCategories = [
     title: "Electronic Services",
     description: "Professional electronic and smart technology services.",
   },
+  {
+    slug: "electrical-services",
+    title: "Electrical Services",
+    description:
+      "Certified electrical work for lighting, rewiring, EV chargers and consumer units.",
+  },
+  {
+    slug: "heating-cooling",
+    title: "Heating & Cooling",
+    description:
+      "Heating and cooling installation, maintenance and efficiency upgrades for year-round comfort.",
+  },
+  {
+    slug: "general-trades",
+    title: "General Trades",
+    description:
+      "Everyday home improvements, repairs and installations from vetted local professionals.",
+  },
 ];
 
 export function getServiceCategoryBySlug(

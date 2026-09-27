@@ -2,16 +2,10 @@ import Link from "next/link";
 import { Card } from "@heroui/react";
 import { ArrowRight, Clock3 } from "lucide-react";
 import MyButton from "../ui/MyButton";
+import { Service } from "@/lib/validation/service.schema";
 
 type ServiceCardProps = {
-  categorySlug: string;
-  service: {
-    id: string;
-    title: string;
-    description: string;
-    durationMinutes: number;
-    priceCents: number;
-  };
+  service: Service;
 };
 
 export function ServiceCard({ service }: ServiceCardProps) {
@@ -50,7 +44,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
           </div>
 
           <div className="shrink-0 sm:self-center">
-            <Link href={`/search?service=${service.title}`}>
+            <Link href={`/search?service=${encodeURIComponent(service.title)}`}>
               <MyButton variant="primary" className="w-full sm:w-auto">
                 Find Providers
                 <ArrowRight className="size-4" />

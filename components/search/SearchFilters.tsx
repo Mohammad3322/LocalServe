@@ -89,7 +89,7 @@ export function SearchFilters() {
           </MyButton>
         </div>
 
-        <div className="my-6 flex gap-5 lg:flex-col">
+        <div className="my-6 flex flex-col gap-5 lg:flex-row">
           {/* Service */}
           <Select
             className="h-full w-full"

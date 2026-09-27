@@ -24,11 +24,7 @@ export function ServiceList({ category }: ServiceListProps) {
         {category.services.length > 0 ? (
           <div className="mt-10 grid gap-5 md:grid-cols-2">
             {category.services.map((service) => (
-              <ServiceCard
-                key={service.id}
-                service={service}
-                categorySlug={category.slug}
-              />
+              <ServiceCard key={service.id} service={service} />
             ))}
           </div>
         ) : (

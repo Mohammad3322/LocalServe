@@ -48,6 +48,7 @@ export async function POST(request: Request) {
     const slot = availability.find(
       (item) =>
         item.providerId === booking.providerId &&
+        item.serviceId === booking.serviceId &&
         item.date === booking.date &&
         item.time === booking.time,
     );
@@ -71,18 +72,6 @@ export async function POST(request: Request) {
     });
 
     if (alreadyBooked) {
-      return NextResponse.json(
-        {
-          message: "This time slot is no longer available.",
-          code: "SLOT_UNAVAILABLE",
-        },
-        {
-          status: 409,
-        },
-      );
-    }
-
-    if (!slot || !slot.available) {
       return NextResponse.json(
         {
           message: "This time slot is no longer available.",

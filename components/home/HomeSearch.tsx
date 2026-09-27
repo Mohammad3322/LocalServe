@@ -44,6 +44,7 @@ export function HomeSearch() {
       <div className="grid items-center gap-3 md:grid-cols-[2fr_1fr_auto]">
         {/* Service */}
         <SearchInput
+          label="What service do you need?"
           List={servicesSet}
           inputValue={service}
           onInputChange={setService}
@@ -51,6 +52,7 @@ export function HomeSearch() {
 
         {/* Location */}
         <SearchInput
+          label="Where do you need it?"
           List={locationsSet}
           inputValue={location}
           onInputChange={setLocation}

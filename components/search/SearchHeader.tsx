@@ -60,12 +60,14 @@ export function SearchHeader() {
 
         <div className="mt-6 grid gap-3 md:grid-cols-[1fr_1fr_auto]">
           <SearchInput
+            label="What service do you need?"
             List={servicesSet}
             inputValue={service}
             onInputChange={setService}
           />
 
           <SearchInput
+            label="Where do you need it?"
             List={locationsSet}
             inputValue={location}
             onInputChange={setLocation}

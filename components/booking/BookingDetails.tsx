@@ -90,7 +90,11 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
                 </p>
 
                 <Link
-                  href={`/book/${provider.id}`}
+                  href={
+                    serviceId
+                      ? `/book/${provider.id}?service=${serviceId}`
+                      : `/book/${provider.id}`
+                  }
                   className="mt-6 inline-block"
                 >
                   <MyButton variant="secondary">Back to Date & Time</MyButton>

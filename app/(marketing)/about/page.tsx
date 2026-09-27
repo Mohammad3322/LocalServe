@@ -1,6 +1,17 @@
+import type { Metadata } from "next";
 import { HomeCta } from "@/components/home/HomeCta";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import Image from "next/image";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata: Metadata = buildMetadata({
+  title: "About",
+  description:
+    "How LocalServe works: browse local professionals, compare services and " +
+    "reviews, check live availability and book an appointment without phoning " +
+    "around.",
+  path: "/about",
+});
 
 const Page = () => {
   return (

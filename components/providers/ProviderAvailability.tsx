@@ -20,7 +20,12 @@ function formatDate(date: string) {
 export function ProviderAvailability({
   providerId,
 }: ProviderAvailabilityProps) {
-  const availableSlots = getProviderAvailability({ providerId });
+  const slots = getProviderAvailability({ providerId });
+
+  const availableSlots = slots.filter((slot) => slot.available);
+
+  const hasSlots = slots.length > 0;
+  const hasAvailableSlots = availableSlots.length > 0;
 
   return (
     <section id="availability" className="border-border border-b py-12">
@@ -35,7 +40,7 @@ export function ProviderAvailability({
           </p>
         </div>
 
-        {availableSlots.length > 0 ? (
+        {hasAvailableSlots ? (
           <>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               {availableSlots.map((slot) => (
@@ -68,7 +73,7 @@ export function ProviderAvailability({
 
             <div className="mt-6">
               <Link href={`/book/${providerId}`}>
-                <MyButton variant="secondary" size="lg" className="">
+                <MyButton variant="secondary" size="lg">
                   View Full Availability
                   <ArrowRight className="size-4" />
                 </MyButton>
@@ -82,12 +87,13 @@ export function ProviderAvailability({
             </div>
 
             <h3 className="text-text-primary mt-4 font-semibold">
-              No availability right now
+              {hasSlots ? "No available times" : "No availability right now"}
             </h3>
 
             <p className="text-text-secondary mx-auto mt-2 max-w-md text-sm leading-6">
-              There are currently no available appointment times for this
-              professional.
+              {hasSlots
+                ? "All currently listed appointment times are unavailable. Please check again later or choose another date."
+                : "There are currently no appointment times available for this professional."}
             </p>
 
             <div className="mt-5">

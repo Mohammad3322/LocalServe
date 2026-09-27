@@ -7,12 +7,28 @@ import {
 
 import type { SearchParams } from "@/lib/validation/search.schema";
 
+export type SearchApiResult = {
+  items: Provider[];
+  total: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+};
+
 export async function searchProviders(
   params: SearchParams,
-): Promise<Provider[]> {
+): Promise<SearchApiResult> {
   const response = await apiClient.get("/providers/search", {
     params,
   });
 
-  return providersSchema.parse(response.data);
+  const data = response.data;
+
+  return {
+    items: providersSchema.parse(data.items),
+    total: data.total,
+    page: data.page,
+    pageSize: data.pageSize,
+    totalPages: data.totalPages,
+  };
 }

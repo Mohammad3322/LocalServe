@@ -1,17 +1,11 @@
 import { reviews } from "@/lib/data/seed/reviews";
 import type { Review } from "@/lib/validation/review.schema";
+import { providers } from "../data/seed/generate";
 
 export function getReviewsByProviderId(providerId: string): Review[] {
   return reviews.filter((review) => review.providerId === providerId);
 }
 
 export function getTotalRatingByProviderId(providerId: string): number {
-  const customersRatings = getReviewsByProviderId(providerId);
-
-  const averageRating =
-    customersRatings.length > 0
-      ? customersRatings.reduce((total, review) => total + review.rating, 0) /
-        customersRatings.length
-      : 0;
-  return averageRating;
+  return providers.find((provider) => provider.id === providerId)?.rating || 0;
 }

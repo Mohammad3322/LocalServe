@@ -12,7 +12,17 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Jest coverage report output.
+    "coverage/**",
   ]),
+  {
+    // Jest loads its config and resolver as CommonJS, so require() is required
+    // rather than a leftover from an ESM file.
+    files: ["jest.config.js", "jest.resolver.js"],
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;

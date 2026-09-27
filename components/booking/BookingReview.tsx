@@ -367,7 +367,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
                   </div>
 
                   <div className="mt-5">
-                    <Link href={`/book/${provider.id}`}>
+                    <Link href={`/book/${provider.id}?service=${serviceId}`}>
                       <MyButton variant="secondary">
                         Choose Another Time
                       </MyButton>

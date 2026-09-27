@@ -1,7 +1,10 @@
 import { Card } from "@heroui/react";
 import { Star } from "lucide-react";
 
-import { getReviewsByProviderId } from "@/lib/services/reviews";
+import {
+  getReviewsByProviderId,
+  getTotalRatingByProviderId,
+} from "@/lib/services/reviews";
 import RatingStars from "../ui/RatingStars";
 
 type ProviderReviewsProps = {
@@ -11,11 +14,7 @@ type ProviderReviewsProps = {
 export function ProviderReviews({ providerId }: ProviderReviewsProps) {
   const providerReviews = getReviewsByProviderId(providerId);
 
-  const averageRating =
-    providerReviews.length > 0
-      ? providerReviews.reduce((total, review) => total + review.rating, 0) /
-        providerReviews.length
-      : 0;
+  const rating = getTotalRatingByProviderId(providerId);
 
   return (
     <section id="reviews" className="border-border border-b py-12">
@@ -28,16 +27,16 @@ export function ProviderReviews({ providerId }: ProviderReviewsProps) {
           </p>
         </div>
 
-        {providerReviews.length > 0 ? (
+        {rating && rating > 0 ? (
           <>
             <div className="flex flex-col gap-5 p-5 sm:flex-row sm:items-center">
               <div>
                 <p className="text-text-primary text-3xl font-semibold">
-                  {averageRating.toFixed(1)}
+                  {rating}
                 </p>
 
                 <div className="mt-2">
-                  <RatingStars rating={Math.round(averageRating)} />
+                  <RatingStars rating={Math.round(rating)} />
                 </div>
               </div>
 
@@ -46,7 +45,7 @@ export function ProviderReviews({ providerId }: ProviderReviewsProps) {
               <div>
                 <p className="text-text-primary font-medium">
                   {providerReviews.length}
-                  {providerReviews.length === 1 ? "review" : "reviews"}
+                  {providerReviews.length === 1 ? " review" : " reviews"}
                 </p>
 
                 <p className="text-text-secondary mt-1 text-sm">

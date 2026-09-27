@@ -46,6 +46,7 @@ export function BookingDateTime({
       try {
         const slots = await getAvailability({
           providerId: provider.id,
+          serviceId: selectedServiceId,
         });
 
         if (!cancelled) {
@@ -68,7 +69,7 @@ export function BookingDateTime({
     return () => {
       cancelled = true;
     };
-  }, [provider.id]);
+  }, [provider.id, selectedServiceId]);
 
   const [selectedDate, setSelectedDate] = useState<
     DateValue | null | undefined
@@ -80,9 +81,13 @@ export function BookingDateTime({
     (slot) => slot.date === formatDateToString(selectedDate),
   );
 
+  const availableTimeSlots = timeSlots.filter((slot) => slot.available);
+
   const availableDatesSet = new Set(
     providerSlots.filter((slot) => slot.available).map((slot) => slot.date),
   );
+
+  const hasAvailableSlots = availableDatesSet.size > 0;
 
   const isDateUnavailable = (date: DateValue) => {
     const dateString = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
@@ -193,14 +198,34 @@ export function BookingDateTime({
                 </p>
               </Card.Content>
             </Card>
+          ) : !hasAvailableSlots ? (
+            <Card
+              variant="default"
+              className="border-border bg-surface border shadow-sm"
+            >
+              <Card.Content className="p-6">
+                <div className="border-warning/30 bg-warning/5 rounded-xl border p-5">
+                  <h2 className="text-text-primary font-semibold">
+                    Sorry, no available times right now
+                  </h2>
+
+                  <p className="text-text-secondary mt-2 text-sm leading-6">
+                    There are currently no available appointment times for this
+                    professional. Please check again later.
+                  </p>
+                </div>
+              </Card.Content>
+            </Card>
           ) : (
             <div className="flex flex-col gap-5 lg:flex-row">
               <div className="text-info-600 flex gap-3 lg:w-50">
                 <NotepadTextIcon />
-                <p className="">
+
+                <p>
                   Notes: Available days are marked with a dot on the calendar.
                 </p>
               </div>
+
               <Calendar
                 aria-label="Booking date"
                 value={selectedDate}
@@ -208,21 +233,23 @@ export function BookingDateTime({
                   setSelectedDate(date);
                   setSelectedTime("");
                 }}
-
                 isDateUnavailable={isDateUnavailable}
                 className="border-border/80 bg-surface ring-accent/5 dark:border-border/90 dark:ring-accent/10 w-63 rounded-2xl border p-3 shadow-sm ring-1"
               >
                 <Calendar.Header className="px-0.5 pb-4">
                   <Calendar.Heading className="text-foreground text-sm font-medium" />
+
                   <Calendar.NavButton
                     className="text-accent-soft-foreground hover:bg-default hover:text-accent-soft-foreground active:scale-95"
                     slot="previous"
                   />
+
                   <Calendar.NavButton
                     className="text-accent-soft-foreground hover:bg-default hover:text-accent-soft-foreground active:scale-95"
                     slot="next"
                   />
                 </Calendar.Header>
+
                 <Calendar.Grid>
                   <Calendar.GridHeader>
                     {(day) => (
@@ -231,6 +258,7 @@ export function BookingDateTime({
                       </Calendar.HeaderCell>
                     )}
                   </Calendar.GridHeader>
+
                   <Calendar.GridBody>
                     {(date) => (
                       <Calendar.Cell date={date}>
@@ -264,7 +292,7 @@ export function BookingDateTime({
 
               {selectedDate ? (
                 <div className="mt-5 space-y-6">
-                  {timeSlots.length > 0 ? (
+                  {availableTimeSlots.length > 0 ? (
                     <div>
                       <h3 className="text-text-primary mb-3 text-sm font-medium">
                         Available Times
@@ -289,9 +317,16 @@ export function BookingDateTime({
                       </div>
                     </div>
                   ) : (
-                    <p className="text-text-secondary text-sm">
-                      No available times for this date.
-                    </p>
+                    <div className="border-warning/30 bg-warning/5 rounded-xl border p-4">
+                      <p className="text-text-primary text-sm font-medium">
+                        No available times
+                      </p>
+
+                      <p className="text-text-secondary mt-1 text-sm leading-6">
+                        There are no available appointment times for this date.
+                        Please choose another date.
+                      </p>
+                    </div>
                   )}
                 </div>
               ) : (

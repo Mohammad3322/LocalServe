@@ -5,15 +5,21 @@ import type { AvailabilitySlot } from "@/lib/validation/availability.schema";
 type GetAvailabilityParams = {
   providerId: string;
   date?: string;
+  serviceId?: string;
 };
 
 export function getProviderAvailability({
   providerId,
   date,
+  serviceId,
 }: GetAvailabilityParams): AvailabilitySlot[] {
   return availability
     .filter((slot) => {
       if (slot.providerId !== providerId) {
+        return false;
+      }
+
+      if (serviceId && slot.serviceId !== serviceId) {
         return false;
       }
 
