@@ -108,10 +108,7 @@ What I did:
 
 ## 9. Performance
 
-Honestly, I have nothing here yet. No Lighthouse, no bundle budget, no load test.
-I only know that the marketing pages are server rendered. I want to record a
-baseline before I start optimising, otherwise I cannot tell if I made it better
-or worse.
+Honestly, I have nothing here yet.
 
 ## 11. When I start and stop
 

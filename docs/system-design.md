@@ -11,26 +11,26 @@ store. It is a working project demo, not a production booking service.
 
 ## Functional requirements
 
-| ID    | Requirement                                                 |
-| ----- | ----------------------------------------------------------- |
-| FR-01 | Search providers by service and location                   |
-| FR-02 | Filter, sort, and page through results                     |
-| FR-03 | Open a provider profile and view services and reviews      |
-| FR-04 | View availability and choose a slot                        |
-| FR-05 | Validate details and create a booking                      |
-| FR-06 | Confirm or recover a booking                               |
+| ID    | Requirement                                           |
+| ----- | ----------------------------------------------------- |
+| FR-01 | Search providers by service and location              |
+| FR-02 | Filter, sort, and page through results                |
+| FR-03 | Open a provider profile and view services and reviews |
+| FR-04 | View availability and choose a slot                   |
+| FR-05 | Validate details and create a booking                 |
+| FR-06 | Confirm or recover a booking                          |
 
 ## Non-functional requirements
 
-| ID     | Requirement                                         |
-| ----- | --------------------------------------------------- |
-| NFR-01 | Keep public pages fast                             |
-| NFR-02 | Provide crawlable public metadata and routes       |
-| NFR-03 | Support responsive layouts                         |
-| NFR-05 | Recover from common request failures               |
-| NFR-06 | Keep availability data fresh                       |
-| NFR-07 | Limit unnecessary client JavaScript                |
-| NFR-08 | Handle customer details appropriately              |
+| ID     | Requirement                                  |
+| ------ | -------------------------------------------- |
+| NFR-01 | Keep public pages fast                       |
+| NFR-02 | Provide crawlable public metadata and routes |
+| NFR-03 | Support responsive layouts                   |
+| NFR-05 | Recover from common request failures         |
+| NFR-06 | Keep availability data fresh                 |
+| NFR-07 | Limit unnecessary client JavaScript          |
+| NFR-08 | Handle customer details appropriately        |
 
 ## Main routes
 
@@ -68,23 +68,6 @@ e2e/                     Playwright browser tests
 
 The route handlers validate input and use the service and data layers. The UI
 does not need to know how the seed arrays are generated.
-
-## Read and write flows
-
-```mermaid
-flowchart LR
-  Visitor --> NextApp[Next.js pages]
-  NextApp --> PublicData[Seed data and service functions]
-  SearchUI[Search UI] --> SearchAPI[GET /api/provider/search]
-  SearchAPI --> SearchService[Search service]
-  SearchService --> PublicData
-  BookingUI[Booking UI] --> AvailabilityAPI[GET /api/availability]
-  AvailabilityAPI --> PublicData
-  BookingUI --> BookingAPI[POST /api/bookings]
-  BookingAPI --> BookingStore[In-memory booking store]
-  Confirmation[Confirmation page] --> BookingLookup[GET /api/bookings/id]
-  BookingLookup --> BookingStore
-```
 
 ### Search and public pages
 
