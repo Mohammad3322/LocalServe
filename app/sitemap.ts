@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 import { providers } from "@/lib/data/seed/providers";
-import { serviceCategories } from "@/lib/services/service-categories";
+import { serviceCategories } from "@/lib/data/seed/categories";
 import { absoluteUrl } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {

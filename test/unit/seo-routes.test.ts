@@ -4,7 +4,7 @@ import { metadata as bookLayoutMetadata } from "@/app/book/layout";
 import { metadata as bookingLayoutMetadata } from "@/app/booking/layout";
 import { metadata as rootMetadata } from "@/app/layout";
 import { providers } from "@/lib/data/seed/providers";
-import { serviceCategories } from "@/lib/services/service-categories";
+import { serviceCategories } from "@/lib/data/seed/categories";
 import { SITE_URL } from "@/lib/seo";
 
 const urls = () => sitemap().map((entry) => entry.url);
