@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { formatBookingDate, formatBookingTime } from "@/lib/utils/formatters";
 import { InfoItem } from "../ui/InfoItem";
+import { BookingProgress } from "./BookingProgress";
 
 type BookingReviewProps = {
   provider: Provider;
@@ -145,7 +146,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
   return (
     <main className="bg-background min-h-screen">
       <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <BookingProgress />
+        <BookingProgress currentStep={4} />
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_320px]">
           <section>
@@ -497,55 +498,5 @@ export function BookingReview({ provider }: BookingReviewProps) {
         </div>
       </div>
     </main>
-  );
-}
-
-function BookingProgress() {
-  const steps = ["Service", "Date & Time", "Your Details", "Review"];
-
-  return (
-    <nav aria-label="Booking progress">
-      <ol className="flex items-center">
-        {steps.map((step, index) => {
-          const stepNumber = index + 1;
-          const isActive = stepNumber === 4;
-          const isCompleted = stepNumber < 4;
-
-          return (
-            <li key={step} className="flex flex-1 items-center">
-              <div className="flex items-center gap-2">
-                <div
-                  className={[
-                    "flex size-8 items-center justify-center rounded-full text-sm font-medium",
-                    isActive
-                      ? "bg-brand-600 text-white"
-                      : isCompleted
-                        ? "bg-brand-100 text-brand-700"
-                        : "bg-surface-muted text-text-secondary",
-                  ].join(" ")}
-                >
-                  {stepNumber}
-                </div>
-
-                <span
-                  className={[
-                    "hidden text-sm sm:inline",
-                    isActive
-                      ? "text-text-primary font-medium"
-                      : "text-text-secondary",
-                  ].join(" ")}
-                >
-                  {step}
-                </span>
-              </div>
-
-              {index < steps.length - 1 && (
-                <div className="bg-border mx-3 h-px flex-1" />
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
   );
 }

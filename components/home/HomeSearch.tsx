@@ -39,7 +39,7 @@ export function HomeSearch() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-border bg-surface rounded-2xl border p-3 shadow-lg"
+      className="border-border bg-brand-700 rounded-2xl border p-3 shadow-lg"
     >
       <div className="grid items-center gap-3 md:grid-cols-[2fr_1fr_auto]">
         {/* Service */}
@@ -48,6 +48,7 @@ export function HomeSearch() {
           List={servicesSet}
           inputValue={service}
           onInputChange={setService}
+          placeholder="Search Sevice"
         />
 
         {/* Location */}
@@ -56,12 +57,13 @@ export function HomeSearch() {
           List={locationsSet}
           inputValue={location}
           onInputChange={setLocation}
+          placeholder="Search location where y..."
         />
 
         {/* Submit */}
         <MyButton
           type="submit"
-          variant="primary"
+          variant="secondary"
           size="sm"
           className="bg-brand-500 min-h-10"
         >

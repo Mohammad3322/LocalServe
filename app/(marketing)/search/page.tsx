@@ -8,10 +8,6 @@ export const metadata: Metadata = buildMetadata({
     "Search local professionals by service, location, price and availability, " +
     "then compare ratings and book online.",
   path: "/search",
-  // Section 8.6: the results page is a query interface, not a destination. Every
-  // filter combination is a separate URL, so indexing them would flood the index
-  // with near-duplicate pages. It stays crawlable so the links to provider
-  // profiles are still followed.
   index: false,
 });
 

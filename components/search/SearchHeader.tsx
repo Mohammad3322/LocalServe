@@ -41,7 +41,7 @@ export function SearchHeader() {
 
     params.set("page", "1");
 
-    router.push(`/search?${params.toString()}`);
+    router.push(`/search?${params.toString()}#searchResults`);
   }
 
   return (
@@ -58,31 +58,36 @@ export function SearchHeader() {
           </p>
         </div>
 
-        <div className="mt-6 grid gap-3 md:grid-cols-[1fr_1fr_auto]">
+        <div className="mt-6 grid gap-3 md:grid-cols-[2fr_1fr_auto]">
+          {/* Service */}
           <SearchInput
             label="What service do you need?"
             List={servicesSet}
             inputValue={service}
             onInputChange={setService}
+            placeholder="Search Sevice"
           />
 
+          {/* Location */}
           <SearchInput
             label="Where do you need it?"
             List={locationsSet}
             inputValue={location}
             onInputChange={setLocation}
+            placeholder="Search location where y..."
           />
 
-          <div className="flex items-end">
-            <MyButton
-              variant="primary"
-              className="w-full md:w-auto"
-              onPress={handleSearch}
-            >
-              <Search className="size-4" />
-              Search
-            </MyButton>
-          </div>
+          {/* Submit */}
+          <MyButton
+            type="submit"
+            variant="secondary"
+            size="sm"
+            className="bg-brand-500 min-h-10"
+            onPress={handleSearch}
+          >
+            <Search className="size-4" />
+            Search
+          </MyButton>
         </div>
       </div>
     </section>

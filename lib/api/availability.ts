@@ -7,7 +7,6 @@ import {
 type GetAvailabilityParams = {
   providerId: string;
   date?: string;
-  /** Narrows the calendar to the service the customer already chose. */
   serviceId?: string;
 };
 

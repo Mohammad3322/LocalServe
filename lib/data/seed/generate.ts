@@ -1,44 +1,12 @@
-/**
- * Deterministic seed data generator (discription.doc, section 1.2 "Working Scale
- * Assumptions").
- *
- * Section 1.2 sets the portfolio working scale at 50-150 providers, 2-8 services
- * per provider, 500-2,000 reviews and "several weeks" of availability per
- * provider. The previous hand-written seed held 6 providers, one service each and
- * ten reviews, so pagination could never produce a second page and the empty
- * states were unreachable.
- *
- * Two properties matter as much as the volume:
- *
- * 1. Determinism. Every value is derived from a fixed seed, so the server and the
- *    browser produce byte-identical data. `Math.random()` would cause hydration
- *    mismatches and make tests unreproducible.
- *
- * 2. Referential integrity by construction. Providers, services, availability and
- *    reviews are built here together, so a provider's `servicesIds` cannot drift
- *    away from the services that actually belong to it. The old seed had pro-6
- *    advertising `smart-home`, which pro-3 owned, so a service search returned a
- *    provider with no such service.
- *
- * Availability is generated relative to today rather than hard-coded, because the
- * old fixed dates (2026-09-25 to 2026-10-05) had already started falling into the
- * past, which silently removes bookable slots from the booking flow.
- */
 import type { AvailabilitySlot } from "@/lib/validation/availability.schema";
 import type { Provider } from "@/lib/validation/provider.schema";
 import type { Review } from "@/lib/validation/review.schema";
 import type { Service } from "@/lib/validation/service.schema";
 
-/** Section 1.2 asks for 50-150 providers. */
 export const PROVIDER_COUNT = 60;
 
-/** How many days ahead availability is generated ("several weeks"). */
 export const AVAILABILITY_DAYS = 21;
 
-/**
- * A mulberry32 PRNG. Small, fast and, most importantly, repeatable: the same seed
- * always yields the same sequence, on the server and in the browser.
- */
 function createRandom(seed: number): () => number {
   let state = seed >>> 0;
 
@@ -161,11 +129,6 @@ const LAST_NAMES = [
   "Almeida",
 ] as const;
 
-/**
- * Locations double as the searchable "service area" text, so the ids and names
- * have to agree. The old seed shipped `id: "Lion", name: "Oxford"` plus a typo
- * ("Marsilia") and a meaningless entry ("Lil").
- */
 const LOCATIONS = [
   { id: "paris", name: "Paris" },
   { id: "marseille", name: "Marseille" },
@@ -181,11 +144,6 @@ const LOCATIONS = [
   { id: "reims", name: "Reims" },
 ] as const;
 
-/**
- * The service catalogue. `slug` is the public, category-level slug used by
- * /services/[serviceSlug]; a provider offering the same service type gets its own
- * service id but shares the slug.
- */
 type ServiceTemplate = {
   key: string;
   slug: string;
@@ -299,15 +257,6 @@ const SERVICE_TEMPLATES: readonly ServiceTemplate[] = [
   },
 ] as const;
 
-/**
- * The five service ids the existing end-to-end journeys navigate to by hand. They
- * are pinned here so the booking, slot-conflict and mobile specs keep working
- * against generated data.
- *
- * The value is the template slug, not just an id: pinning the id alone would let
- * `solar-panel-installation` end up titled "Heat Pump Installation", which would
- * make `/book/pro-1?service=solar-panel-installation` show the wrong job.
- */
 const LEGACY_SERVICE_IDS: Readonly<Record<string, string>> = {
   "pro-1": "solar-panel-installation",
   "pro-2": "cctv-installation",
@@ -316,7 +265,6 @@ const LEGACY_SERVICE_IDS: Readonly<Record<string, string>> = {
   "pro-5": "cctv-installation",
 };
 
-/** How the pinned id for each provider differs from the shared template slug. */
 const LEGACY_SERVICE_ID_OVERRIDES: Readonly<Record<string, string>> = {
   "pro-4": "solar-panel-installation-2",
   "pro-5": "cctv-installation-2",
@@ -398,7 +346,6 @@ const HEADLINE_TEMPLATES = [
   "Doors, carpentry and general repairs",
 ] as const;
 
-/** Section 8.2: public routing should be human-readable, not an internal id. */
 function toSlug(value: string): string {
   return value
     .toLowerCase()
@@ -424,7 +371,6 @@ function isWeekend(date: Date): boolean {
   return day === 0 || day === 6;
 }
 
-/** Working hours an installer would realistically offer, in 30 minute steps. */
 const TIME_SLOTS = [
   "08:00",
   "08:30",
@@ -452,22 +398,15 @@ type SeedData = {
   locations: { id: string; name: string }[];
 };
 
-/**
- * Builds the whole dataset in one pass. The random stream is consumed in a fixed
- * order so the output only depends on the seed, never on iteration accidents.
- */
 function buildSeedData(): SeedData {
   const random = createRandom(20260927);
 
-  /** Inclusive integer in [min, max]. */
   const between = (min: number, max: number) =>
     min + Math.floor(random() * (max - min + 1));
 
-  /** Picks one item deterministically. */
   const pick = <T>(items: readonly T[]): T =>
     items[Math.floor(random() * items.length)];
 
-  /** Picks `count` distinct items, preserving a stable order. */
   const pickSome = <T>(items: readonly T[], count: number): T[] => {
     const start = Math.floor(random() * items.length);
     const chosen: T[] = [];
@@ -488,28 +427,21 @@ function buildSeedData(): SeedData {
     const number = index + 1;
     const id = `pro-${number}`;
 
-    // The surname cycles per provider rather than changing only after the first
-    // name list wraps, otherwise the first 50 providers would all be called
-    // "... Johnson". The first names are unique, so the full name stays unique.
     const firstName = FIRST_NAMES[index % FIRST_NAMES.length];
     const lastName = LAST_NAMES[index % LAST_NAMES.length];
     const name = `${firstName} ${lastName}`;
 
     const location = LOCATIONS[index % LOCATIONS.length];
 
-    // Section 1.2 asks for 2-8 services per provider.
     const serviceCount = between(2, 5);
 
-    // A provider's first service is the one the hand-written journeys use, so the
-    // template is forced to match the pinned id rather than left to chance.
     const pinnedTemplateSlug = LEGACY_SERVICE_IDS[id];
     const pinnedTemplate = pinnedTemplateSlug
       ? SERVICE_TEMPLATES.find(
           (template) => template.slug === pinnedTemplateSlug,
         )
       : undefined;
-    // The pinned template counts towards the total, so only the remainder is
-    // drawn at random.
+
     const randomCount = Math.max(serviceCount - (pinnedTemplate ? 1 : 0), 0);
     const remainingTemplates = pickSome(
       SERVICE_TEMPLATES.filter(

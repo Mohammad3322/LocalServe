@@ -11,10 +11,6 @@ type ServiceCategoryRouteProps = {
   }>;
 };
 
-/**
- * The category description is the source of the page copy, so the metadata
- * description cannot drift away from what the page actually says.
- */
 export async function generateMetadata({
   params,
 }: ServiceCategoryRouteProps): Promise<Metadata> {

@@ -5,12 +5,8 @@ type SearchInputProps = {
   List: string[];
   inputValue: string | undefined;
   onInputChange: ((value: string) => void) | undefined;
-  /**
-   * The visible label, which is also the accessible name of the input. It has to
-   * differ between the service and location fields, otherwise a screen reader
-   * announces two identically named inputs and neither can be told apart.
-   */
   label: string;
+  placeholder: string;
 };
 
 function SearchInput({
@@ -18,6 +14,7 @@ function SearchInput({
   inputValue,
   onInputChange,
   label,
+  placeholder,
 }: SearchInputProps) {
   return (
     <div>
@@ -28,12 +25,12 @@ function SearchInput({
         allowsCustomValue
         menuTrigger="input"
       >
-        <Label className="text-text-primary mb-2 block text-sm font-medium">
+        <Label className="text-surface mb-2 block text-sm font-medium">
           {label}
         </Label>
 
         <ComboBox.InputGroup>
-          <MyInput placeholder="Search Service..." />
+          <MyInput placeholder={placeholder} />
 
           <ComboBox.Trigger />
         </ComboBox.InputGroup>

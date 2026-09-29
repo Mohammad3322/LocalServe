@@ -1,5 +1,3 @@
-export const dynamic = "force-dynamic";
-
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -23,12 +21,6 @@ type ProviderPageProps = {
   }>;
 };
 
-/**
- * Section 8.4: a profile page is the main indexable page for a provider, so its
- * title and description are built from that provider's own data. Two profiles
- * therefore never share metadata, and the description matches the copy on the
- * page.
- */
 export async function generateMetadata({
   params,
 }: ProviderPageProps): Promise<Metadata> {
@@ -56,12 +48,9 @@ export async function generateMetadata({
   });
 }
 
-/**
- * Section 8.5: the structured data describes the professional as a local
- * business with the rating and service area shown on the page, so a search engine
- * can understand the listing without scraping the layout.
- */
-const structuredData = (provider: NonNullable<ReturnType<typeof getProviderBySlug>>) => ({
+const structuredData = (
+  provider: NonNullable<ReturnType<typeof getProviderBySlug>>,
+) => ({
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
   name: provider.name,
@@ -104,8 +93,7 @@ export default async function ProviderPage({
     <main className="bg-background min-h-screen">
       <script
         type="application/ld+json"
-        // The payload is built from validated seed data, and JSON.stringify
-        // escapes the characters that could otherwise close the script tag.
+
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(structuredData(provider)).replace(
             /</g,
