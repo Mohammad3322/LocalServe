@@ -47,31 +47,27 @@ export function BookingSummary({
     <aside className="lg:sticky lg:top-24">
       <Card
         variant="default"
-        className="border-border bg-surface border shadow-sm"
+        className="border-border bg-brand-600 border shadow-sm"
       >
         <Card.Content className="p-5 sm:p-6">
-          <h2 className="text-text-primary text-lg font-semibold">
+          <h2 className="text-surface text-lg font-semibold">
             Booking Summary
           </h2>
 
           <div className="border-border mt-5 border-b pb-5">
-            <p className="text-text-secondary text-xs font-medium tracking-wide uppercase">
+            <p className="text-brand-100 text-xs font-medium tracking-wide uppercase">
               Provider
             </p>
 
-            <p className="text-text-primary mt-1 font-medium">
-              {provider.name}
-            </p>
+            <p className="text-surface mt-1 font-medium">{provider.name}</p>
           </div>
 
           <div className="border-border border-b py-5">
-            <p className="text-text-secondary text-xs font-medium tracking-wide uppercase">
+            <p className="text-brand-100 text-xs font-medium tracking-wide uppercase">
               Service
             </p>
 
-            <p className="text-text-primary mt-1 font-medium">
-              {service.title}
-            </p>
+            <p className="text-brand-100 mt-1 font-medium">{service.title}</p>
           </div>
 
           <div className="border-border space-y-4 border-b py-5">
@@ -79,9 +75,9 @@ export function BookingSummary({
               <CalendarDays className="text-brand-600 mt-0.5 size-4 shrink-0" />
 
               <div>
-                <p className="text-text-secondary text-xs">Date</p>
+                <p className="text-brand-100 text-xs">Date</p>
 
-                <p className="text-text-primary mt-1 text-sm font-medium">
+                <p className="text-surface mt-1 text-sm font-medium">
                   {selectedDate
                     ? new Date(`${selectedDate}T00:00:00`).toLocaleDateString(
                         "en",
@@ -100,9 +96,9 @@ export function BookingSummary({
               <Clock3 className="text-brand-600 mt-0.5 size-4 shrink-0" />
 
               <div>
-                <p className="text-text-secondary text-xs">Time</p>
+                <p className="text-brand-100 text-xs">Time</p>
 
-                <p className="text-text-primary mt-1 text-sm font-medium">
+                <p className="text-surface mt-1 text-sm font-medium">
                   {selectedTime || "Not selected"}
                 </p>
               </div>
@@ -110,9 +106,9 @@ export function BookingSummary({
           </div>
 
           <div className="flex items-center justify-between py-5">
-            <span className="text-text-secondary text-sm">Estimated price</span>
+            <span className="text-brand-100 text-sm">Estimated price</span>
 
-            <span className="text-text-primary font-semibold">
+            <span className="text-surface font-semibold">
               €{(service.priceCents / 100).toFixed(0)}
             </span>
           </div>
@@ -127,7 +123,7 @@ export function BookingSummary({
             Continue
           </MyButton>
 
-          <p className="text-text-secondary mt-3 text-center text-xs leading-5">
+          <p className="text-brand-100 mt-3 text-center text-xs leading-5">
             You will review your details before confirming the booking.
           </p>
         </Card.Content>
