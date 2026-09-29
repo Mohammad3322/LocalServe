@@ -12,7 +12,7 @@ export function Hero() {
           </div> */}
 
           <h1 className="text-brand-700 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            Find trusted professionals near you
+            Find trusted professionals
           </h1>
 
           <p className="text-text-secondary mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg">

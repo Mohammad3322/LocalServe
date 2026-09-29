@@ -3,7 +3,7 @@ import { Card } from "@heroui/react";
 import { ArrowRight } from "lucide-react";
 
 import { popularServices } from "@/lib/data/seed/home";
-import MyButton from "../ui/MyButton";
+// import MyButton from "../ui/MyButton";
 
 export function PopularServices() {
   return (
@@ -26,12 +26,12 @@ export function PopularServices() {
             </p>
           </div>
 
-          <Link href="/services">
+          {/* <Link href="/services">
             <MyButton variant="secondary">
               View all services
               <ArrowRight className="size-4" />
             </MyButton>
-          </Link>
+          </Link> */}
         </div>
 
         {/* Services */}

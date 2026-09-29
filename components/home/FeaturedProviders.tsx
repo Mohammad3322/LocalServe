@@ -39,12 +39,12 @@ export function FeaturedProviders() {
             </p>
           </div>
 
-          <Link href="/search">
+          {/* <Link href="/search">
             <MyButton variant="secondary">
               View all professionals
               <ArrowRight className="size-4" />
             </MyButton>
-          </Link>
+          </Link> */}
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
