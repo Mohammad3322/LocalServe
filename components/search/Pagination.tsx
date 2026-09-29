@@ -2,6 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import MyButton from "../ui/MyButton";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
 type PaginationProps = {
   currentPage: number;
@@ -29,7 +30,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
 
   return (
     <nav
-      className="mt-8 flex items-center justify-center gap-2"
+      className="mt-8 flex w-full items-center justify-center gap-2"
       aria-label="Pagination"
     >
       <MyButton
@@ -38,7 +39,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
         isDisabled={currentPage === 1}
         onPress={() => goToPage(currentPage - 1)}
       >
-        Previous
+        <ArrowLeft />
       </MyButton>
 
       <div className="flex items-center gap-1">
@@ -50,6 +51,7 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
             aria-label={`Go to page ${page}`}
             aria-current={page === currentPage ? "page" : undefined}
             onPress={() => goToPage(page)}
+            className="w-0.5!"
           >
             {page}
           </MyButton>
@@ -61,8 +63,9 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
         size="sm"
         isDisabled={currentPage === totalPages}
         onPress={() => goToPage(currentPage + 1)}
+        className="w-full"
       >
-        Next
+        <ArrowRight />
       </MyButton>
     </nav>
   );

@@ -73,8 +73,7 @@ export function SearchFilters() {
 
   return (
     <aside className="">
-      <div className="border-border bg-surface sticky top-24 rounded-xl border p-5">
-        {/* Header */}
+      <div className="border-border bg-surface sticky top-12 rounded-xl border px-5 py-3">
         <div className="flex items-center justify-between">
           <h2 className="text-text-primary text-base font-semibold">Filters</h2>
 
@@ -89,7 +88,7 @@ export function SearchFilters() {
           </MyButton>
         </div>
 
-        <div className="my-6 flex flex-col gap-5 lg:flex-row">
+        <div className="my-6 flex gap-5">
           {/* Service */}
           <Select
             className="h-full w-full"

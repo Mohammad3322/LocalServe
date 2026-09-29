@@ -34,7 +34,7 @@ const Page = () => {
             <h2 className="text-text-primary mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               What is LocalServe?
             </h2>
-            <div className="mt-4 flex items-start gap-10">
+            <div className="mt-4 flex flex-col items-start gap-10 md:flex-row">
               <Image
                 src="/Logo/LogoWithBrandName.svg"
                 alt=""
@@ -54,7 +54,6 @@ const Page = () => {
               </div>
             </div>
             <HowItWorks />
-            <HomeCta />
           </div>
 
           <div className="relative mt-14">
@@ -64,6 +63,7 @@ const Page = () => {
             />
           </div>
         </div>
+        <HomeCta />
       </section>
     </div>
   );

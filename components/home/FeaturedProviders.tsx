@@ -14,6 +14,10 @@ function getInitials(name: string) {
     .slice(0, 2);
 }
 
+const providersNearYou = providers.filter((provider) =>
+  provider.serviceArea.toLowerCase().includes("paris"),
+);
+
 export function FeaturedProviders() {
   return (
     <section className="bg-brand-50/50 py-20 lg:py-24">
@@ -44,7 +48,7 @@ export function FeaturedProviders() {
         </div>
 
         <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {providers.map((provider) => (
+          {providersNearYou.map((provider) => (
             <Card
               key={provider.id}
               variant="default"

@@ -39,7 +39,7 @@ export function HomeSearch() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="border-border bg-brand-700 rounded-2xl border p-3 shadow-lg"
+      className="border-border bg-brand-700 rounded-2xl border p-5 shadow-lg"
     >
       <div className="grid items-center gap-3 md:grid-cols-[2fr_1fr_auto]">
         {/* Service */}
