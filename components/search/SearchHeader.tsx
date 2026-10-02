@@ -58,7 +58,7 @@ export function SearchHeader() {
           </p>
         </div>
 
-        <div className="mt-6 grid gap-3 md:grid-cols-[2fr_1fr_auto]">
+        <div className="mt-6 grid items-end gap-3 md:grid-cols-[2fr_1fr_auto]">
           {/* Service */}
           <SearchInput
             label="What service do you need?"

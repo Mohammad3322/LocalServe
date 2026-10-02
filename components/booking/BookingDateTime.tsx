@@ -8,13 +8,13 @@ import { useState, useEffect } from "react";
 import { getAvailability } from "@/lib/api/availability";
 import type { AvailabilitySlot } from "@/lib/validation/availability.schema";
 
-import { services } from "@/lib/data/seed/services";
 import type { Provider } from "@/lib/validation/provider.schema";
 import { BookingSummary } from "./BookingSummary";
 import MyButton from "../ui/MyButton";
 import { formatDateToString } from "@/lib/utils/formatters";
 import type { DateValue } from "@internationalized/date";
 import { TimeSlot } from "../ui/TimeSlot";
+import { getProviderServices } from "@/lib/services/providerServices";
 
 type BookingDateTimeProps = {
   provider: Provider;
@@ -25,7 +25,9 @@ export function BookingDateTime({
   provider,
   selectedServiceId,
 }: BookingDateTimeProps) {
-  const selectedService = services.find(
+  const providerServices = getProviderServices(provider.id);
+
+  const selectedService = providerServices.find(
     (service) =>
       service.id === selectedServiceId && service.providerId === provider.id,
   );
@@ -71,9 +73,9 @@ export function BookingDateTime({
     };
   }, [provider.id, selectedServiceId]);
 
-  const [selectedDate, setSelectedDate] = useState<
-    DateValue | null | undefined
-  >(null);
+  const [selectedDate, setSelectedDate] = useState<DateValue | undefined>(
+    undefined,
+  );
 
   const [selectedTime, setSelectedTime] = useState<string>("");
 

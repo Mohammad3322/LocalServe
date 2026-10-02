@@ -11,7 +11,7 @@ export const DEFAULT_DESCRIPTION =
   "and book an appointment in minutes.";
 
 export const DEFAULT_OG_IMAGE = {
-  url: `${SITE_URL}/images/og-default.png`,
+  url: `${SITE_URL}/Logo/Vector.svg`,
   width: 1200,
   height: 630,
   alt: "LocalServe - find trusted local professionals",

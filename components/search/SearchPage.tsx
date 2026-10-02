@@ -8,7 +8,7 @@ export function SearchPage() {
       <SearchHeader />
 
       <section className="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[280px_1fr]">
+        <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.5fr_1fr]">
           <SearchFilters />
 
           <SearchResults />

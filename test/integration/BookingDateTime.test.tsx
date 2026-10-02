@@ -70,8 +70,8 @@ beforeEach(() => {
       id: "slot-1",
       providerId: "pro-1",
       serviceId: "solar-panel-installation",
-      date: "2026-09-28",
-      time: "09:00",
+      date: "2026-10-20",
+      time: "14:00",
       available: true,
     },
   ]);
@@ -82,21 +82,19 @@ describe("BookingDateTime", () => {
     const user = userEvent.setup();
     await renderStep();
 
-    const day = calendarDay(28);
+    const day = calendarDay(20);
     await user.click(day);
 
     expect(
       screen.getByRole("heading", { name: "Available Times" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "09:00" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "14:00" })).toBeInTheDocument();
   });
 
   it("shows a recoverable message when availability cannot be loaded", async () => {
     getAvailability.mockRejectedValue(new Error("network down"));
     await renderStep();
 
-    expect(
-      screen.getByText("Availability unavailable"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Availability unavailable")).toBeInTheDocument();
   });
 });
