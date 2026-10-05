@@ -63,7 +63,6 @@ export function Pagination({ currentPage, totalPages }: PaginationProps) {
         size="sm"
         isDisabled={currentPage === totalPages}
         onPress={() => goToPage(currentPage + 1)}
-        className="w-full"
       >
         <ArrowRight />
       </MyButton>

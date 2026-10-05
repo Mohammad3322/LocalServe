@@ -55,7 +55,7 @@ const Page = () => {
             </div>
             <HowItWorks />
           </div>
-
+          
           <div className="relative mt-14">
             <div
               aria-hidden="true"
