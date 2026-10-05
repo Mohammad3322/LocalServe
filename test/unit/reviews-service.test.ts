@@ -2,7 +2,7 @@
   getReviewsByProviderId,
   getTotalRatingByProviderId,
 } from "@/lib/services/reviews";
-import { reviews as seededReviews } from "@/lib/data/seed/reviews";
+import { reviews as seededReviews } from "@/lib/data/seed/generate";
 
 describe("getReviewsByProviderId", () => {
   it("returns only the reviews written for that provider", () => {

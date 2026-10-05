@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { availability } from "@/lib/data/seed/availability";
+import { availability } from "@/lib/data/seed/generate";
 import {
   BookingResponse,
   createBookingSchema,
 } from "@/lib/validation/booking.schema";
-import { services } from "@/lib/data/seed/services";
+import { services } from "@/lib/data/seed/generate";
 
 import { saveBooking, hasBookingForSlot } from "@/lib/data/mock-bookings";
 

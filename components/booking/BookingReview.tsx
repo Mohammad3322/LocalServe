@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button, Card } from "@heroui/react";
 
-import { services } from "@/lib/data/seed/services";
+import { services } from "@/lib/data/seed/generate";
 import type { Provider } from "@/lib/validation/provider.schema";
 
 import axios from "axios";

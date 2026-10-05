@@ -1,5 +1,5 @@
 import type { Service } from "@/lib/validation/service.schema";
-import { services } from "@/lib/data/seed/services";
+import { services } from "@/lib/data/seed/generate";
 import { serviceCategories } from "../data/seed/categories";
 
 export type ServiceCategory = {

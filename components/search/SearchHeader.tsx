@@ -5,8 +5,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import MyButton from "../ui/MyButton";
-import { locations } from "@/lib/data/seed/locations";
-import { services } from "@/lib/data/seed/services";
+import { locations } from "@/lib/data/seed/generate";
+import { services } from "@/lib/data/seed/generate";
 import SearchInput from "../ui/SearchInput";
 
 export function SearchHeader() {

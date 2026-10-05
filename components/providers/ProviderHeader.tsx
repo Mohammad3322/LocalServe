@@ -7,7 +7,6 @@ import {
   getReviewsByProviderId,
   getTotalRatingByProviderId,
 } from "@/lib/services/reviews";
-import MyButton from "../ui/MyButton";
 
 type ProviderHeaderProps = {
   provider: Provider;
@@ -118,19 +117,6 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
 
               <p>{provider.experienceYears} years of experience</p>
             </div>
-          </div>
-
-          {/* CTA */}
-          <div className="lg:self-center">
-            <Link href="#services">
-              <MyButton
-                variant="secondary"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                Choose a Service
-              </MyButton>
-            </Link>
           </div>
         </div>
       </div>

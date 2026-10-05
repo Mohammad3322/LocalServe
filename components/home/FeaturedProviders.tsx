@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Avatar, Card, Chip } from "@heroui/react";
 import { ArrowRight, MapPin, Star, BadgeCheck } from "lucide-react";
 
-import { providers } from "@/lib/data/seed/providers";
+import { providers } from "@/lib/data/seed/generate";
 import MyButton from "../ui/MyButton";
 
 function getInitials(name: string) {

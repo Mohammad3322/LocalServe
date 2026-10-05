@@ -5,8 +5,8 @@ import type { SubmitEvent } from "react";
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import MyButton from "../ui/MyButton";
-import { locations } from "@/lib/data/seed/locations";
-import { services } from "@/lib/data/seed/services";
+import { locations } from "@/lib/data/seed/generate";
+import { services } from "@/lib/data/seed/generate";
 import SearchInput from "../ui/SearchInput";
 
 const servicesSet = [...new Set(services.map((s) => s.title))];

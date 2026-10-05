@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Card, Label, TextArea } from "@heroui/react";
 import { CalendarDays, Clock3 } from "lucide-react";
 
-import { services } from "@/lib/data/seed/services";
+import { services } from "@/lib/data/seed/generate";
 import { customerDetailsSchema } from "@/lib/validation/booking.schema";
 import type { Provider } from "@/lib/validation/provider.schema";
 import MyInput from "../ui/MyInput";
@@ -142,7 +142,7 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
     console.log("customerDetails handleSubmit done");
   };
 
-  const backUrl = `/book/${provider.id}`;
+  const backUrl = `/book/${provider.id}?service=${serviceId}`;
 
   return (
     <main className="bg-background min-h-screen">

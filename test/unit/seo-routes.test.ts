@@ -3,7 +3,7 @@ import robots from "@/app/robots";
 import { metadata as bookLayoutMetadata } from "@/app/book/layout";
 import { metadata as bookingLayoutMetadata } from "@/app/booking/layout";
 import { metadata as rootMetadata } from "@/app/layout";
-import { providers } from "@/lib/data/seed/providers";
+import { providers } from "@/lib/data/seed/generate";
 import { serviceCategories } from "@/lib/data/seed/categories";
 import { SITE_URL } from "@/lib/seo";
 
