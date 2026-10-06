@@ -443,10 +443,8 @@ function buildSeedData(): SeedData {
     //   : undefined;
 
     const randomCount = Math.max(serviceCount, 0);
-    const Templates = pickSome(
-      SERVICE_TEMPLATES,
-      randomCount,
-    );
+
+    const Templates = pickSome(SERVICE_TEMPLATES, randomCount);
     const chosenTemplates = Templates;
 
     // const pinnedId =
@@ -458,8 +456,7 @@ function buildSeedData(): SeedData {
     chosenTemplates.forEach((template, serviceIndex) => {
       // const isFirst = serviceIndex === 0;
 
-      const serviceId =
-        `${template.key}-${id}-${serviceIndex + 1}`;
+      const serviceId = `${template.key}-${id}-${serviceIndex + 1}`;
 
       const priceVariance = between(-4, 4) * 500;
 
