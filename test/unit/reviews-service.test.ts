@@ -2,18 +2,16 @@
   getReviewsByProviderId,
   getTotalRatingByProviderId,
 } from "@/lib/services/reviews";
-import { reviews as seededReviews } from "@/lib/data/seed/generate";
+import { reviews } from "@/lib/data/seed/generate";
 
 describe("getReviewsByProviderId", () => {
   it("returns only the reviews written for that provider", () => {
-    const found = getReviewsByProviderId("pro-1");
-    const expected = seededReviews.filter(
-      (review) => review.providerId === "pro-1",
-    );
+    const found = getReviewsByProviderId("pro-3");
+    const expected = reviews.filter((review) => review.providerId === "pro-3");
 
     expect(found.length).toBeGreaterThan(0);
     expect(found).toHaveLength(expected.length);
-    expect(found.every((review) => review.providerId === "pro-1")).toBe(true);
+    expect(found.every((review) => review.providerId === "pro-3")).toBe(true);
   });
 
   it("returns an empty array for an unknown provider", () => {
@@ -29,7 +27,7 @@ describe("getReviewsByProviderId", () => {
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const reviewsModule = require("@/lib/services/reviews");
 
-      result = reviewsModule.getReviewsByProviderId("pro-1");
+      result = reviewsModule.getReviewsByProviderId("pro-3");
     });
 
     expect(result).toEqual([]);
@@ -39,7 +37,7 @@ describe("getReviewsByProviderId", () => {
 describe("getTotalRatingByProviderId", () => {
   it("stays within the 0-5 rating scale for every seeded provider", () => {
     for (const providerId of new Set(
-      seededReviews.map((review) => review.providerId),
+      reviews.map((review) => review.providerId),
     )) {
       const mean = getTotalRatingByProviderId(providerId);
 
@@ -56,12 +54,12 @@ describe("getTotalRatingByProviderId", () => {
     let result: unknown;
 
     jest.isolateModules(() => {
-      jest.doMock("@/lib/data/seed/reviews", () => ({ reviews: [] }));
+      jest.doMock("@/lib/data/seed/generate", () => ({ reviews: [] }));
 
       // eslint-disable-next-line @typescript-eslint/no-require-imports
       const reviewsModule = require("@/lib/services/reviews");
 
-      result = reviewsModule.getTotalRatingByProviderId("pro-1");
+      result = reviewsModule.getTotalRatingByProviderId("pro-3");
     });
 
     expect(result).toBe(0);

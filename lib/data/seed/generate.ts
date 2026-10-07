@@ -257,19 +257,6 @@ const SERVICE_TEMPLATES: readonly ServiceTemplate[] = [
   },
 ] as const;
 
-// const LEGACY_SERVICE_IDS: Readonly<Record<string, string>> = {
-//   "pro-1": "solar-panel-installation",
-//   "pro-2": "cctv-installation",
-//   "pro-3": "smart-home",
-//   "pro-4": "solar-panel-installation",
-//   "pro-5": "cctv-installation",
-// };
-
-// const LEGACY_SERVICE_ID_OVERRIDES: Readonly<Record<string, string>> = {
-//   "pro-4": "solar-panel-installation-2",
-//   "pro-5": "cctv-installation-2",
-// };
-
 const CREDENTIAL_TEMPLATES = [
   {
     title: "Certified Professional Installer",
@@ -435,27 +422,14 @@ function buildSeedData(): SeedData {
 
     const serviceCount = between(2, 5);
 
-    // const pinnedTemplateSlug = LEGACY_SERVICE_IDS[id];
-    // const pinnedTemplate = pinnedTemplateSlug
-    //   ? SERVICE_TEMPLATES.find(
-    //       (template) => template.slug === pinnedTemplateSlug,
-    //     )
-    //   : undefined;
-
     const randomCount = Math.max(serviceCount, 0);
 
     const Templates = pickSome(SERVICE_TEMPLATES, randomCount);
     const chosenTemplates = Templates;
 
-    // const pinnedId =
-    //   (pinnedTemplateSlug && LEGACY_SERVICE_ID_OVERRIDES[id]) ||
-    //   pinnedTemplateSlug;
-
     const providerServiceIds: string[] = [];
 
     chosenTemplates.forEach((template, serviceIndex) => {
-      // const isFirst = serviceIndex === 0;
-
       const serviceId = `${template.key}-${id}-${serviceIndex + 1}`;
 
       const priceVariance = between(-4, 4) * 500;
