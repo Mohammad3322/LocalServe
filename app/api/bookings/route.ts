@@ -56,7 +56,8 @@ export async function POST(request: Request) {
     if (!slot || !slot.available) {
       return NextResponse.json(
         {
-          message: "This time slot is no longer available.",
+          message:
+            "This time slot has been cancelled and is no longer available.",
           code: "SLOT_UNAVAILABLE",
         },
         {

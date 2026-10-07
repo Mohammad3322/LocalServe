@@ -424,8 +424,8 @@ function buildSeedData(): SeedData {
 
     const randomCount = Math.max(serviceCount, 0);
 
-    const Templates = pickSome(SERVICE_TEMPLATES, randomCount);
-    const chosenTemplates = Templates;
+    const serviceTemplates = pickSome(SERVICE_TEMPLATES, randomCount);
+    const chosenTemplates = serviceTemplates;
 
     const providerServiceIds: string[] = [];
 
@@ -462,6 +462,21 @@ function buildSeedData(): SeedData {
     const languages = pickSome(LANGUAGES, between(1, 3));
     const credentials = pickSome(CREDENTIAL_TEMPLATES, between(1, 3));
 
+    for (let reviewIndex = 0; reviewIndex < reviewCount; reviewIndex += 1) {
+      const daysAgo = between(1, 150);
+      const createdAt = new Date(Date.now() - daysAgo * MS_PER_DAY);
+
+      reviews.push({
+        id: `review-${id}-${reviewIndex + 1}`,
+        providerId: id,
+        customerName: pick(CUSTOMER_NAMES),
+
+        rating: random() > 0.18 ? 5 : random() > 0.35 ? 4 : 3,
+        comment: pick(REVIEW_COMMENTS),
+        createdAt: toDateString(createdAt),
+      });
+    }
+
     providers.push({
       id,
       slug: toSlug(name),
@@ -494,21 +509,6 @@ function buildSeedData(): SeedData {
 
       languages: [...languages],
     });
-
-    for (let reviewIndex = 0; reviewIndex < reviewCount; reviewIndex += 1) {
-      const daysAgo = between(1, 150);
-      const createdAt = new Date(Date.now() - daysAgo * MS_PER_DAY);
-
-      reviews.push({
-        id: `review-${id}-${reviewIndex + 1}`,
-        providerId: id,
-        customerName: pick(CUSTOMER_NAMES),
-
-        rating: random() > 0.18 ? 5 : random() > 0.35 ? 4 : 3,
-        comment: pick(REVIEW_COMMENTS),
-        createdAt: toDateString(createdAt),
-      });
-    }
 
     for (let dayOffset = 0; dayOffset < AVAILABILITY_DAYS; dayOffset += 1) {
       const date = new Date(Date.now() + dayOffset * MS_PER_DAY);
