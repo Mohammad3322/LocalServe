@@ -3,8 +3,10 @@
 import { Avatar, Card, Chip, Label, ListBox, Select } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import { searchProviders } from "@/lib/services/search";
-import { searchParamsSchema } from "@/lib/validation/search.schema";
+import type { SearchApiResult } from "@/lib/api/search";
+import type { SearchParams } from "@/lib/validation/search.schema";
+// import type { Provider } from "@/lib/validation/provider.schema";
+
 import { Pagination } from "./Pagination";
 import { ArrowRight, BadgeCheck, MapPin, Star } from "lucide-react";
 import Link from "next/link";
@@ -30,30 +32,20 @@ const sortOptions = [
   },
 ];
 
-export function SearchResults() {
+type Props = {
+  initialData: SearchApiResult;
+  initialParams: SearchParams;
+};
+
+export function SearchResults({ initialData, initialParams }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const params = searchParamsSchema.parse({
-    service: searchParams.get("service") ?? undefined,
+  const searchResult = initialData;
 
-    location: searchParams.get("location") ?? undefined,
-
-    category: searchParams.get("category") ?? undefined,
-
-    rating: searchParams.get("rating") ?? undefined,
-
-    availability: searchParams.get("availability") ?? undefined,
-
-    sort: searchParams.get("sort") ?? "rating",
-
-    page: searchParams.get("page") ?? "1",
-  });
-
-  const searchResult = searchProviders(params);
-
-  const selectedSort = params.sort ?? "rating";
+  const selectedSort =
+    searchParams.get("sort") ?? initialParams.sort ?? "rating";
 
   function updateSort(value: string | number | null) {
     const nextParams = new URLSearchParams(searchParams.toString());
