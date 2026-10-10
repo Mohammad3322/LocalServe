@@ -5,14 +5,14 @@ export function TrustSection() {
     <section className="bg-brand-50 py-20">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:items-center">
-          <div>
-            <p className="text-brand-600 text-sm font-semibold">
+          <div className="self-center">
+            <h2 className="text-brand-600 mt-2 text-3xl font-bold tracking-tight">
               Why LocalServe
-            </p>
-
-            <h2 className="text-text-primary mt-2 text-3xl font-bold tracking-tight">
-              A clearer way to book local services
             </h2>
+
+            <p className="text-brand-500 text-md mt-2 font-semibold">
+              A clearer way to book local services
+            </p>
 
             <p className="text-text-secondary mt-5 leading-7">
               LocalServe brings service information, professional details,

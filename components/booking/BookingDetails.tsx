@@ -282,9 +282,13 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
               </Card.Content>
             </Card>
 
-            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center lg:m-10 lg:gap-10">
               <Link href={backUrl}>
-                <MyButton variant="secondary" className="w-full sm:w-auto">
+                <MyButton
+                  variant="secondary"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                >
                   Back
                 </MyButton>
               </Link>

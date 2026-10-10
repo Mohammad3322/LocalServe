@@ -23,17 +23,17 @@ export function FeaturedProviders() {
     <section className="bg-brand-50/50 py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section heading */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <div className="max-w-2xl">
-            <p className="text-brand-600 text-sm font-semibold">
+            {/* <p className="text-brand-600 text-sm font-semibold">
               Featured Professionals
-            </p>
+            </p> */}
 
-            <h2 className="text-text-primary mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2 className="text-brand-600 mt-3 text-center text-3xl font-bold tracking-tight sm:text-4xl">
               Trusted professionals near you
             </h2>
 
-            <p className="text-text-secondary mt-4 text-base leading-7">
+            <p className="text-text-secondary mt-4 text-center text-base leading-7">
               Explore experienced professionals and compare their services
               before making your booking.
             </p>

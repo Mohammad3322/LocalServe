@@ -10,11 +10,14 @@ import type { AvailabilitySlot } from "@/lib/validation/availability.schema";
 
 import type { Provider } from "@/lib/validation/provider.schema";
 import { BookingSummary } from "./BookingSummary";
-import MyButton from "../ui/MyButton";
 import { formatDateToString } from "@/lib/utils/formatters";
 import type { DateValue } from "@internationalized/date";
 import { TimeSlot } from "../ui/TimeSlot";
 import { getProviderServices } from "@/lib/services/providerServices";
+import MyButton from "../ui/MyButton";
+
+import { useRouter } from "next/navigation";
+import { useBookingStore } from "@/lib/store/booking-store";
 
 type BookingDateTimeProps = {
   provider: Provider;
@@ -95,6 +98,30 @@ export function BookingDateTime({
     const dateString = `${date.year}-${String(date.month).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`;
     return !availableDatesSet.has(dateString);
   };
+
+  const router = useRouter();
+
+  const setAppointment = useBookingStore((state) => state.setAppointment);
+
+  const canContinue =
+    Boolean(selectedDate) && Boolean(selectedTime) && Boolean(selectedService);
+
+  const handleContinue = () => {
+    if (!selectedService || !selectedDate || !selectedTime) {
+      return;
+    }
+
+    setAppointment({
+      providerId: provider.id,
+      serviceId: selectedService.id,
+      date: formatDateToString(selectedDate),
+      time: selectedTime,
+    });
+
+    router.push(`/book/${provider.id}/details`);
+  };
+
+  const backUrl = `/book/${provider.id}`;
 
   if (!selectedService) {
     return (
@@ -338,16 +365,39 @@ export function BookingDateTime({
               )}
             </Card.Content>
           </Card>
+
+          <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center lg:m-10 lg:gap-10">
+            <Link href={backUrl}>
+              <MyButton
+                variant="secondary"
+                size="lg"
+                className="w-full sm:w-auto"
+              >
+                Back
+              </MyButton>
+            </Link>
+
+            <MyButton
+              variant="primary"
+              onPress={handleContinue}
+              size="lg"
+              className="w-full sm:w-auto"
+              isDisabled={!canContinue}
+            >
+              Continue
+            </MyButton>
+          </div>
         </div>
 
-        {
+        <div>
           <BookingSummary
+            className="lg:sticky lg:top-24"
             provider={provider}
             service={selectedService}
             selectedDate={formatDateToString(selectedDate)}
             selectedTime={selectedTime}
           />
-        }
+        </div>
       </div>
     </div>
   );

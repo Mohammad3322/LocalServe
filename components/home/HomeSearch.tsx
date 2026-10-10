@@ -1,13 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import type { SubmitEvent } from "react";
-import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import MyButton from "../ui/MyButton";
 import { locations } from "@/lib/data/seed/generate";
 import { services } from "@/lib/data/seed/generate";
-import SearchInput from "../ui/SearchInput";
+import SearchForm from "../ui/SearchForm";
 
 const servicesSet = [...new Set(services.map((s) => s.title))];
 const locationsSet = [...new Set(locations.map((s) => s.name))];
@@ -18,9 +15,7 @@ export function HomeSearch() {
   const [service, setService] = useState<string>("");
   const [location, setLocation] = useState<string>("");
 
-  function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
-    event.preventDefault();
-
+  function handleSearch() {
     const params = new URLSearchParams();
 
     if (service) {
@@ -37,40 +32,18 @@ export function HomeSearch() {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="border-border bg-brand-700 rounded-2xl border p-5 shadow-lg"
-    >
-      <div className="grid items-end gap-3 md:grid-cols-[2fr_1fr_auto]">
-        {/* Service */}
-        <SearchInput
-          label="What service do you need?"
-          List={servicesSet}
-          inputValue={service}
-          onInputChange={setService}
-          placeholder="Search Sevice"
+    <div className="rounded-2xl p-5 transition-all hover:shadow-lg">
+      <div className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-end">
+        <SearchForm
+          servicesSet={servicesSet}
+          service={service}
+          setService={setService}
+          locationsSet={locationsSet}
+          location={location}
+          setLocation={setLocation}
+          handleSearch={handleSearch}
         />
-
-        {/* Location */}
-        <SearchInput
-          label="Where do you need it?"
-          List={locationsSet}
-          inputValue={location}
-          onInputChange={setLocation}
-          placeholder="Search location where y..."
-        />
-
-        {/* Submit */}
-        <MyButton
-          type="submit"
-          variant="secondary"
-          size="sm"
-          className="bg-brand-500 min-h-10"
-        >
-          <Search className="size-4" />
-          Search
-        </MyButton>
       </div>
-    </form>
+    </div>
   );
 }

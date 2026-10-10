@@ -50,13 +50,13 @@ export function BookingReview({ provider }: BookingReviewProps) {
     }
 
     if (!serviceId || !date || !time || !customer) {
-      console.log("useEffect: !serviceId || !date || !time || !customer");
+      // console.log("useEffect: !serviceId || !date || !time || !customer");
       router.replace(`/book/${provider.id}`);
       return;
     }
 
     if (!selectedService) {
-      console.log("useEffect: !selectedService");
+      // console.log("useEffect: !selectedService");
       router.replace(`/book/${provider.id}`);
     }
   }, [
@@ -378,11 +378,12 @@ export function BookingReview({ provider }: BookingReviewProps) {
               </Card>
             )}
 
-            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center lg:m-10 lg:gap-10">
               <Link href={`/book/${provider.id}/details`}>
                 <MyButton
                   variant="secondary"
                   className="w-full sm:w-auto"
+                  size="lg"
                   isDisabled={bookingState === "submitting"}
                 >
                   Back
