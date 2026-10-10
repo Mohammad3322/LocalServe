@@ -26,7 +26,7 @@ function ProviderCard({ provider }: ProviderCardProps) {
               className=""
             />
 
-            <Avatar.Fallback>{provider.name.slice(0, 1)}</Avatar.Fallback>
+            {/* <Avatar.Fallback>{provider.name.slice(0, 1)}</Avatar.Fallback> */}
           </Avatar>
 
           <div className="min-w-0 flex-1">

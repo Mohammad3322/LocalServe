@@ -3,10 +3,8 @@
 import { Label, ListBox, Select } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-import type { SearchApiResult } from "@/lib/api/search";
-import type { SearchParams } from "@/lib/validation/search.schema";
-// import type { Provider } from "@/lib/validation/provider.schema";
-
+import { searchProviders } from "@/lib/services/search";
+import { searchParamsSchema } from "@/lib/validation/search.schema";
 import { Pagination } from "./Pagination";
 import ProviderCard from "../ui/ProviderCard";
 
@@ -29,20 +27,30 @@ const sortOptions = [
   },
 ];
 
-type Props = {
-  initialData: SearchApiResult;
-  initialParams: SearchParams;
-};
-
-export function SearchResults({ initialData, initialParams }: Props) {
+export function SearchResults() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const searchResult = initialData;
+  const params = searchParamsSchema.parse({
+    service: searchParams.get("service") ?? undefined,
 
-  const selectedSort =
-    searchParams.get("sort") ?? initialParams.sort ?? "rating";
+    location: searchParams.get("location") ?? undefined,
+
+    category: searchParams.get("category") ?? undefined,
+
+    rating: searchParams.get("rating") ?? undefined,
+
+    availability: searchParams.get("availability") ?? undefined,
+
+    sort: searchParams.get("sort") ?? "rating",
+
+    page: searchParams.get("page") ?? "1",
+  });
+
+  const searchResult = searchProviders(params);
+
+  const selectedSort = params.sort ?? "rating";
 
   function updateSort(value: string | number | null) {
     const nextParams = new URLSearchParams(searchParams.toString());
@@ -57,6 +65,8 @@ export function SearchResults({ initialData, initialParams }: Props) {
 
     router.push(`${pathname}?${nextParams.toString()}`);
   }
+
+  // console.log(pathname);
 
   return (
     <section id="searchResults" className="w-full">

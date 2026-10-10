@@ -1,15 +1,8 @@
 import { SearchHeader } from "./SearchHeader";
 import { SearchFilters } from "./SearchFilters";
 import { SearchResults } from "./SearchResults";
-import type { SearchApiResult } from "@/lib/api/search";
-import type { SearchParams } from "@/lib/validation/search.schema";
 
-type Props = {
-  initialData: SearchApiResult;
-  initialParams: SearchParams;
-};
-
-export async function SearchPage({ initialData, initialParams }: Props) {
+export async function SearchPage() {
   return (
     <main className="bg-brand-50 min-h-screen">
       <SearchHeader />
@@ -18,10 +11,7 @@ export async function SearchPage({ initialData, initialParams }: Props) {
         <div className="grid grid-cols-1 gap-5 lg:grid-cols-[0.5fr_1fr]">
           <SearchFilters />
 
-          <SearchResults
-            initialData={initialData}
-            initialParams={initialParams}
-          />
+          <SearchResults />
         </div>
       </section>
     </main>
