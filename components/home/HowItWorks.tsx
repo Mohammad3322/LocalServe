@@ -26,18 +26,19 @@ const steps = [
 export function HowItWorks() {
   return (
     <section id="how-it-works" className="py-20 lg:py-24">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className="bg-brand-50 mx-auto max-w-7xl rounded-2xl pb-6">
         {/* Heading */}
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="text-brand-600 text-sm font-semibold">How It Works</p>
-
-          <h2 className="text-text-primary mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-            Find and book in three simple steps
+        <div className="bg-brand-600 flex flex-col items-center rounded-t-2xl py-6 text-center">
+          <h2 className="text-surface mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
+            How It Works
           </h2>
 
-          <p className="text-text-secondary mt-4 text-base leading-7">
+          <p className="text-brand-50 mt-4 text-base leading-7">
             LocalServe makes it easier to discover the right professional and
-            schedule a service without unnecessary complexity.
+            schedule a service
+          </p>
+          <p className="text-brand-50 text-base leading-7">
+            without unnecessary complexity.
           </p>
         </div>
 
@@ -46,7 +47,7 @@ export function HowItWorks() {
           {/* Connecting line */}
           <div
             aria-hidden="true"
-            className="bg-brand-100 absolute top-12 right-[16.66%] left-[16.66%] hidden h-px lg:block"
+            className="bg-brand-600 absolute top-12 right-[16.66%] left-[16.66%] hidden h-px lg:block"
           />
 
           <div className="grid gap-10 lg:grid-cols-3 lg:gap-8">
@@ -74,7 +75,7 @@ export function HowItWorks() {
                   </h3>
 
                   {/* Description */}
-                  <p className="text-text-secondary mt-3 max-w-sm text-sm leading-6">
+                  <p className="text-text-secondary mt-3 max-w-48 text-sm leading-6">
                     {step.description}
                   </p>
 

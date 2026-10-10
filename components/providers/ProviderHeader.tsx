@@ -7,7 +7,6 @@ import {
   getReviewsByProviderId,
   getTotalRatingByProviderId,
 } from "@/lib/services/reviews";
-import MyButton from "../ui/MyButton";
 
 type ProviderHeaderProps = {
   provider: Provider;
@@ -96,10 +95,12 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
                   {averageRating.toFixed(1)}
                 </span>
 
-                <p className="text-text-secondary text-sm">
-                  {providerReviews.length}
-                  {providerReviews.length === 1 ? "review" : "reviews"}
-                </p>
+                <Link href="#reviews">
+                  <p className="text-text-secondary hover:text-brand-600 text-sm">
+                    {providerReviews.length}
+                    {providerReviews.length === 1 ? "review" : "reviews"}
+                  </p>
+                </Link>
               </div>
 
               <div className="bg-border hidden h-4 w-px sm:block" />
@@ -116,19 +117,6 @@ export function ProviderHeader({ provider }: ProviderHeaderProps) {
 
               <p>{provider.experienceYears} years of experience</p>
             </div>
-          </div>
-
-          {/* CTA */}
-          <div className="lg:self-center">
-            <Link href="#services">
-              <MyButton
-                variant="secondary"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                Choose a Service
-              </MyButton>
-            </Link>
           </div>
         </div>
       </div>

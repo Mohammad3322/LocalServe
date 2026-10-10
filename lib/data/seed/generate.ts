@@ -257,19 +257,6 @@ const SERVICE_TEMPLATES: readonly ServiceTemplate[] = [
   },
 ] as const;
 
-const LEGACY_SERVICE_IDS: Readonly<Record<string, string>> = {
-  "pro-1": "solar-panel-installation",
-  "pro-2": "cctv-installation",
-  "pro-3": "smart-home",
-  "pro-4": "solar-panel-installation",
-  "pro-5": "cctv-installation",
-};
-
-const LEGACY_SERVICE_ID_OVERRIDES: Readonly<Record<string, string>> = {
-  "pro-4": "solar-panel-installation-2",
-  "pro-5": "cctv-installation-2",
-};
-
 const CREDENTIAL_TEMPLATES = [
   {
     title: "Certified Professional Installer",
@@ -435,39 +422,17 @@ function buildSeedData(): SeedData {
 
     const serviceCount = between(2, 5);
 
-    const pinnedTemplateSlug = LEGACY_SERVICE_IDS[id];
-    const pinnedTemplate = pinnedTemplateSlug
-      ? SERVICE_TEMPLATES.find(
-          (template) => template.slug === pinnedTemplateSlug,
-        )
-      : undefined;
+    const randomCount = Math.max(serviceCount, 0);
 
-    const randomCount = Math.max(serviceCount - (pinnedTemplate ? 1 : 0), 0);
-    const remainingTemplates = pickSome(
-      SERVICE_TEMPLATES.filter(
-        (template) => template.slug !== pinnedTemplateSlug,
-      ),
-      randomCount,
-    );
-    const chosenTemplates = pinnedTemplate
-      ? [pinnedTemplate, ...remainingTemplates]
-      : remainingTemplates;
-
-    const pinnedId =
-      (pinnedTemplateSlug && LEGACY_SERVICE_ID_OVERRIDES[id]) ||
-      pinnedTemplateSlug;
+    const serviceTemplates = pickSome(SERVICE_TEMPLATES, randomCount);
+    const chosenTemplates = serviceTemplates;
 
     const providerServiceIds: string[] = [];
 
     chosenTemplates.forEach((template, serviceIndex) => {
-      const isFirst = serviceIndex === 0;
+      const serviceId = `${template.key}-${id}-${serviceIndex + 1}`;
 
-      const serviceId =
-        isFirst && pinnedId
-          ? pinnedId
-          : `${template.key}-${id}-${serviceIndex + 1}`;
-
-      const priceVariance = isFirst && pinnedId ? 0 : between(-4, 4) * 500;
+      const priceVariance = between(-4, 4) * 500;
 
       services.push({
         id: serviceId,
@@ -496,6 +461,21 @@ function buildSeedData(): SeedData {
 
     const languages = pickSome(LANGUAGES, between(1, 3));
     const credentials = pickSome(CREDENTIAL_TEMPLATES, between(1, 3));
+
+    for (let reviewIndex = 0; reviewIndex < reviewCount; reviewIndex += 1) {
+      const daysAgo = between(1, 150);
+      const createdAt = new Date(Date.now() - daysAgo * MS_PER_DAY);
+
+      reviews.push({
+        id: `review-${id}-${reviewIndex + 1}`,
+        providerId: id,
+        customerName: pick(CUSTOMER_NAMES),
+
+        rating: random() > 0.18 ? 5 : random() > 0.35 ? 4 : 3,
+        comment: pick(REVIEW_COMMENTS),
+        createdAt: toDateString(createdAt),
+      });
+    }
 
     providers.push({
       id,
@@ -529,21 +509,6 @@ function buildSeedData(): SeedData {
 
       languages: [...languages],
     });
-
-    for (let reviewIndex = 0; reviewIndex < reviewCount; reviewIndex += 1) {
-      const daysAgo = between(1, 150);
-      const createdAt = new Date(Date.now() - daysAgo * MS_PER_DAY);
-
-      reviews.push({
-        id: `review-${id}-${reviewIndex + 1}`,
-        providerId: id,
-        customerName: pick(CUSTOMER_NAMES),
-
-        rating: random() > 0.18 ? 5 : random() > 0.35 ? 4 : 3,
-        comment: pick(REVIEW_COMMENTS),
-        createdAt: toDateString(createdAt),
-      });
-    }
 
     for (let dayOffset = 0; dayOffset < AVAILABILITY_DAYS; dayOffset += 1) {
       const date = new Date(Date.now() + dayOffset * MS_PER_DAY);

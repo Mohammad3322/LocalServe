@@ -9,6 +9,7 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "@/lib/seo";
+import { ScrollToTop } from "@/components/layout/ScrollToTop";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-plus_jakarta_sans",
@@ -46,9 +47,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${plusJakartaSans.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
-        <Header />
-        {children}
-        <Footer />
+        <div className="mt-20">
+          <Header />
+          {children}
+          <Footer />
+          <ScrollToTop />
+        </div>
       </body>
     </html>
   );

@@ -6,7 +6,7 @@ export const searchParamsSchema = z.object({
 
   location: z.string().trim().optional(),
 
-  rating: z.coerce.number().int().min(1).max(5).optional(),
+  rating: z.coerce.number().int().min(1).max(5).optional().catch(undefined),
 
   availability: z.enum(["true", "false"]).optional(),
 

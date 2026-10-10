@@ -1,5 +1,5 @@
-import { providers } from "@/lib/data/seed/providers";
-import { services } from "@/lib/data/seed/services";
+import { providers } from "@/lib/data/seed/generate";
+import { services } from "@/lib/data/seed/generate";
 import type { Provider } from "@/lib/validation/provider.schema";
 import type { SearchParams } from "@/lib/validation/search.schema";
 

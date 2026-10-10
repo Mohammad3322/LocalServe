@@ -7,15 +7,15 @@ import { buildMetadata, clampDescription } from "@/lib/seo";
 
 type ServiceCategoryRouteProps = {
   params: Promise<{
-    serviceSlug: string;
+    categorySlug: string;
   }>;
 };
 
 export async function generateMetadata({
   params,
 }: ServiceCategoryRouteProps): Promise<Metadata> {
-  const { serviceSlug } = await params;
-  const category = getServiceCategoryBySlug(serviceSlug);
+  const { categorySlug } = await params;
+  const category = getServiceCategoryBySlug(categorySlug);
 
   if (!category) {
     return { title: "Service not found" };
@@ -36,9 +36,9 @@ export async function generateMetadata({
 export default async function ServiceCategoryRoute({
   params,
 }: ServiceCategoryRouteProps) {
-  const { serviceSlug } = await params;
+  const { categorySlug } = await params;
 
-  const category = getServiceCategoryBySlug(serviceSlug);
+  const category = getServiceCategoryBySlug(categorySlug);
 
   if (!category) {
     notFound();

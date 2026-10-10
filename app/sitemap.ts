@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-import { providers } from "@/lib/data/seed/providers";
+import { providers } from "@/lib/data/seed/generate";
 import { serviceCategories } from "@/lib/data/seed/categories";
 import { absoluteUrl } from "@/lib/seo";
 

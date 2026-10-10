@@ -1,4 +1,4 @@
-import { reviews } from "@/lib/data/seed/reviews";
+import { reviews } from "@/lib/data/seed/generate";
 import type { Review } from "@/lib/validation/review.schema";
 import { providers } from "../data/seed/generate";
 

@@ -4,7 +4,7 @@ import { Hero } from "@/components/home/Hero";
 import { HomeCta } from "@/components/home/HomeCta";
 import { HowItWorks } from "@/components/home/HowItWorks";
 import { PopularServices } from "@/components/home/PopularServices";
-import { TrustSection } from "@/components/home/TrustSection";
+import { TrustSection } from "@/components/home/WhyLocalServeSection";
 
 export default function HomePage() {
   return (

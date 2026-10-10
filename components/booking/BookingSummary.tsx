@@ -3,16 +3,13 @@ import { CalendarDays, Clock3 } from "lucide-react";
 
 import type { Provider } from "@/lib/validation/provider.schema";
 import type { Service } from "@/lib/validation/service.schema";
-import MyButton from "../ui/MyButton";
-
-import { useRouter } from "next/navigation";
-import { useBookingStore } from "@/lib/store/booking-store";
 
 type BookingSummaryProps = {
   provider: Provider;
   service: Service;
   selectedDate: string;
   selectedTime: string;
+  className?: string;
 };
 
 export function BookingSummary({
@@ -20,31 +17,10 @@ export function BookingSummary({
   service,
   selectedDate,
   selectedTime,
+  className,
 }: BookingSummaryProps) {
-  const router = useRouter();
-
-  const setAppointment = useBookingStore((state) => state.setAppointment);
-
-  const canContinue =
-    Boolean(selectedDate) && Boolean(selectedTime) && Boolean(service);
-
-  const handleContinue = () => {
-    if (!service || !selectedDate || !selectedTime) {
-      return;
-    }
-
-    setAppointment({
-      providerId: provider.id,
-      serviceId: service.id,
-      date: selectedDate,
-      time: selectedTime,
-    });
-
-    router.push(`/book/${provider.id}/details`);
-  };
-
   return (
-    <aside className="lg:sticky lg:top-24">
+    <aside className={` ${className} `}>
       <Card
         variant="default"
         className="border-border bg-brand-600 border shadow-sm"
@@ -112,16 +88,6 @@ export function BookingSummary({
               €{(service.priceCents / 100).toFixed(0)}
             </span>
           </div>
-
-          <MyButton
-            variant="secondary"
-            onPress={handleContinue}
-            size="lg"
-            className="w-full"
-            isDisabled={!canContinue}
-          >
-            Continue
-          </MyButton>
 
           <p className="text-brand-100 mt-3 text-center text-xs leading-5">
             You will review your details before confirming the booking.

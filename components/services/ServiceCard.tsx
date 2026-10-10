@@ -43,7 +43,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
             </div>
           </div>
 
-          <div className="shrink-0 sm:self-center">
+          <div className="shrink-0 sm:self-end">
             <Link href={`/search?service=${encodeURIComponent(service.title)}`}>
               <MyButton variant="primary" className="w-full sm:w-auto">
                 Find Providers

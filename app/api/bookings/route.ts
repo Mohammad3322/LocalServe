@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 
-import { availability } from "@/lib/data/seed/availability";
+import { availability } from "@/lib/data/seed/generate";
 import {
   BookingResponse,
   createBookingSchema,
 } from "@/lib/validation/booking.schema";
-import { services } from "@/lib/data/seed/services";
+import { services } from "@/lib/data/seed/generate";
 
 import { saveBooking, hasBookingForSlot } from "@/lib/data/mock-bookings";
 
@@ -56,7 +56,8 @@ export async function POST(request: Request) {
     if (!slot || !slot.available) {
       return NextResponse.json(
         {
-          message: "This time slot is no longer available.",
+          message:
+            "This time slot has been cancelled and is no longer available.",
           code: "SLOT_UNAVAILABLE",
         },
         {

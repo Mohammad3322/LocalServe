@@ -1,7 +1,7 @@
 import { searchProviders } from "@/lib/services/search";
-import { locations } from "@/lib/data/seed/locations";
-import { providers } from "@/lib/data/seed/providers";
-import { services } from "@/lib/data/seed/services";
+import { locations } from "@/lib/data/seed/generate";
+import { providers } from "@/lib/data/seed/generate";
+import { services } from "@/lib/data/seed/generate";
 
 describe("searchProviders", () => {
   it("returns the first page of providers when no filters are set", () => {

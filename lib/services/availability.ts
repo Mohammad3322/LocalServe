@@ -1,4 +1,4 @@
-import { availability } from "@/lib/data/seed/availability";
+import { availability } from "@/lib/data/seed/generate";
 import { hasBookingForSlot } from "@/lib/data/mock-bookings";
 import type { AvailabilitySlot } from "@/lib/validation/availability.schema";
 

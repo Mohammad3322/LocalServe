@@ -12,31 +12,31 @@ jest.mock("next/navigation", () => ({
 }));
 
 const provider: Provider = {
-  id: "pro-1",
-  slug: "pro-1",
-  name: "John Smith",
-  headline: "Solar installation & energy solutions",
+  id: "pro-3",
+  slug: "pro-3",
+  name: "Amelia Bernard",
+  headline: "Networks, cabling and smart home technology",
   imageUrl: "/images/providers/solar-tech-pro.jpg",
-  serviceArea: "Paris & nearby areas",
-  rating: 4.9,
-  reviewCount: 128,
+  serviceArea: "Lyon & nearby areas",
+  rating: 4.8,
+  reviewCount: 9,
   verified: true,
-  startingPrice: 850,
+  startingPrice: 870,
   available: true,
   description:
-    "Professional solar energy installation and maintenance services.",
-  experienceYears: 8,
+    "Amelia Bernard is a heating, cooling & renewable energy specialist based in Lyon, serving residential and small business customers for over 16 years. Every job is quoted before work starts and covered by a workmanship guarantee.",
+  experienceYears: 16,
   credentials: [],
   languages: ["English"],
-  servicesIds: ["solar-panel-installation"],
+  servicesIds: ["solar-panel-installation-pro-3-2"],
 };
 
 const withAppointment = () =>
   useBookingStore.setState({
-    providerId: "pro-1",
-    serviceId: "solar-panel-installation",
-    date: "2026-09-28",
-    time: "09:00",
+    providerId: "pro-3",
+    serviceId: "solar-panel-installation-pro-3-2",
+    date: "2026-10-20",
+    time: "09:30",
     customer: undefined,
     hasHydrated: true,
   });
@@ -78,7 +78,7 @@ describe("BookingDetails", () => {
     );
 
     await waitFor(() =>
-      expect(push).toHaveBeenCalledWith("/book/pro-1/review"),
+      expect(push).toHaveBeenCalledWith("/book/pro-3/review"),
     );
     expect(useBookingStore.getState().customer).toMatchObject({
       customerName: "Jane Doe",

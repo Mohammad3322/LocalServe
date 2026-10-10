@@ -16,9 +16,9 @@ jest.mock("next/navigation", () => ({
 }));
 
 const provider: Provider = {
-  id: "pro-1",
-  slug: "pro-1",
-  name: "John Smith",
+  id: "pro-3",
+  slug: "pro-3",
+  name: "Amelia Bernard",
   headline: "Solar installation & energy solutions",
   imageUrl: "/images/providers/solar-tech-pro.jpg",
   serviceArea: "Paris & nearby areas",
@@ -32,7 +32,7 @@ const provider: Provider = {
   experienceYears: 8,
   credentials: [],
   languages: ["English"],
-  servicesIds: ["solar-panel-installation"],
+  servicesIds: ["solar-panel-installation-pro-3-2"],
 };
 
 const calendarDay = (day: number) => {
@@ -51,7 +51,7 @@ const renderStep = async () => {
   render(
     <BookingDateTime
       provider={provider}
-      selectedServiceId="solar-panel-installation"
+      selectedServiceId="solar-panel-installation-pro-3-2"
     />,
   );
 
@@ -68,10 +68,10 @@ beforeEach(() => {
   getAvailability.mockResolvedValue([
     {
       id: "slot-1",
-      providerId: "pro-1",
+      providerId: "pro-3",
       serviceId: "solar-panel-installation",
-      date: "2026-09-28",
-      time: "09:00",
+      date: "2026-10-20",
+      time: "14:00",
       available: true,
     },
   ]);
@@ -82,21 +82,19 @@ describe("BookingDateTime", () => {
     const user = userEvent.setup();
     await renderStep();
 
-    const day = calendarDay(28);
+    const day = calendarDay(20);
     await user.click(day);
 
     expect(
       screen.getByRole("heading", { name: "Available Times" }),
     ).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "09:00" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "14:00" })).toBeInTheDocument();
   });
 
   it("shows a recoverable message when availability cannot be loaded", async () => {
     getAvailability.mockRejectedValue(new Error("network down"));
     await renderStep();
 
-    expect(
-      screen.getByText("Availability unavailable"),
-    ).toBeInTheDocument();
+    expect(screen.getByText("Availability unavailable")).toBeInTheDocument();
   });
 });

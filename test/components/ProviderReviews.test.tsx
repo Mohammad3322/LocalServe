@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 // import {  within } from "@testing-library/react";
 
 import { ProviderReviews } from "@/components/providers/ProviderReviews";
-import { reviews as seededReviews } from "@/lib/data/seed/reviews";
+import { reviews as seededReviews } from "@/lib/data/seed/generate";
 import { getTotalRatingByProviderId } from "@/lib/services/reviews";
 
 const providerWithReviews = (() => {

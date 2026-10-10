@@ -1,4 +1,4 @@
-import { providers } from "@/lib/data/seed/providers";
+import { providers } from "@/lib/data/seed/generate";
 import type { Provider } from "@/lib/validation/provider.schema";
 
 export function getProviderBySlug(slug: string): Provider | undefined {
