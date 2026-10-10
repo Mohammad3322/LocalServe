@@ -29,12 +29,12 @@ export default function NotFound() {
         </p>
 
         <h1 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-          Page not found
+          This Provider not found
         </h1>
 
         <p className="mx-auto mt-4 max-w-md text-base leading-7 text-slate-600">
-          Sorry, we couldn&apos;t find the page you&apos;re looking for. It may
-          have been moved or the link may be incorrect.
+          Sorry, we couldn&apos;t find this provider you&apos;re looking for. It
+          may have been removed or the link may be incorrect.
         </p>
 
         <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
@@ -42,8 +42,8 @@ export default function NotFound() {
             <MyButton variant="primary">Back to Home</MyButton>
           </Link>
 
-          <Link href="/services">
-            <MyButton variant="secondary">Explore Services</MyButton>
+          <Link href="/search">
+            <MyButton variant="secondary">Search Providers</MyButton>
           </Link>
         </div>
       </div>

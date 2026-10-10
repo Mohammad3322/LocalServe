@@ -1,5 +1,5 @@
 import { saveBooking } from "@/lib/data/mock-bookings";
-import { availability } from "@/lib/data/seed/availability";
+import { availability } from "@/lib/data/seed/generate";
 import { getProviderAvailability } from "@/lib/services/availability";
 import type { BookingResponse } from "@/lib/validation/booking.schema";
 

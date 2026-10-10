@@ -15,12 +15,13 @@ export function TimeSlot({
       onClick={onSelect}
       disabled={!available}
       className={[
-        "rounded-xl border px-4 py-3 text-sm font-medium transition",
+        "w-32 rounded-xl border px-4 py-3 text-sm font-medium transition",
+        "hover:bg-brand-500 hover:text-surface",
         !available
-          ? "border-border bg-background text-text-secondary cursor-not-allowed opacity-60"
+          ? "border-border bg-muted text-text-secondary cursor-not-allowed opacity-60"
           : selected
-            ? "border-brand-500 bg-brand-50 text-brand-700 ring-brand-500 ring-1"
-            : "border-border bg-background text-text-primary hover:border-brand-300",
+            ? "border-brand-600 bg-brand-600 text-surface ring-brand-500 ring-1"
+            : "border-brand-500 bg-background text-brand-700 hover:border-brand-300",
       ].join(" ")}
     >
       {time}

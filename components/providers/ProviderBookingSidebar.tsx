@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Card } from "@heroui/react";
 import { CalendarDays, Clock3 } from "lucide-react";
 
-import { services } from "@/lib/data/seed/services";
+import { services } from "@/lib/data/seed/generate";
 import type { Provider } from "@/lib/validation/provider.schema";
 import MyButton from "../ui/MyButton";
 

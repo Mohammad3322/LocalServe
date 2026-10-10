@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Card } from "@heroui/react";
-import { ArrowRight, CalendarDays, Clock3 } from "lucide-react";
+// import { Card } from "@heroui/react";
+import { CalendarDays } from "lucide-react";
 
 import { getProviderAvailability } from "@/lib/services/availability";
 import MyButton from "../ui/MyButton";
@@ -9,13 +9,13 @@ type ProviderAvailabilityProps = {
   providerId: string;
 };
 
-function formatDate(date: string) {
-  return new Date(`${date}T00:00:00`).toLocaleDateString("en", {
-    weekday: "short",
-    month: "short",
-    day: "numeric",
-  });
-}
+// function formatDate(date: string) {
+//   return new Date(`${date}T00:00:00`).toLocaleDateString("en", {
+//     weekday: "short",
+//     month: "short",
+//     day: "numeric",
+//   });
+// }
 
 export function ProviderAvailability({
   providerId,
@@ -35,15 +35,18 @@ export function ProviderAvailability({
             Availability
           </h2>
 
-          <p className="text-text-secondary mt-2 text-sm">
+          {/* <p className="text-text-secondary mt-2 text-sm">
             Preview the next available appointment times.
-          </p>
+          </p> */}
         </div>
 
         {hasAvailableSlots ? (
           <>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              {availableSlots.map((slot) => (
+              <p className="text-text-secondary mt-2 text-sm">
+                This Provider has available appointment times.
+              </p>
+              {/* {availableSlots.map((slot) => (
                 <Card
                   key={slot.id}
                   variant="default"
@@ -68,17 +71,17 @@ export function ProviderAvailability({
                     </div>
                   </Card.Content>
                 </Card>
-              ))}
+              ))} */}
             </div>
 
-            <div className="mt-6">
+            {/* <div className="mt-6">
               <Link href={`/book/${providerId}`}>
                 <MyButton variant="secondary" size="lg">
                   View Full Availability
                   <ArrowRight className="size-4" />
                 </MyButton>
               </Link>
-            </div>
+            </div> */}
           </>
         ) : (
           <div className="border-border bg-surface mt-6 rounded-xl border p-8 text-center">

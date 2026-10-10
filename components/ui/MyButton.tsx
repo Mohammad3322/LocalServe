@@ -16,7 +16,10 @@ function MyButton({
       : "bg-brand-500 text-surface  hover:bg-brand-700 ";
 
   return (
-    <Button className={`${variantStyles} ${className} shadow-2xl`} {...props}>
+    <Button
+      className={`${variantStyles} ${className} rounded-md shadow-2xl transition-colors`}
+      {...props}
+    >
       {children}
     </Button>
   );
