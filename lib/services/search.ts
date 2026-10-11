@@ -1,5 +1,4 @@
-import { providers } from "@/lib/data/seed/generate";
-import { services } from "@/lib/data/seed/generate";
+import { providers, services } from "@/lib/data/seed/generate";
 import type { Provider } from "@/lib/validation/provider.schema";
 import type { SearchParams } from "@/lib/validation/search.schema";
 
@@ -13,63 +12,64 @@ export type SearchResult = {
   totalPages: number;
 };
 
+function getMatchingServiceIds(params: SearchParams): Set<string> {
+  const matched = services.filter((service) => {
+    // Filter by Service (title)
+    if (params.service) {
+      if (!service.title.toLowerCase().includes(params.service)) {
+        return false;
+      }
+    }
+
+    // Filter by Category
+    if (params.category) {
+      if (service.category !== params.category) {
+        return false;
+      }
+    }
+
+    // Filter by Price
+    if (params.price) {
+      const { min, max } = params.price;
+      const priceInDollars = service.priceCents / 100;
+
+      if (priceInDollars < min || priceInDollars > max) {
+        return false;
+      }
+    }
+
+    return true;
+  });
+
+  return new Set(matched.map((service) => service.id));
+}
+
+// Search Providers
 export function searchProviders(params: SearchParams): SearchResult {
   let results = [...providers];
 
-  // Filter by location
+  //  Filter by Service + Category + Price
+  if (params.service || params.category || params.price) {
+    const matchingServiceIds = getMatchingServiceIds(params);
+
+    results = results.filter((provider) =>
+      provider.servicesIds.some((id) => matchingServiceIds.has(id)),
+    );
+  }
+
+  // Filter by Location
   if (params.location) {
-    const providerIds = new Set(
-      providers
-        .filter((provider) =>
-          provider.serviceArea
-            .toLowerCase()
-            .includes(String(params.location).toLowerCase()),
-        )
-        .map((provider) => provider.id),
+    results = results.filter((provider) =>
+      provider.serviceArea.toLowerCase().includes(params.location!),
     );
-    results = results.filter((provider) => providerIds.has(provider.id));
   }
 
-  // Filter by Servics
-  if (params.service) {
-    const filterdServicesIds = services
-      .filter((service) =>
-        service.title
-          .toLowerCase()
-          .includes(String(params.service).toLowerCase()),
-      )
-      .map((service) => service.id);
-
-    const providerIds = new Set(
-      providers
-        .filter((provider) =>
-          provider.servicesIds.some((item) =>
-            filterdServicesIds.includes(item),
-          ),
-        )
-        .map((provider) => provider.id),
-    );
-
-    results = results.filter((provider) => providerIds.has(provider.id));
-  }
-
-  // Filter by category
-  if (params.category) {
-    const providerIds = new Set(
-      services
-        .filter((service) => service.category === params.category)
-        .map((service) => service.providerId),
-    );
-
-    results = results.filter((provider) => providerIds.has(provider.id));
-  }
-
-  // Filter by rating
+  // Filter by Rating
   if (params.rating) {
     results = results.filter((provider) => provider.rating >= params.rating!);
   }
 
-  // Filter by availability
+  // Filter by Availability-
   if (params.availability === "true") {
     results = results.filter((provider) => provider.available);
   }
@@ -93,6 +93,7 @@ export function searchProviders(params: SearchParams): SearchResult {
       break;
   }
 
+  // Pagination
   const total = results.length;
   const page = params.page;
   const totalPages = Math.ceil(total / PAGE_SIZE);

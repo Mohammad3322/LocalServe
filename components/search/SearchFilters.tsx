@@ -4,21 +4,7 @@ import type { Key } from "@heroui/react";
 import { Checkbox, Label, ListBox, Select } from "@heroui/react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import MyButton from "../ui/MyButton";
-
-const categories = [
-  {
-    id: "solar-energy",
-    label: "Solar Energy",
-  },
-  {
-    id: "security-surveillance",
-    label: "Security & Surveillance",
-  },
-  {
-    id: "electronic-services",
-    label: "Electronic Services",
-  },
-];
+import { serviceCategories } from "@/lib/data/seed/categories";
 
 const ratings = [
   {
@@ -34,14 +20,27 @@ const ratings = [
     label: "3+ stars",
   },
 ];
+const prices = [
+  { min: "0", max: "200", label: "$0 - $200" },
+  { min: "200", max: "400", label: "$200 - $400" },
+  { min: "400", max: "600", label: "$400 - $600" },
+  { min: "600", max: "800", label: "$600 - $800" },
+  { min: "800", max: "1000", label: "$800 - $1000" },
+  { min: "1000", max: "1200", label: "$1000 - $1200" },
+  { min: "1200", max: "1400", label: "$1200 - $1400" },
+  { min: "1400", max: "1600", label: "$1400 - $1600" },
+  { min: "1600", max: "1800", label: "$1600 - $1800" },
+  { min: "1800", max: "2000", label: "$1800 - $2000" },
+];
 
 export function SearchFilters() {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const selectedService = searchParams.get("category") ?? "";
+  const selectedCategory = searchParams.get("category") ?? "";
   const selectedRating = searchParams.get("rating") ?? "";
+  const selectedPrice = searchParams.get("price") ?? "";
 
   const availability = searchParams.get("availability") === "true";
 
@@ -56,7 +55,7 @@ export function SearchFilters() {
 
     params.set("page", "1");
 
-    router.push(`${pathname}?${params.toString()}`);
+    router.push(`${pathname}?${params.toString()}#searchResults`);
   }
 
   function clearFilters() {
@@ -64,6 +63,7 @@ export function SearchFilters() {
 
     params.delete("category");
     params.delete("rating");
+    params.delete("price");
     params.delete("availability");
 
     params.set("page", "1");
@@ -88,12 +88,12 @@ export function SearchFilters() {
           </MyButton>
         </div>
 
-        <div className="my-6 flex w-full gap-5">
+        <div className="my-6 flex w-full flex-col gap-5 sm:flex-row">
           {/* Service */}
           <Select
             className="h-full w-full"
             placeholder="All services"
-            value={selectedService || null}
+            value={selectedCategory || null}
             onChange={(value) => updateParam("category", value)}
           >
             <Label>Category</Label>
@@ -105,13 +105,13 @@ export function SearchFilters() {
 
             <Select.Popover>
               <ListBox>
-                {categories.map((category) => (
+                {serviceCategories.map((category) => (
                   <ListBox.Item
                     key={category.id}
                     id={category.id}
-                    textValue={category.label}
+                    textValue={category.title}
                   >
-                    <Label>{category.label}</Label>
+                    <Label>{category.title}</Label>
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
                 ))}
@@ -142,6 +142,36 @@ export function SearchFilters() {
                     textValue={rating.label}
                   >
                     <Label>{rating.label}</Label>
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+
+          {/* Price */}
+          <Select
+            className="h-full w-full"
+            placeholder="Any price"
+            value={selectedPrice || null}
+            onChange={(value) => updateParam("price", value)}
+          >
+            <Label>Price</Label>
+
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+
+            <Select.Popover>
+              <ListBox>
+                {prices.map((price) => (
+                  <ListBox.Item
+                    key={price.max}
+                    id={`${price.min}-${price.max}`}
+                    textValue={price.label}
+                  >
+                    <Label>{price.label}</Label>
                     <ListBox.ItemIndicator />
                   </ListBox.Item>
                 ))}

@@ -41,6 +41,8 @@ export function SearchResults() {
 
     rating: searchParams.get("rating") ?? undefined,
 
+    price: searchParams.get("price") ?? undefined,
+
     availability: searchParams.get("availability") ?? undefined,
 
     sort: searchParams.get("sort") ?? "rating",
@@ -50,7 +52,7 @@ export function SearchResults() {
 
   const searchResult = searchProviders(params);
 
-  const selectedSort = params.sort ?? "rating";
+  const selectedSort = params.sort;
 
   function updateSort(value: string | number | null) {
     const nextParams = new URLSearchParams(searchParams.toString());
@@ -63,7 +65,7 @@ export function SearchResults() {
 
     nextParams.set("page", "1");
 
-    router.push(`${pathname}?${nextParams.toString()}`);
+    router.push(`${pathname}?${nextParams.toString()}#searchResults`);
   }
 
   // console.log(pathname);

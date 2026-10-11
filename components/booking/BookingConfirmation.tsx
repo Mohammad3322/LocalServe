@@ -18,6 +18,7 @@ import MyButton from "../ui/MyButton";
 import { getBookingById } from "@/lib/api/bookings";
 import { getProviderSlug } from "@/lib/services/providers";
 import { useBookingStore } from "@/lib/store/booking-store";
+import { InfoItem } from "../ui/InfoItem";
 
 type BookingConfirmationProps = {
   bookingId: string;
@@ -281,32 +282,6 @@ export function BookingConfirmation({
             </MyButton>
           </Link>
         </div>
-      </div>
-    </div>
-  );
-}
-
-type InfoItemProps = {
-  icon: React.ReactNode;
-  label: string;
-  value: string;
-};
-
-function InfoItem({ icon, label, value }: InfoItemProps) {
-  return (
-    <div className="flex items-start gap-3">
-      <div className="bg-brand-50 text-brand-600 flex size-9 shrink-0 items-center justify-center rounded-full">
-        {icon}
-      </div>
-
-      <div className="min-w-0">
-        <p className="text-text-secondary text-xs font-medium tracking-wide uppercase">
-          {label}
-        </p>
-
-        <p className="text-text-primary mt-1 text-sm font-medium wrap-break-word">
-          {value}
-        </p>
       </div>
     </div>
   );
