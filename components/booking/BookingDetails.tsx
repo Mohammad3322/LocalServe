@@ -23,8 +23,7 @@ type BookingDetailsProps = {
 export function BookingDetails({ provider }: BookingDetailsProps) {
   const router = useRouter();
 
-  const { serviceId, date, time, customer, hasHydrated, setCustomer } =
-    useBookingStore();
+  const { serviceId, date, time, customer, setCustomer } = useBookingStore();
 
   const [customerName, setCustomerName] = useState(
     customer?.customerName ?? "",
@@ -45,29 +44,6 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
   const selectedService = services.find(
     (service) => service.id === serviceId && service.providerId === provider.id,
   );
-
-  if (!hasHydrated) {
-    return (
-      <main className="bg-background min-h-screen">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <BookingProgress currentStep={3} />
-
-          <div className="mx-auto mt-8 max-w-2xl">
-            <Card
-              variant="default"
-              className="border-border bg-surface border shadow-sm"
-            >
-              <Card.Content className="p-6 text-center sm:p-8">
-                <p className="text-text-secondary text-sm">
-                  Loading booking information...
-                </p>
-              </Card.Content>
-            </Card>
-          </div>
-        </div>
-      </main>
-    );
-  }
 
   if (!selectedService || !date || !time) {
     return (
@@ -117,16 +93,12 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
     });
 
     if (!result.success) {
-      console.log("!result.success");
-
       const fieldErrors: Record<string, string> = {};
 
       for (const issue of result.error.issues) {
         const field = issue.path[0];
 
         if (typeof field === "string" && !fieldErrors[field]) {
-          console.log("typeof field === string && !fieldErrors[field]");
-
           fieldErrors[field] = issue.message;
         }
       }
@@ -139,7 +111,6 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
     setErrors({});
 
     router.push(`/book/${provider.id}/review`);
-    console.log("customerDetails handleSubmit done");
   };
 
   const backUrl = `/book/${provider.id}?service=${serviceId}`;
@@ -170,7 +141,7 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
             >
               <Card.Content className="p-5 sm:p-6">
                 <div className="space-y-6">
-                  <div className="">
+                  <div>
                     <Label
                       htmlFor="customerName"
                       className="text-text-primary mb-2 block text-sm font-medium"

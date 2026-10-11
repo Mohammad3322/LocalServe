@@ -35,9 +35,9 @@ type BookingState = "idle" | "submitting" | "slot-unavailable" | "error";
 
 export function BookingReview({ provider }: BookingReviewProps) {
   const router = useRouter();
-  const { serviceId, date, time, customer, hasHydrated } = useBookingStore();
 
-  // const clearBooking = useBookingStore((state) => state.clearBooking);
+  const { serviceId, date, time, customer, setConfirmedBooking } =
+    useBookingStore();
 
   const [bookingState, setBookingState] = useState<BookingState>("idle");
 
@@ -51,60 +51,29 @@ export function BookingReview({ provider }: BookingReviewProps) {
   const notes = customer?.notes;
 
   useEffect(() => {
-    if (!hasHydrated) {
-      return;
-    }
-
     if (!serviceId || !date || !time || !customer) {
-      // console.log("useEffect: !serviceId || !date || !time || !customer");
       router.replace(`/book/${provider.id}`);
       return;
     }
 
     if (!selectedService) {
-      // console.log("useEffect: !selectedService");
       router.replace(`/book/${provider.id}`);
     }
-  }, [
-    hasHydrated,
-    serviceId,
-    date,
-    time,
-    customer,
-    selectedService,
-    provider.id,
-    router,
-  ]);
-
-  if (!hasHydrated) {
-    return (
-      <main className="bg-background min-h-screen">
-        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <p className="text-text-secondary text-sm">
-            Loading booking information...
-          </p>
-        </div>
-      </main>
-    );
-  }
+  }, [serviceId, date, time, customer, selectedService, provider.id, router]);
 
   if (!serviceId) {
-    // console.log("BookingReview: !serviceId ");
     return null;
   }
 
   if (!date || !time) {
-    // console.log("BookingReview:  !date || !time");
     return null;
   }
 
   if (!customer) {
-    // console.log("BookingReview:!customer");
     return null;
   }
 
   if (!selectedService) {
-    // console.log("!selectedService");
     return null;
   }
 
@@ -126,12 +95,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
         notes: notes || undefined,
       });
 
-      sessionStorage.setItem(
-        `localserve:booking:${booking.id}`,
-        JSON.stringify(booking),
-      );
-
-      // clearBooking();
+      setConfirmedBooking(booking);
 
       router.push(
         `/booking/confirmation/${booking.id}` +

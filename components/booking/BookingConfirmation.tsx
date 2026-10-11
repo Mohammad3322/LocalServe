@@ -32,33 +32,32 @@ export function BookingConfirmation({
 }: BookingConfirmationProps) {
   const clearBooking = useBookingStore((state) => state.clearBooking);
 
-  const [booking, setBooking] = useState<BookingResponse | null>(null);
+  const confirmedBooking = useBookingStore((state) => state.confirmedBooking);
 
-  const [state, setState] = useState<ConfirmationState>("loading");
+  const [fetchedBooking, setFetchedBooking] = useState<BookingResponse | null>(
+    null,
+  );
+
+  const [fetchState, setFetchState] = useState<
+    "idle" | "loading" | "success" | "error"
+  >(confirmedBooking ? "success" : "loading");
+
+  const booking = confirmedBooking ?? fetchedBooking;
+
+  const state: ConfirmationState = booking
+    ? "success"
+    : fetchState === "error"
+      ? "connection-lost"
+      : "loading";
 
   useEffect(() => {
+    if (confirmedBooking) {
+      return;
+    }
+
     let cancelled = false;
 
     const loadBooking = async () => {
-      try {
-        const storedBooking = sessionStorage.getItem(
-          `localserve:booking:${bookingId}`,
-        );
-
-        if (storedBooking) {
-          const parsedBooking = JSON.parse(storedBooking) as BookingResponse;
-
-          if (!cancelled) {
-            setBooking(parsedBooking);
-            setState("success");
-          }
-
-          return;
-        }
-      } catch {
-        // Continue with API recovery.
-      }
-
       try {
         const recoveredBooking = await getBookingById(bookingId);
 
@@ -66,16 +65,11 @@ export function BookingConfirmation({
           return;
         }
 
-        sessionStorage.setItem(
-          `localserve:booking:${bookingId}`,
-          JSON.stringify(recoveredBooking),
-        );
-
-        setBooking(recoveredBooking);
-        setState("success");
+        setFetchedBooking(recoveredBooking);
+        setFetchState("success");
       } catch {
         if (!cancelled) {
-          setState("connection-lost");
+          setFetchState("error");
         }
       }
     };
@@ -85,7 +79,7 @@ export function BookingConfirmation({
     return () => {
       cancelled = true;
     };
-  }, [bookingId]);
+  }, [bookingId, confirmedBooking]);
 
   if (state === "loading") {
     return (
@@ -185,111 +179,109 @@ export function BookingConfirmation({
         </p>
       </div>
 
-      {booking && (
-        <div className="mt-10 space-y-5">
-          <Card
-            variant="default"
-            className="border-border bg-surface border shadow-sm"
-          >
-            <Card.Content className="p-5 sm:p-6">
-              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-text-secondary text-xs font-medium tracking-wide uppercase">
-                    Booking Reference
-                  </p>
+      <div className="mt-10 space-y-5">
+        <Card
+          variant="default"
+          className="border-border bg-surface border shadow-sm"
+        >
+          <Card.Content className="p-5 sm:p-6">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-text-secondary text-xs font-medium tracking-wide uppercase">
+                  Booking Reference
+                </p>
 
-                  <p className="text-text-primary mt-1 text-lg font-semibold">
-                    {booking.reference}
-                  </p>
-                </div>
-
-                <span className="bg-brand-50 text-brand-700 inline-flex w-fit rounded-full px-3 py-1 text-xs font-medium">
-                  Confirmed
-                </span>
+                <p className="text-text-primary mt-1 text-lg font-semibold">
+                  {booking.reference}
+                </p>
               </div>
-            </Card.Content>
-          </Card>
 
-          <Card
-            variant="default"
-            className="border-border bg-surface border shadow-sm"
-          >
-            <Card.Content className="p-5 sm:p-6">
-              <h2 className="text-text-primary text-lg font-semibold">
-                Appointment Details
-              </h2>
+              <span className="bg-brand-50 text-brand-700 inline-flex w-fit rounded-full px-3 py-1 text-xs font-medium">
+                Confirmed
+              </span>
+            </div>
+          </Card.Content>
+        </Card>
 
-              <div className="mt-5 grid gap-5 sm:grid-cols-2">
-                <InfoItem
-                  icon={<CalendarDays className="size-4" />}
-                  label="Date"
-                  value={formatBookingDate(booking.date)}
-                />
+        <Card
+          variant="default"
+          className="border-border bg-surface border shadow-sm"
+        >
+          <Card.Content className="p-5 sm:p-6">
+            <h2 className="text-text-primary text-lg font-semibold">
+              Appointment Details
+            </h2>
 
-                <InfoItem
-                  icon={<Clock3 className="size-4" />}
-                  label="Time"
-                  value={formatBookingTime(booking.time)}
-                />
-              </div>
-            </Card.Content>
-          </Card>
+            <div className="mt-5 grid gap-5 sm:grid-cols-2">
+              <InfoItem
+                icon={<CalendarDays className="size-4" />}
+                label="Date"
+                value={formatBookingDate(booking.date)}
+              />
 
-          <Card
-            variant="default"
-            className="border-border bg-surface border shadow-sm"
-          >
-            <Card.Content className="p-5 sm:p-6">
-              <h2 className="text-text-primary text-lg font-semibold">
-                Your Information
-              </h2>
+              <InfoItem
+                icon={<Clock3 className="size-4" />}
+                label="Time"
+                value={formatBookingTime(booking.time)}
+              />
+            </div>
+          </Card.Content>
+        </Card>
 
-              <div className="mt-5 space-y-5">
-                <InfoItem
-                  icon={<User className="size-4" />}
-                  label="Full Name"
-                  value={booking.customerName}
-                />
+        <Card
+          variant="default"
+          className="border-border bg-surface border shadow-sm"
+        >
+          <Card.Content className="p-5 sm:p-6">
+            <h2 className="text-text-primary text-lg font-semibold">
+              Your Information
+            </h2>
 
-                <InfoItem
-                  icon={<Mail className="size-4" />}
-                  label="Email"
-                  value={booking.customerEmail}
-                />
-              </div>
-            </Card.Content>
-          </Card>
+            <div className="mt-5 space-y-5">
+              <InfoItem
+                icon={<User className="size-4" />}
+                label="Full Name"
+                value={booking.customerName}
+              />
 
-          <div className="bg-brand-50 rounded-xl p-4">
-            <p className="text-brand-700 text-sm leading-6">
-              A confirmation email will be sent to{" "}
-              <strong>{booking.customerEmail}</strong>.
-            </p>
-          </div>
+              <InfoItem
+                icon={<Mail className="size-4" />}
+                label="Email"
+                value={booking.customerEmail}
+              />
+            </div>
+          </Card.Content>
+        </Card>
 
-          <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-center">
-            <Link href={`/providers/${getProviderSlug(booking.providerId)}`}>
-              <MyButton
-                variant="secondary"
-                onClick={handleClick}
-                className="w-full sm:w-auto"
-              >
-                View Provider
-              </MyButton>
-            </Link>
-
-            <Link href="/">
-              <MyButton
-                variant="primary"
-                onClick={handleClick}
-                className="w-full sm:w-auto"
-              >
-                Back to Home
-              </MyButton>
-            </Link>
-          </div>
+        <div className="bg-brand-50 rounded-xl p-4">
+          <p className="text-brand-700 text-sm leading-6">
+            A confirmation email will be sent to{" "}
+            <strong>{booking.customerEmail}</strong>.
+          </p>
         </div>
-      )}
+
+        <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-center">
+          <Link href={`/providers/${getProviderSlug(booking.providerId)}`}>
+            <MyButton
+              variant="secondary"
+              onClick={handleClick}
+              className="w-full sm:w-auto"
+            >
+              View Provider
+            </MyButton>
+          </Link>
+
+          <Link href="/">
+            <MyButton
+              variant="primary"
+              onClick={handleClick}
+              className="w-full sm:w-auto"
+            >
+              Back to Home
+            </MyButton>
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
