@@ -347,16 +347,17 @@ export function BookingReview({ provider }: BookingReviewProps) {
             )}
 
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-center lg:m-10 lg:gap-10">
-              <Link href={`/book/${provider.id}/details`}>
-                <MyButton
-                  variant="secondary"
-                  className="w-full sm:w-auto"
-                  size="lg"
-                  isDisabled={bookingState === "submitting"}
-                >
-                  Back
-                </MyButton>
-              </Link>
+              <MyButton
+                variant="secondary"
+                className="w-full sm:w-auto"
+                size="lg"
+                onPress={() => {
+                  router.push(`/book/${provider.id}/details`);
+                }}
+                isDisabled={bookingState === "submitting"}
+              >
+                Back
+              </MyButton>
 
               <MyButton
                 variant="primary"
