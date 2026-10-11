@@ -1,6 +1,10 @@
 import { test } from "@playwright/test";
 
-test.use({ viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true });
+test.use({
+  viewport: { width: 390, height: 844 },
+  hasTouch: true,
+  isMobile: true,
+});
 
 test("find root cause of overflow on /search", async ({ page }) => {
   await page.goto("/search");
@@ -18,7 +22,9 @@ test("find root cause of overflow on /search", async ({ page }) => {
     const roots = all.filter(
       (el) =>
         overflows(el) &&
-        !Array.from(el.children).some((child) => overflows(child as HTMLElement)),
+        !Array.from(el.children).some((child) =>
+          overflows(child as HTMLElement),
+        ),
     );
 
     return roots.slice(0, 15).map((el) => {

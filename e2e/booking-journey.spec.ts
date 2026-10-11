@@ -5,7 +5,7 @@ const pickComboBox = async (
   index: number,
   value: string,
 ) => {
-  const input = page.locator("form input").nth(index);
+  const input = page.locator("input").nth(index);
 
   await input.click();
   await input.fill(value);

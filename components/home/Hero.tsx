@@ -29,8 +29,8 @@ export function Hero() {
             </h1>
 
             <p className="text-brand-50 mx-auto mt-6 max-w-2xl text-base leading-7 sm:text-lg">
-              Discover local professionals, compare their services, and book the
-              right appointment for your needs.
+              Discover local professionals, compare their services, <br></br>
+              and book the right appointment for your needs.
             </p>
           </div>
 

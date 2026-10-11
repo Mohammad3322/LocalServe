@@ -4,17 +4,17 @@ type BookingTarget = { providerId: string; serviceId: string };
 
 const BOOKED: BookingTarget = {
   providerId: "pro-4",
-  serviceId: "solar-panel-installation-2",
+  serviceId: "smart-home-pro-4-1",
 };
 
 const CONFLICT_A: BookingTarget = {
   providerId: "pro-2",
-  serviceId: "cctv-installation",
+  serviceId: "cctv-installation-pro-2-1",
 };
 
 const CONFLICT_B: BookingTarget = {
   providerId: "pro-5",
-  serviceId: "cctv-installation-2",
+  serviceId: "electrician-pro-5-1",
 };
 
 const reachReviewStep = async (

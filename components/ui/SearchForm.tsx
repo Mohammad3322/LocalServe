@@ -53,7 +53,7 @@ function SearchForm({
         className="bg-brand-600 border-surface text-surface min-h-10 justify-self-center rounded-4xl! border"
       >
         <Search className="size-5" />
-        <p className="font-semibold">Search</p>
+        <p className="font-semibold">Search for providers</p>
       </MyButton>
     </>
   );

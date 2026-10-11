@@ -17,6 +17,7 @@ import MyButton from "../ui/MyButton";
 
 import { getBookingById } from "@/lib/api/bookings";
 import { getProviderSlug } from "@/lib/services/providers";
+import { useBookingStore } from "@/lib/store/booking-store";
 
 type BookingConfirmationProps = {
   bookingId: string;
@@ -29,6 +30,8 @@ export function BookingConfirmation({
   bookingId,
   reference,
 }: BookingConfirmationProps) {
+  const clearBooking = useBookingStore((state) => state.clearBooking);
+
   const [booking, setBooking] = useState<BookingResponse | null>(null);
 
   const [state, setState] = useState<ConfirmationState>("loading");
@@ -157,6 +160,10 @@ export function BookingConfirmation({
     return null;
   }
 
+  function handleClick() {
+    clearBooking();
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 lg:px-8">
       <div className="text-center">
@@ -262,13 +269,21 @@ export function BookingConfirmation({
 
           <div className="flex flex-col gap-3 pt-2 sm:flex-row sm:justify-center">
             <Link href={`/providers/${getProviderSlug(booking.providerId)}`}>
-              <MyButton variant="secondary" className="w-full sm:w-auto">
+              <MyButton
+                variant="secondary"
+                onClick={handleClick}
+                className="w-full sm:w-auto"
+              >
                 View Provider
               </MyButton>
             </Link>
 
             <Link href="/">
-              <MyButton variant="primary" className="w-full sm:w-auto">
+              <MyButton
+                variant="primary"
+                onClick={handleClick}
+                className="w-full sm:w-auto"
+              >
                 Back to Home
               </MyButton>
             </Link>

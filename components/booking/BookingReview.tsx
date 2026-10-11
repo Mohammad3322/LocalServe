@@ -44,6 +44,12 @@ export function BookingReview({ provider }: BookingReviewProps) {
   const selectedService = services.find(
     (service) => service.id === serviceId && service.providerId === provider.id,
   );
+
+  const customerName = customer?.customerName;
+  const customerEmail = customer?.customerEmail;
+  const customerPhone = customer?.customerPhone;
+  const notes = customer?.notes;
+
   useEffect(() => {
     if (!hasHydrated) {
       return;
@@ -69,6 +75,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
     provider.id,
     router,
   ]);
+
   if (!hasHydrated) {
     return (
       <main className="bg-background min-h-screen">
@@ -81,26 +88,23 @@ export function BookingReview({ provider }: BookingReviewProps) {
     );
   }
 
-  const customerName = customer?.customerName;
-  const customerEmail = customer?.customerEmail;
-  const customerPhone = customer?.customerPhone;
-  const notes = customer?.notes;
-
   if (!serviceId) {
-    console.log("BookingReview: !serviceId ");
+    // console.log("BookingReview: !serviceId ");
     return null;
   }
+
   if (!date || !time) {
-    console.log("BookingReview:  !date || !time");
+    // console.log("BookingReview:  !date || !time");
     return null;
   }
+
   if (!customer) {
-    console.log("BookingReview:!customer");
+    // console.log("BookingReview:!customer");
     return null;
   }
 
   if (!selectedService) {
-    console.log("!selectedService");
+    // console.log("!selectedService");
     return null;
   }
 

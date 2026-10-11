@@ -36,11 +36,16 @@ function SearchInput({
           className={`text-surface mb-2 flex items-end justify-end gap-2 text-${labelSize ?? "sm"} font-medium`}
         >
           {icon === "location" ? (
-            <MapPinSearch size={20} />
+            <>
+              <MapPinSearch size={20} />
+              <p className="min-w-40 text-start">{label}</p>
+            </>
           ) : (
-            <DatabaseSearch size={28} />
+            <>
+              <DatabaseSearch size={28} />
+              <p className="min-w-60 text-start">{label}</p>
+            </>
           )}
-          <p>{label}</p>
         </Label>
 
         <ComboBox.InputGroup>

@@ -25,5 +25,10 @@ export default async function BookingRoute({
     notFound();
   }
 
-  return <BookingPage provider={provider} selectedServiceId={service} />;
+  const validServiceId =
+    service && provider.servicesIds?.some((sId) => sId === service)
+      ? service
+      : undefined;
+
+  return <BookingPage provider={provider} selectedServiceId={validServiceId} />;
 }
