@@ -33,7 +33,7 @@ export function ServicesHero() {
             business needs.
           </p>
 
-          <div className="mx-auto mt-8 flex max-w-xl flex-col items-end justify-center gap-3 sm:flex-row">
+          <div className="mx-auto mt-8 flex max-w-xl flex-col items-center justify-center gap-3 sm:flex-row">
             <SearchInput
               label="What service do you need?"
               List={servicesSet}
