@@ -38,7 +38,6 @@ const withAppointment = () =>
     date: "2026-10-20",
     time: "09:30",
     customer: undefined,
-    hasHydrated: true,
   });
 
 beforeEach(() => {
