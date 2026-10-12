@@ -1,11 +1,17 @@
 import { providers, services } from "@/lib/data/seed/generate";
 import type { Provider } from "@/lib/validation/provider.schema";
 import type { SearchParams } from "@/lib/validation/search.schema";
+import { Service } from "../validation/service.schema";
 
 const PAGE_SIZE = 6;
 
+export type SearchResultItem = {
+  provider: Provider;
+  matchedService: Service;
+};
+
 export type SearchResult = {
-  items: Provider[];
+  items: SearchResultItem[];
   total: number;
   page: number;
   pageSize: number;
@@ -44,16 +50,31 @@ function getMatchingServiceIds(params: SearchParams): Set<string> {
   return new Set(matched.map((service) => service.id));
 }
 
+function findMatchedService(
+  provider: Provider,
+  matchingServiceIds: Set<string> | null,
+): Service | undefined {
+  if (!matchingServiceIds) {
+    const firstServiceId = provider.servicesIds[0];
+    return services.find((s) => s.id === firstServiceId);
+  }
+
+  return services.find(
+    (s) => provider.servicesIds.includes(s.id) && matchingServiceIds.has(s.id),
+  );
+}
+
 // Search Providers
 export function searchProviders(params: SearchParams): SearchResult {
   let results = [...providers];
+  let matchingServiceIds: Set<string> | null = null;
 
   //  Filter by Service + Category + Price
   if (params.service || params.category || params.price) {
-    const matchingServiceIds = getMatchingServiceIds(params);
+    matchingServiceIds = getMatchingServiceIds(params);
 
     results = results.filter((provider) =>
-      provider.servicesIds.some((id) => matchingServiceIds.has(id)),
+      provider.servicesIds.some((id) => matchingServiceIds!.has(id)),
     );
   }
 
@@ -101,7 +122,14 @@ export function searchProviders(params: SearchParams): SearchResult {
   const startIndex = (page - 1) * PAGE_SIZE;
   const endIndex = startIndex + PAGE_SIZE;
 
-  const items = results.slice(startIndex, endIndex);
+  const items: SearchResultItem[] = results
+    .slice(startIndex, endIndex)
+    .map((provider) => {
+      const matchedService = findMatchedService(provider, matchingServiceIds);
+      if (!matchedService) return null;
+      return { provider, matchedService };
+    })
+    .filter((item): item is SearchResultItem => item !== null);
 
   return {
     items,

@@ -1,15 +1,18 @@
-import { Provider } from "@/lib/validation/provider.schema";
 import { Avatar, Card, Chip } from "@heroui/react";
 import { ArrowRight, BadgeCheck, MapPin, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import MyButton from "./MyButton";
+import type { SearchResultItem } from "@/lib/services/search";
 
 type ProviderCardProps = {
-  provider: Provider;
+  item: SearchResultItem;
 };
 
-function ProviderCard({ provider }: ProviderCardProps) {
+function ProviderCard({ item }: ProviderCardProps) {
+  const { provider, matchedService } = item;
+  const matchedPrice = Math.round(matchedService.priceCents / 100);
+
   return (
     <Card
       variant="default"
@@ -68,10 +71,16 @@ function ProviderCard({ provider }: ProviderCardProps) {
         </div>
 
         <div className="border-border mt-6 border-t pt-5">
-          <p className="text-text-secondary text-xs">Starting from</p>
-
-          <p className="text-text-primary mt-1 text-xl font-bold">
-            €{provider.startingPrice}
+          {matchedService && (
+            <>
+              <p className="text-text-secondary text-xs">Matched service</p>
+              <p className="text-text-primary mt-1 text-sm font-medium">
+                {matchedService.title}
+              </p>
+            </>
+          )}
+          <p className="text-text-primary mt-2 text-xl font-bold">
+            €{matchedPrice}
           </p>
         </div>
 

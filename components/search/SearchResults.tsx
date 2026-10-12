@@ -32,23 +32,9 @@ export function SearchResults() {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const params = searchParamsSchema.parse({
-    service: searchParams.get("service") ?? undefined,
-
-    location: searchParams.get("location") ?? undefined,
-
-    category: searchParams.get("category") ?? undefined,
-
-    rating: searchParams.get("rating") ?? undefined,
-
-    price: searchParams.get("price") ?? undefined,
-
-    availability: searchParams.get("availability") ?? undefined,
-
-    sort: searchParams.get("sort") ?? "rating",
-
-    page: searchParams.get("page") ?? "1",
-  });
+  const params = searchParamsSchema.parse(
+    Object.fromEntries(searchParams.entries()),
+  );
 
   const searchResult = searchProviders(params);
 
@@ -114,8 +100,8 @@ export function SearchResults() {
       </div>
 
       <div className="grid grid-cols-1 gap-5 space-y-4 md:grid-cols-2">
-        {searchResult.items.map((provider) => (
-          <ProviderCard key={provider.id} provider={provider} />
+        {searchResult.items.map((item) => (
+          <ProviderCard key={item.provider.id} item={item} />
         ))}
       </div>
 
