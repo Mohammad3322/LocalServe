@@ -7,6 +7,7 @@ function parseParams(input: Record<string, string>) {
 }
 
 describe("searchProviders", () => {
+  // Pagination
   it("returns the first page of providers when no filters are set", () => {
     const result = searchProviders(parseParams({ page: "1" }));
 
@@ -29,6 +30,7 @@ describe("searchProviders", () => {
     expect(ids2.some((id) => ids1.has(id))).toBe(false);
   });
 
+  // Provider-level filters
   it("filters providers by location", () => {
     const location = providers[0].serviceArea;
     const result = searchProviders(parseParams({ page: "1", location }));
@@ -43,45 +45,10 @@ describe("searchProviders", () => {
     ).toBe(true);
   });
 
-  it("filters providers by service title and picks matchedService", () => {
-    const result = searchProviders(
-      parseParams({ page: "1", service: "solar" }),
-    );
-
-    expect(result.total).toBeGreaterThan(0);
-    expect(
-      result.items.every((item) =>
-        item.matchedService.title.toLowerCase().includes("solar"),
-      ),
-    ).toBe(true);
-  });
-
-  it("filters providers by category", () => {
-    const category = services[0].category;
-    const result = searchProviders(parseParams({ page: "1", category }));
-
-    expect(
-      result.items.every((item) => item.matchedService.category === category),
-    ).toBe(true);
-  });
-
   it("filters providers by rating (>=)", () => {
     const result = searchProviders(parseParams({ page: "1", rating: "4" }));
 
     expect(result.items.every((item) => item.provider.rating >= 4)).toBe(true);
-  });
-
-  it("filters providers by price range", () => {
-    const result = searchProviders(
-      parseParams({ page: "1", price: "100-500" }),
-    );
-
-    expect(
-      result.items.every((item) => {
-        const price = item.matchedService.priceCents / 100;
-        return price >= 100 && price <= 500;
-      }),
-    ).toBe(true);
   });
 
   it("combines location and availability filters", () => {
@@ -101,6 +68,73 @@ describe("searchProviders", () => {
     ).toBe(true);
   });
 
+  // Service-level filters (matchedService)
+  it("filters providers by service title and picks matchedService", () => {
+    const result = searchProviders(
+      parseParams({ page: "1", service: "solar" }),
+    );
+
+    expect(result.total).toBeGreaterThan(0);
+    expect(
+      result.items.every((item) =>
+        item.matchedService?.title.toLowerCase().includes("solar"),
+      ),
+    ).toBe(true);
+  });
+
+  it("filters providers by category", () => {
+    const category = services[0].category;
+    const result = searchProviders(parseParams({ page: "1", category }));
+
+    expect(result.total).toBeGreaterThan(0);
+    expect(
+      result.items.every((item) => item.matchedService?.category === category),
+    ).toBe(true);
+  });
+
+  it("filters providers by price range", () => {
+    const result = searchProviders(
+      parseParams({ page: "1", price: "100-500" }),
+    );
+
+    expect(result.total).toBeGreaterThan(0);
+    expect(
+      result.items.every((item) => {
+        if (!item.matchedService) return false;
+        const price = item.matchedService.priceCents / 100;
+        return price >= 100 && price <= 500;
+      }),
+    ).toBe(true);
+  });
+
+  it("combines service + category + price filters on the same service", () => {
+    // خدمة "Solar Panel Installation" سعرها الأساسي 85000 سنت ($850)
+    const result = searchProviders(
+      parseParams({
+        page: "1",
+        service: "solar",
+        category: "solar-energy",
+        price: "800-1000",
+      }),
+    );
+
+    expect(result.total).toBeGreaterThan(0);
+    expect(
+      result.items.every((item) => {
+        const s = item.matchedService;
+        if (!s) return false;
+        const price = s.priceCents / 100;
+        return (
+          s.title.toLowerCase().includes("solar") &&
+          s.category === "solar-energy" &&
+          price >= 800 &&
+          price <= 1000
+        );
+      }),
+    ).toBe(true);
+  });
+
+  // Sorting
   it("sorts by rating descending by default", () => {
     const result = searchProviders(parseParams({ page: "1" }));
 
@@ -111,7 +145,7 @@ describe("searchProviders", () => {
     }
   });
 
-  it("sorts by price-low ascending", () => {
+  it("sorts by price-low ascending (no filters)", () => {
     const result = searchProviders(
       parseParams({ page: "1", sort: "price-low" }),
     );
@@ -123,7 +157,7 @@ describe("searchProviders", () => {
     }
   });
 
-  it("sorts by price-high descending", () => {
+  it("sorts by price-high descending (no filters)", () => {
     const result = searchProviders(
       parseParams({ page: "1", sort: "price-high" }),
     );
@@ -135,6 +169,21 @@ describe("searchProviders", () => {
     }
   });
 
+  it("sorts by matchedService price when service filter is active", () => {
+    const result = searchProviders(
+      parseParams({ page: "1", service: "solar", sort: "price-low" }),
+    );
+
+    const prices = result.items
+      .map((item) => item.matchedService?.priceCents)
+      .filter((p): p is number => p !== undefined);
+
+    for (let i = 1; i < prices.length; i++) {
+      expect(prices[i - 1]).toBeLessThanOrEqual(prices[i]);
+    }
+  });
+
+  // Edge cases
   it("returns empty items when no provider matches", () => {
     const result = searchProviders(
       parseParams({ page: "1", service: "___nonexistent___" }),

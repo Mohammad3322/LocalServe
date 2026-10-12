@@ -11,7 +11,14 @@ type ProviderCardProps = {
 
 function ProviderCard({ item }: ProviderCardProps) {
   const { provider, matchedService } = item;
-  const matchedPrice = Math.round(matchedService.priceCents / 100);
+
+  const hasMatchedService = matchedService !== null;
+
+  const displayTitle = hasMatchedService ? matchedService.title : null;
+
+  const displayPrice = hasMatchedService
+    ? Math.round(matchedService.priceCents / 100)
+    : provider.startingPrice;
 
   return (
     <Card
@@ -71,17 +78,24 @@ function ProviderCard({ item }: ProviderCardProps) {
         </div>
 
         <div className="border-border mt-6 border-t pt-5">
-          {matchedService && (
+          {hasMatchedService ? (
             <>
               <p className="text-text-secondary text-xs">Matched service</p>
               <p className="text-text-primary mt-1 text-sm font-medium">
-                {matchedService.title}
+                {displayTitle}
+              </p>
+              <p className="text-text-primary mt-2 text-xl font-bold">
+                €{displayPrice}
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-text-secondary text-xs">Starting from</p>
+              <p className="text-text-primary mt-1 text-xl font-bold">
+                €{displayPrice}
               </p>
             </>
           )}
-          <p className="text-text-primary mt-2 text-xl font-bold">
-            €{matchedPrice}
-          </p>
         </div>
 
         <Link href={`/providers/${provider.slug}`} className="mt-6">
