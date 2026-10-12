@@ -36,6 +36,15 @@
   --color-text-muted: #64748b;
 
   --color-border: #e2e8f0;
+
+  --animate-up-and-down: up-and-down 0.9s infinite alternate;
+
+  @keyframes up-and-down {
+    to {
+      opacity: 0.2;
+      transform: translateY(-10px);
+    }
+  }
 }
 
 :root {
