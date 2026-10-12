@@ -1,7 +1,5 @@
 import { useBookingStore } from "@/lib/store/booking-store";
 
-const STORAGE_KEY = "localserve:booking-draft";
-
 const appointment = {
   providerId: "pro-1",
   serviceId: "solar-panel-installation",
@@ -15,8 +13,6 @@ const customer = {
 };
 
 beforeEach(() => {
-  sessionStorage.clear();
-  localStorage.clear();
   useBookingStore.getState().clearBooking();
 });
 
@@ -29,6 +25,7 @@ describe("useBookingStore", () => {
     expect(state.date).toBeUndefined();
     expect(state.time).toBeUndefined();
     expect(state.customer).toBeUndefined();
+    expect(state.confirmedBooking).toBeUndefined();
   });
 
   it("keeps the appointment so later steps can read it", () => {
@@ -72,52 +69,77 @@ describe("useBookingStore", () => {
     expect(state.date).toBeUndefined();
     expect(state.time).toBeUndefined();
     expect(state.customer).toBeUndefined();
+    expect(state.confirmedBooking).toBeUndefined();
   });
-});
 
-describe("draft persistence", () => {
-  it("keeps the draft in sessionStorage so it is dropped when the tab closes", () => {
+  it("stores the confirmed booking after createBooking succeeds", () => {
+    const confirmedBooking = {
+      id: "booking-1",
+      reference: "LS-ABC12345",
+      providerId: "pro-1",
+      serviceId: "solar-panel-installation",
+      date: "2026-09-28",
+      time: "09:00",
+      customerName: "Jane Doe",
+      customerEmail: "jane@example.com",
+      status: "confirmed" as const,
+    };
+
+    useBookingStore.getState().setConfirmedBooking(confirmedBooking);
+
+    expect(useBookingStore.getState().confirmedBooking).toEqual(
+      confirmedBooking,
+    );
+  });
+
+  it("keeps the appointment when only the confirmed booking is set", () => {
+    const confirmedBooking = {
+      id: "booking-1",
+      reference: "LS-ABC12345",
+      providerId: "pro-1",
+      serviceId: "solar-panel-installation",
+      date: "2026-09-28",
+      time: "09:00",
+      customerName: "Jane Doe",
+      customerEmail: "jane@example.com",
+      status: "confirmed" as const,
+    };
+
     useBookingStore.getState().setAppointment(appointment);
+    useBookingStore.getState().setConfirmedBooking(confirmedBooking);
 
-    expect(sessionStorage.getItem(STORAGE_KEY)).not.toBeNull();
+    const state = useBookingStore.getState();
+
+    expect(state).toMatchObject(appointment);
+    expect(state.confirmedBooking).toEqual(confirmedBooking);
   });
 
-  it("never writes the customer draft to localStorage", () => {
+  it("clears the confirmed booking when clearing the whole booking", () => {
+    const confirmedBooking = {
+      id: "booking-1",
+      reference: "LS-ABC12345",
+      providerId: "pro-1",
+      serviceId: "solar-panel-installation",
+      date: "2026-09-28",
+      time: "09:00",
+      customerName: "Jane Doe",
+      customerEmail: "jane@example.com",
+      status: "confirmed" as const,
+    };
+
+    useBookingStore.getState().setAppointment(appointment);
     useBookingStore.getState().setCustomer(customer);
+    useBookingStore.getState().setConfirmedBooking(confirmedBooking);
 
-    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
-    expect(localStorage.length).toBe(0);
-  });
+    useBookingStore.getState().clearBooking();
 
-  it("stores the appointment under a namespaced key", () => {
-    useBookingStore.getState().setAppointment(appointment);
+    const state = useBookingStore.getState();
 
-    const raw = sessionStorage.getItem(STORAGE_KEY);
-
-    expect(JSON.parse(raw ?? "{}").state).toMatchObject(appointment);
-  });
-
-  it("restores a draft that was saved earlier in the session", async () => {
-    useBookingStore.getState().setAppointment(appointment);
-    useBookingStore.getState().setCustomer(customer);
-
-    jest.resetModules();
-    const { useBookingStore: rehydrated } =
-      await import("@/lib/store/booking-store");
-
-    expect(rehydrated.getState()).toMatchObject({
-      ...appointment,
-      customer,
-    });
-  });
-
-  it("starts empty when the saved draft is malformed", async () => {
-    sessionStorage.setItem(STORAGE_KEY, "{not valid json");
-
-    jest.resetModules();
-    const { useBookingStore: rehydrated } =
-      await import("@/lib/store/booking-store");
-
-    expect(rehydrated.getState().customer).toBeUndefined();
+    expect(state.providerId).toBeUndefined();
+    expect(state.serviceId).toBeUndefined();
+    expect(state.date).toBeUndefined();
+    expect(state.time).toBeUndefined();
+    expect(state.customer).toBeUndefined();
+    expect(state.confirmedBooking).toBeUndefined();
   });
 });

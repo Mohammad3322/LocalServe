@@ -19,11 +19,11 @@ export function HomeSearch() {
     const params = new URLSearchParams();
 
     if (service) {
-      params.set("service", String(service));
+      params.set("service", service);
     }
 
     if (location.trim()) {
-      params.set("location", location.trim());
+      params.set("location", location);
     }
 
     const query = params.toString();

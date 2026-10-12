@@ -2,13 +2,24 @@ import Link from "next/link";
 import { Card } from "@heroui/react";
 import { ArrowRight, Clock3 } from "lucide-react";
 import MyButton from "../ui/MyButton";
-import { Service } from "@/lib/validation/service.schema";
+import type { Service } from "@/lib/validation/service.schema";
 
 type ServiceCardProps = {
   service: Service;
 };
 
 export function ServiceCard({ service }: ServiceCardProps) {
+  const priceInDollars = Math.round(service.priceCents / 100);
+  const margin = Math.max(50, Math.round(priceInDollars * 0.15));
+  const minPrice = Math.max(0, priceInDollars - margin);
+  const maxPrice = priceInDollars + margin;
+
+  const searchParams = new URLSearchParams({
+    service: service.title,
+    category: service.category,
+    price: `${minPrice}-${maxPrice}`,
+  });
+
   return (
     <Card
       variant="default"
@@ -35,16 +46,15 @@ export function ServiceCard({ service }: ServiceCardProps) {
 
               <div className="text-sm">
                 <span className="text-text-secondary">From </span>
-
                 <span className="text-text-primary font-semibold">
-                  €{(service.priceCents / 100).toFixed(0)}
+                  €{priceInDollars}
                 </span>
               </div>
             </div>
           </div>
 
           <div className="shrink-0 sm:self-end">
-            <Link href={`/search?service=${encodeURIComponent(service.title)}`}>
+            <Link href={`/search?${searchParams.toString()}`}>
               <MyButton variant="primary" className="w-full sm:w-auto">
                 Find Providers
                 <ArrowRight className="size-4" />

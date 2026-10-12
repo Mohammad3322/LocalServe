@@ -9,8 +9,6 @@ export function ServiceCategoryHero({ category }: ServiceCategoryHeroProps) {
     <section className="border-border bg-background border-b">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="max-w-3xl">
-          
-
           <h1 className="text-text-primary mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
             {category.title}
           </h1>
@@ -22,10 +20,6 @@ export function ServiceCategoryHero({ category }: ServiceCategoryHeroProps) {
           <div className="text-text-secondary mt-8 flex flex-wrap gap-3 text-sm">
             <span className="bg-brand-50 text-brand-700 rounded-full px-3 py-1.5">
               {category.services.length} services
-            </span>
-
-            <span className="bg-surface rounded-full px-3 py-1.5">
-              Trusted local professionals
             </span>
           </div>
         </div>

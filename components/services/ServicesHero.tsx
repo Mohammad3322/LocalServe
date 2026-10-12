@@ -2,28 +2,33 @@
 
 import SearchInput from "../ui/SearchInput";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { services } from "@/lib/data/seed/generate";
 import MyButton from "../ui/MyButton";
-import Link from "next/link";
 
 const servicesSet = [...new Set(services.map((s) => s.title))];
 
 export function ServicesHero() {
+  const router = useRouter();
   const [service, setService] = useState<string>("");
 
-  return (
-    <section className="border-border bg-background border-b">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <div className="mx-auto max-w-3xl text-center">
-          <span className="bg-brand-50 text-brand-700 inline-flex rounded-full px-3 py-1 text-sm font-medium">
-            LocalServe Services
-          </span>
+  function handleSearch() {
+    const trimmed = service.trim();
+    if (!trimmed) return;
 
-          <h1 className="text-text-primary mt-5 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
+    const params = new URLSearchParams({ service: trimmed });
+    router.push(`/services?${params.toString()}#services`);
+  }
+
+  return (
+    <section className="border-border bg-brand-700 border-b">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-8 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-3xl text-center">
+          <h1 className="text-surface mt-5 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Explore our services
           </h1>
 
-          <p className="text-text-secondary mx-auto mt-5 max-w-2xl text-base leading-7 sm:text-lg">
+          <p className="text-brand-50 mx-auto mt-5 max-w-3xl text-base leading-7 sm:text-lg">
             Discover trusted local professionals and services for your home and
             business needs.
           </p>
@@ -34,17 +39,16 @@ export function ServicesHero() {
               List={servicesSet}
               inputValue={service}
               onInputChange={setService}
-              placeholder="Search Sevice"
+              placeholder="Search Service"
             />
-            <Link href={`/search?service=${service}`}>
-              <MyButton
-                variant="primary"
-                size="lg"
-                className="w-full sm:w-auto"
-              >
-                Search
-              </MyButton>
-            </Link>
+            <MyButton
+              variant="primary"
+              size="lg"
+              className="bg-brand-600 border-surface text-surface min-h-10 justify-self-center rounded-4xl! border"
+              onClick={handleSearch}
+            >
+              Search
+            </MyButton>
           </div>
         </div>
       </div>

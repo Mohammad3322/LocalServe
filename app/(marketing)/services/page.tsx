@@ -10,6 +10,11 @@ export const metadata: Metadata = buildMetadata({
   path: "/services",
 });
 
-export default function Page() {
-  return <ServicesPage />;
+type ServicesPageProps = {
+  searchParams: Promise<{ service?: string }>;
+};
+
+export default async function Page({ searchParams }: ServicesPageProps) {
+  const { service } = await searchParams;
+  return <ServicesPage serviceQuery={service} />;
 }

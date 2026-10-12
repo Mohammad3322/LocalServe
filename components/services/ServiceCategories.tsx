@@ -1,7 +1,23 @@
 import { serviceCategories } from "@/lib/data/seed/categories";
 import { ServiceCategoryCard } from "./ServiceCategoryCard";
+import { services } from "@/lib/data/seed/generate";
+import { SearchServiceResults } from "./SearchServiceResults";
 
-export function ServiceCategories() {
+type ServiceCategoriesProps = {
+  serviceQuery?: string;
+};
+
+export function ServiceCategories({ serviceQuery }: ServiceCategoriesProps) {
+  const filteredServices = serviceQuery
+    ? services.filter((s) =>
+        s.title.toLowerCase().includes(serviceQuery.toLowerCase()),
+      )
+    : null;
+
+  if (serviceQuery && filteredServices) {
+    return <SearchServiceResults filteredServices={filteredServices} />;
+  }
+
   return (
     <section className="border-border bg-surface border-b">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
