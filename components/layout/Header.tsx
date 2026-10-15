@@ -59,6 +59,7 @@ export function Header() {
             width={200}
             height={200}
             className="hidden lg:block"
+            loading="eager"
           />
         </Link>
 
