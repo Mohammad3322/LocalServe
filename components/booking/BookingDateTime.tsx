@@ -10,7 +10,7 @@ import type { AvailabilitySlot } from "@/lib/validation/availability.schema";
 
 import type { Provider } from "@/lib/validation/provider.schema";
 import { BookingSummary } from "./BookingSummary";
-import { formatDateToString } from "@/lib/utils/formatters";
+import { formatDateToString, formatStringToDate } from "@/lib/utils/formatters";
 import type { DateValue } from "@internationalized/date";
 import { TimeSlot } from "../ui/TimeSlot";
 import { getProviderServices } from "@/lib/services/providerServices";
@@ -76,11 +76,10 @@ export function BookingDateTime({
     };
   }, [provider.id, selectedServiceId]);
 
-  const [selectedDate, setSelectedDate] = useState<DateValue | undefined>(
-    undefined,
-  );
+  const { date, time, setAppointment } = useBookingStore();
 
-  const [selectedTime, setSelectedTime] = useState<string>("");
+  const selectedDate = formatStringToDate(date);
+  const selectedTime = time ?? "";
 
   const timeSlots = providerSlots.filter(
     (slot) => slot.date === formatDateToString(selectedDate),
@@ -100,8 +99,6 @@ export function BookingDateTime({
   };
 
   const router = useRouter();
-
-  const setAppointment = useBookingStore((state) => state.setAppointment);
 
   const canContinue =
     Boolean(selectedDate) && Boolean(selectedTime) && Boolean(selectedService);
@@ -258,9 +255,13 @@ export function BookingDateTime({
               <Calendar
                 aria-label="Booking date"
                 value={selectedDate}
-                onChange={(date) => {
-                  setSelectedDate(date);
-                  setSelectedTime("");
+                onChange={(newDate) => {
+                  setAppointment({
+                    providerId: provider.id,
+                    serviceId: selectedService.id,
+                    date: formatDateToString(newDate),
+                    time: "", // reset time
+                  });
                 }}
                 isDateUnavailable={isDateUnavailable}
                 className="border-border/80 bg-surface ring-accent/5 dark:border-border/90 dark:ring-accent/10 w-63 rounded-2xl border p-3 shadow-sm ring-1"
@@ -339,7 +340,12 @@ export function BookingDateTime({
                                 return;
                               }
 
-                              setSelectedTime(slot.time);
+                              setAppointment({
+                                providerId: provider.id,
+                                serviceId: selectedService.id,
+                                date: formatDateToString(selectedDate),
+                                time: slot.time,
+                              });
                             }}
                           />
                         ))}

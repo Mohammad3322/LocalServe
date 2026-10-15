@@ -32,8 +32,8 @@ export function formatBookingTime(time: string): string {
   }).format(date);
 }
 
-export function formatStringToDate(date: string) {
-  if (!date) return null;
+export function formatStringToDate(date: string | undefined) {
+  if (!date) return undefined;
   return parseDate(date);
 }
 
