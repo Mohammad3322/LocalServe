@@ -22,8 +22,6 @@ export function ServiceCategories({ serviceQuery }: ServiceCategoriesProps) {
     <section className="border-border bg-surface border-b">
       <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
         <div className="max-w-2xl">
-          <p className="text-brand-600 text-sm font-semibold">Services</p>
-
           <h2 className="text-text-primary mt-2 text-3xl font-bold tracking-tight">
             Find the right service for your needs
           </h2>

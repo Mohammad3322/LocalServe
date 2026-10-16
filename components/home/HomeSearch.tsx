@@ -35,6 +35,8 @@ export function HomeSearch() {
     <div className="rounded-2xl p-5 transition-all hover:shadow-lg">
       <div className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-end">
         <SearchForm
+          type="all"
+
           servicesSet={servicesSet}
           service={service}
           setService={setService}

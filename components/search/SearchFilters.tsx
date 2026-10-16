@@ -89,8 +89,8 @@ export function SearchFilters() {
         </div>
 
         <div className="my-6 flex w-full flex-col gap-5 sm:flex-row">
-          {/* Service */}
-          <Select
+          {/* Category */}
+          {/* <Select
             className="h-full w-full"
             placeholder="All services"
             value={selectedCategory || null}
@@ -117,10 +117,10 @@ export function SearchFilters() {
                 ))}
               </ListBox>
             </Select.Popover>
-          </Select>
+          </Select> */}
 
           {/* Rating */}
-          <Select
+          {/* <Select
             className="w-full"
             placeholder="Any rating"
             value={selectedRating || null}
@@ -147,7 +147,7 @@ export function SearchFilters() {
                 ))}
               </ListBox>
             </Select.Popover>
-          </Select>
+          </Select> */}
 
           {/* Price */}
           <Select

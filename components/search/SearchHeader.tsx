@@ -5,6 +5,7 @@ import { useState } from "react";
 import { locations } from "@/lib/data/seed/generate";
 import { services } from "@/lib/data/seed/generate";
 import SearchForm from "../ui/SearchForm";
+import CategoriesBar from "../ui/CategoriesBar";
 
 export function SearchHeader() {
   const router = useRouter();
@@ -18,8 +19,30 @@ export function SearchHeader() {
 
   const [location, setLocation] = useState(initialLocation);
 
-  const servicesSet = [...new Set(services.map((s) => s.title))];
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const servicesSet = selectedCategory
+    ? [
+        ...new Set(
+          services
+            .filter((service) => service.category === selectedCategory)
+            .map((s) => s.title),
+        ),
+      ]
+    : [...new Set(services.map((s) => s.title))];
   const locationsSet = [...new Set(locations.map((s) => s.name))];
+
+  function handelSelectCategory(category: string) {
+    setSelectedCategory(category);
+    const param = new URLSearchParams(searchParams.toString());
+    if (category.trim()) {
+      param.set("category", category.trim());
+    } else {
+      param.delete("category");
+    }
+
+    router.push(`/search?${param.toString()}`);
+  }
 
   function handleSearch() {
     const params = new URLSearchParams(searchParams.toString());
@@ -48,15 +71,17 @@ export function SearchHeader() {
           <h1 className="text-surface text-2xl font-semibold sm:text-3xl">
             Find a Professional
           </h1>
-
-          <p className="text-brand-100 text-sm sm:text-base">
-            Compare trusted local professionals and find the right service for
-            you.
-          </p>
         </div>
 
-        <div className="mt-10 flex w-full flex-col items-center justify-center gap-5 md:flex-row md:items-end">
+        <div className="md:flex-column mt-10 flex w-full flex-col items-center justify-center gap-5 md:items-end">
+          <CategoriesBar
+            color="white"
+            onSelect={handelSelectCategory}
+            selectedCategory={selectedCategory}
+          />
+
           <SearchForm
+            type="all"
             servicesSet={servicesSet}
             service={service}
             setService={setService}

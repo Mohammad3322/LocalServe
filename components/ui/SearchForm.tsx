@@ -25,7 +25,7 @@ function SearchForm({
   handleSearch,
 }: SearchFormProps) {
   return (
-    <>
+    <div className="mt-10 flex w-full flex-col items-center justify-center gap-5 md:flex-row md:items-end">
       <SearchInput
         label="What service do you need?"
         labelSize="lg"
@@ -63,7 +63,7 @@ function SearchForm({
           {type === "services" ? "Search for services" : "Search for providers"}
         </p>
       </MyButton>
-    </>
+    </div>
   );
 }
 
