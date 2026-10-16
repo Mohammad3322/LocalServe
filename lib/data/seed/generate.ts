@@ -443,6 +443,7 @@ function buildSeedData(): SeedData {
         durationMinutes: template.durationMinutes,
         priceCents: Math.max(5000, template.priceCents + priceVariance),
         category: template.category,
+        location: `${location.name} & nearby areas`,
       });
 
       providerServiceIds.push(serviceId);

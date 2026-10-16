@@ -1,10 +1,9 @@
 "use client";
 
-import SearchInput from "../ui/SearchInput";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { services } from "@/lib/data/seed/generate";
-import MyButton from "../ui/MyButton";
+import SearchForm from "../ui/SearchForm";
 
 const servicesSet = [...new Set(services.map((s) => s.title))];
 
@@ -34,21 +33,13 @@ export function ServicesHero() {
           </p>
 
           <div className="mx-auto mt-8 flex max-w-xl flex-col items-end justify-end gap-3 sm:flex-row">
-            <SearchInput
-              label="What service do you need?"
-              List={servicesSet}
-              inputValue={service}
-              onInputChange={setService}
-              placeholder="Search Service"
+            <SearchForm
+              type="services"
+              servicesSet={servicesSet}
+              service={service}
+              setService={setService}
+              handleSearch={handleSearch}
             />
-            <MyButton
-              variant="primary"
-              size="lg"
-              className="bg-brand-600 border-surface text-surface min-h-10 justify-self-end rounded-4xl! border"
-              onClick={handleSearch}
-            >
-              Search
-            </MyButton>
           </div>
         </div>
       </div>

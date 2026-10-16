@@ -9,6 +9,7 @@ export const serviceSchema = z.object({
   durationMinutes: z.number().int().positive(),
   priceCents: z.number().int().nonnegative(),
   category: z.string(),
+  location: z.string(),
 });
 
 export const servicesSchema = z.array(serviceSchema);
