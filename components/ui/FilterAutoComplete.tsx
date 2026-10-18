@@ -38,13 +38,13 @@ export function FilterAutoComplete({
 
   return (
     <Autocomplete
-      className="w-[256px] max-w-96"
+      className="w-[256px] max-w-40 md:max-w-80 lg:max-w-96"
       placeholder={placeholder}
       selectionMode="single"
       value={value}
       onChange={onChange}
     >
-      <Label className="text-surface">{label}</Label>
+      <Label className="text-surface text-center font-semibold">{label}</Label>
       <Autocomplete.Trigger>
         <Autocomplete.Value />
         <Autocomplete.ClearButton />

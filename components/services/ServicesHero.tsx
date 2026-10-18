@@ -22,7 +22,7 @@ export function ServicesHero() {
 
   return (
     <section className="border-border bg-brand-700 border-b">
-      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-8 lg:px-8 lg:py-24">
+      <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-8 lg:px-8 lg:py-8">
         <div className="mx-auto flex max-w-3xl flex-col justify-center text-center">
           <h1 className="text-surface mt-5 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
             Explore our services

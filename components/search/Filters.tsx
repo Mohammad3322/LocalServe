@@ -92,47 +92,56 @@ function Filters() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-end">
-      <FilterAutoComplete
-        label="Where do you need it?"
-        List={servicesSet}
-        value={service}
-        onChange={(value) => updateParam("service", value)}
-        placeholder="Search Service"
-      />
-      <FilterAutoComplete
-        label="Where do you need it?"
-        List={locationsSet}
-        value={location}
-        onChange={(value) => updateParam("location", value)}
-        placeholder="Search Location"
-      />
+      <div className="flex justify-center gap-5">
+        <FilterAutoComplete
+          label="Where do you need it?"
+          List={servicesSet}
+          value={service}
+          onChange={(value) => updateParam("service", value)}
+          placeholder="Service"
+        />
+        <FilterAutoComplete
+          label="Where do you need it?"
+          List={locationsSet}
+          value={location}
+          onChange={(value) => updateParam("location", value)}
+          placeholder="Location"
+        />
+      </div>
+      <div className="flex justify-center gap-5">
+        <div className="flex flex-col gap-1">
+          <label className="text-surface text-center text-sm font-semibold">
+            Price range
+          </label>
+          <MyModal
+            isOpen={isPriceModalOpen}
+            onOpenChange={handleOpenPriceModal}
+            onConfirm={handleConfirmPrice}
+            onReset={handleResetPrice}
+            confirmLabel={priceButtonLabel}
+          >
+            <PriceFilter value={tempPrice} onChange={setTempPrice} />
+          </MyModal>
+        </div>
 
-      <MyModal
-        isOpen={isPriceModalOpen}
-        onOpenChange={handleOpenPriceModal}
-        onConfirm={handleConfirmPrice}
-        onReset={handleResetPrice}
-        confirmLabel={priceButtonLabel}
-      >
-        <PriceFilter value={tempPrice} onChange={setTempPrice} />
-      </MyModal>
-
-      <div>
-        <Checkbox
-          id="available"
-          isSelected={availability}
-          onChange={(isSelected) =>
-            updateBooleanParam("availability", isSelected)
-          }
-        >
-          <Checkbox.Content>
-            <Checkbox.Control>
-              <Checkbox.Indicator />
-            </Checkbox.Control>
-
-            <span className="text-surface text-sm">Available</span>
-          </Checkbox.Content>
-        </Checkbox>
+        <div>
+          <Checkbox
+            id="available"
+            isSelected={availability}
+            onChange={(isSelected) =>
+              updateBooleanParam("availability", isSelected)
+            }
+          >
+            <Checkbox.Content className="flex flex-col gap-1">
+              <span className="text-surface text-sm font-semibold">
+                Available
+              </span>
+              <Checkbox.Control className="size-8">
+                <Checkbox.Indicator />
+              </Checkbox.Control>
+            </Checkbox.Content>
+          </Checkbox>
+        </div>
       </div>
     </div>
   );

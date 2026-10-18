@@ -35,6 +35,15 @@ export function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  const handleHowItWorksClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+
+    const target = document.getElementById("how-it-works");
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <header
       className={`border-border bg-surface fixed top-0 right-0 left-0 z-50 border-b transition-transform duration-300 ${
@@ -71,6 +80,11 @@ export function Header() {
             <Link
               key={item.label}
               href={item.href}
+              onClick={
+                item.href === "/#how-it-works"
+                  ? handleHowItWorksClick
+                  : undefined
+              }
               className="text-text-secondary hover:text-brand-600 text-center text-sm font-bold md:text-lg"
             >
               {item.label}

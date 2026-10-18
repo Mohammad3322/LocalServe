@@ -12,7 +12,7 @@ export default function PriceFilter({ value, onChange }: PriceFilterProps) {
     <Slider
       value={value}
       onChange={(val) => onChange(val as number[])}
-      className="w-full max-w-xs"
+      className="min-h-80 w-full max-w-xs"
       formatOptions={{
         currency: "USD",
         style: "currency",
@@ -22,15 +22,20 @@ export default function PriceFilter({ value, onChange }: PriceFilterProps) {
       maxValue={2000}
       minValue={0}
       step={5}
+      orientation="vertical"
     >
       <Label className="text-text-primary">Price Range</Label>
       <Slider.Output className="text-text-primary" />
-      <Slider.Track>
+      <Slider.Track dir="ltr">
         {({ state }) => (
           <>
-            <Slider.Fill />
+            <Slider.Fill className="direction-alternate-reverse" />
             {state.values.map((_, i) => (
-              <Slider.Thumb key={i} index={i} />
+              <Slider.Thumb
+                key={i}
+                index={i}
+                className="direction-alternate-reverse"
+              />
             ))}
           </>
         )}

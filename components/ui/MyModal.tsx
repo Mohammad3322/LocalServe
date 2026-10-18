@@ -33,8 +33,8 @@ export default function MyModal({
         onOpenChange={onOpenChange}
         className="h-full"
       >
-        <Modal.Container>
-          <Modal.Dialog className="mt-80 sm:max-w-90">
+        <Modal.Container className="h-fit">
+          <Modal.Dialog className="mt-80 sm:max-w-90 lg:mt-auto">
             <Modal.CloseTrigger />
             <Modal.Header>
               <Modal.Heading>Price Range</Modal.Heading>
