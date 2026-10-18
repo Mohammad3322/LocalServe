@@ -85,14 +85,14 @@ function ProviderCard({ item }: ProviderCardProps) {
                 {displayTitle}
               </p>
               <p className="text-text-primary mt-2 text-xl font-bold">
-                €{displayPrice}
+                ${displayPrice}
               </p>
             </>
           ) : (
             <>
               <p className="text-text-secondary text-xs">Starting from</p>
               <p className="text-text-primary mt-1 text-xl font-bold">
-                €{displayPrice}
+                ${displayPrice}
               </p>
             </>
           )}

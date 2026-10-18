@@ -1,16 +1,13 @@
-import React from "react";
-import SearchInput from "./SearchInput";
 import MyButton from "./MyButton";
 import { Search } from "lucide-react";
+import { Key } from "@heroui/react";
+import SearchInput from "./SearchInput";
 
 type SearchFormProps = {
-  type?: "services" | "all";
+  type?: "services";
   servicesSet: string[];
-  service: string;
-  setService: (value: string) => void;
-  locationsSet?: string[];
-  location?: string;
-  setLocation?: (value: string) => void;
+  service: Key | null;
+  setService: (value: Key | null) => void;
   handleSearch: () => void;
 };
 
@@ -19,37 +16,20 @@ function SearchForm({
   servicesSet,
   service,
   setService,
-  locationsSet,
-  location,
-  setLocation,
+
   handleSearch,
 }: SearchFormProps) {
   return (
-    <div className="mt-10 flex w-full flex-col items-center justify-center gap-5 md:flex-row md:items-end">
+    <div className="flex w-full flex-col items-center justify-center gap-5 md:flex-row md:items-end">
       <SearchInput
         label="What service do you need?"
         labelSize="lg"
         List={servicesSet}
-        inputValue={service}
+        inputValue={service?.toString()}
         onInputChange={setService}
         placeholder="Search Sevice"
         className="max-w-96"
       />
-
-      {/* Location */}
-      {type && type === "all" ? (
-        <SearchInput
-          label="Where do you need it?"
-          List={locationsSet ?? []}
-          inputValue={location ?? undefined}
-          onInputChange={setLocation}
-          placeholder="Search location"
-          icon="location"
-          className="max-w-60"
-        />
-      ) : (
-        ""
-      )}
 
       {/* Submit */}
       <MyButton

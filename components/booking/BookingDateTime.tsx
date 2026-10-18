@@ -190,9 +190,7 @@ export function BookingDateTime({
                   {selectedService.durationMinutes} min
                 </span>
 
-                <span>
-                  From €{(selectedService.priceCents / 100).toFixed(0)}
-                </span>
+                <span>${(selectedService.priceCents / 100).toFixed(0)}</span>
               </div>
             </Card.Content>
           </Card>

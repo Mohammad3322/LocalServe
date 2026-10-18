@@ -355,7 +355,7 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
                       </span>
 
                       <span className="text-surface font-semibold">
-                        €{(selectedService.priceCents / 100).toFixed(0)}
+                        ${(selectedService.priceCents / 100).toFixed(0)}
                       </span>
                     </div>
                   </div>

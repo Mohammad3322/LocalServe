@@ -443,7 +443,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
                       </span>
 
                       <span className="text-text-primary text-lg font-semibold">
-                        €{(selectedService.priceCents / 100).toFixed(0)}
+                        ${(selectedService.priceCents / 100).toFixed(0)}
                       </span>
                     </div>
 

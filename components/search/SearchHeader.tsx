@@ -2,41 +2,23 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
-import { locations } from "@/lib/data/seed/generate";
-import { services } from "@/lib/data/seed/generate";
-import SearchForm from "../ui/SearchForm";
 import CategoriesBar from "../ui/CategoriesBar";
+import Filters from "./Filters";
 
 export function SearchHeader() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const initialService = searchParams.get("service") ?? "";
+  const initialCategory = searchParams.get("category") ?? "";
 
-  const initialLocation = searchParams.get("location") ?? "";
-
-  const [service, setService] = useState(initialService);
-
-  const [location, setLocation] = useState(initialLocation);
-
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  const servicesSet = selectedCategory
-    ? [
-        ...new Set(
-          services
-            .filter((service) => service.category === selectedCategory)
-            .map((s) => s.title),
-        ),
-      ]
-    : [...new Set(services.map((s) => s.title))];
-  const locationsSet = [...new Set(locations.map((s) => s.name))];
+  const [selectedCategory, setSelectedCategory] = useState(initialCategory);
 
   function handelSelectCategory(category: string) {
     setSelectedCategory(category);
     const param = new URLSearchParams(searchParams.toString());
     if (category.trim()) {
       param.set("category", category.trim());
+      param.delete("service");
     } else {
       param.delete("category");
     }
@@ -44,52 +26,16 @@ export function SearchHeader() {
     router.push(`/search?${param.toString()}`);
   }
 
-  function handleSearch() {
-    const params = new URLSearchParams(searchParams.toString());
-
-    if (service.trim()) {
-      params.set("service", service.trim());
-    } else {
-      params.delete("service");
-    }
-
-    if (location.trim()) {
-      params.set("location", location.trim());
-    } else {
-      params.delete("location");
-    }
-
-    params.set("page", "1");
-
-    router.push(`/search?${params.toString()}#searchResults`);
-  }
-
   return (
     <section className="border-border bg-brand-700 border-b">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="space-y-2 text-center">
-          <h1 className="text-surface text-2xl font-semibold sm:text-3xl">
-            Find a Professional
-          </h1>
-        </div>
-
-        <div className="md:flex-column mt-10 flex w-full flex-col items-center justify-center gap-5 md:items-end">
-          <CategoriesBar
-            color="white"
-            onSelect={handelSelectCategory}
-            selectedCategory={selectedCategory}
-          />
-
-          <SearchForm
-            type="all"
-            servicesSet={servicesSet}
-            service={service}
-            setService={setService}
-            locationsSet={locationsSet}
-            location={location}
-            setLocation={setLocation}
-            handleSearch={handleSearch}
-          />
+      <div className="md:flex-column mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-3 px-4 pb-6 sm:px-6 lg:px-8">
+        <CategoriesBar
+          color="white"
+          onSelect={handelSelectCategory}
+          selectedCategory={selectedCategory}
+        />
+        <div className="flex flex-col gap-5">
+          <Filters />
         </div>
       </div>
     </section>

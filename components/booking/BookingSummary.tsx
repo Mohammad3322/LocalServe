@@ -85,7 +85,7 @@ export function BookingSummary({
             <span className="text-brand-100 text-sm">Estimated price</span>
 
             <span className="text-surface font-semibold">
-              €{(service.priceCents / 100).toFixed(0)}
+              ${(service.priceCents / 100).toFixed(0)}
             </span>
           </div>
 

@@ -62,7 +62,7 @@ export function ProviderBookingSidebar({
                   </div>
 
                   <span className="text-text-primary text-sm font-semibold">
-                    €{(selectedService.priceCents / 100).toFixed(0)}
+                    ${(selectedService.priceCents / 100).toFixed(0)}
                   </span>
                 </div>
               </div>

@@ -10,14 +10,11 @@ type ServiceCardProps = {
 
 export function ServiceCard({ service }: ServiceCardProps) {
   const priceInDollars = Math.round(service.priceCents / 100);
-  const margin = Math.max(50, Math.round(priceInDollars * 0.15));
-  const minPrice = Math.max(0, priceInDollars - margin);
-  const maxPrice = priceInDollars + margin;
 
   const searchParams = new URLSearchParams({
     service: service.title,
     category: service.category,
-    price: `${minPrice}-${maxPrice}`,
+    price: `${priceInDollars}-${priceInDollars}`,
   });
 
   return (
@@ -45,9 +42,8 @@ export function ServiceCard({ service }: ServiceCardProps) {
               <div className="bg-border h-4 w-px" />
 
               <div className="text-sm">
-                <span className="text-text-secondary">From </span>
                 <span className="text-text-primary font-semibold">
-                  €{priceInDollars}
+                  ${priceInDollars}
                 </span>
               </div>
             </div>

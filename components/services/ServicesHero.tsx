@@ -4,15 +4,16 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { services } from "@/lib/data/seed/generate";
 import SearchForm from "../ui/SearchForm";
+import { Key } from "@heroui/react";
 
 const servicesSet = [...new Set(services.map((s) => s.title))];
 
 export function ServicesHero() {
   const router = useRouter();
-  const [service, setService] = useState<string>("");
+  const [service, setService] = useState<Key | null>("");
 
   function handleSearch() {
-    const trimmed = service.trim();
+    const trimmed = service?.toString().trim();
     if (!trimmed) return;
 
     const params = new URLSearchParams({ service: trimmed });

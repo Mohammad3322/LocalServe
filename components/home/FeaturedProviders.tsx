@@ -108,7 +108,7 @@ export function FeaturedProviders() {
                   <p className="text-text-secondary text-xs">Starting from</p>
 
                   <p className="text-text-primary mt-1 text-xl font-bold">
-                    €{provider.startingPrice}
+                    ${provider.startingPrice}
                   </p>
                 </div>
 

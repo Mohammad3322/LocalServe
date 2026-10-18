@@ -52,12 +52,8 @@ export function ProviderServices({ providerId }: ProviderServicesProps) {
                         <div className="bg-border h-4 w-px" />
 
                         <div>
-                          <span className="text-text-secondary text-xs">
-                            From
-                          </span>
-
                           <span className="text-text-primary ml-1 font-semibold">
-                            €{(service.priceCents / 100).toFixed(0)}
+                            ${(service.priceCents / 100).toFixed(0)}
                           </span>
                         </div>
                       </div>

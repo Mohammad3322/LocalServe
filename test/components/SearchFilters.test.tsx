@@ -1,7 +1,6 @@
+import Filters from "@/components/search/Filters";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
-import { SearchFilters } from "@/components/search/SearchFilters";
 
 const push = jest.fn();
 let currentSearch = "";
@@ -14,7 +13,7 @@ jest.mock("next/navigation", () => ({
 
 const renderWithSearch = (search: string) => {
   currentSearch = search;
-  return render(<SearchFilters />);
+  return render(<Filters />);
 };
 
 const pushedQuery = () => {
