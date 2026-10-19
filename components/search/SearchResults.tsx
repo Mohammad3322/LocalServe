@@ -61,7 +61,7 @@ export function SearchResults() {
     <section id="searchResults" className="w-full">
       <div className="mb-12 flex flex-col items-center gap-4 lg:flex-row-reverse lg:items-end lg:justify-center">
         <div className="flex w-full flex-col items-center justify-center gap-3 lg:flex-row lg:gap-5">
-          <div className="bg-brand-700 w-fit rounded-4xl px-5 py-2">
+          <div className="bg-brand-700 w-full rounded-4xl px-5 py-2">
             <Filters />
           </div>
           <Select

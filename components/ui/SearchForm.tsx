@@ -28,6 +28,7 @@ function SearchForm({
         value={service}
         onChange={setService}
         placeholder="Service"
+        className="w-60 md:w-72 lg:w-80"
       />
 
       {/* Submit */}

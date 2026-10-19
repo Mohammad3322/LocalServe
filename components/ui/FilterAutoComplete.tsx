@@ -18,6 +18,7 @@ type FilterAutoCompleteProps = {
   onChange?: (value: Key | null) => void;
   label?: string;
   placeholder: string;
+  className?: string;
 };
 
 export function FilterAutoComplete({
@@ -27,6 +28,7 @@ export function FilterAutoComplete({
   onChange,
   label,
   placeholder,
+  className,
 }: FilterAutoCompleteProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { contains } = useFilter({ sensitivity: "base" });
@@ -40,7 +42,7 @@ export function FilterAutoComplete({
 
   return (
     <Autocomplete
-      className="w-60 md:w-72 lg:w-80"
+      className={` ${className}`}
       placeholder={placeholder}
       selectionMode="single"
       value={value}

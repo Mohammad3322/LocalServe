@@ -98,6 +98,7 @@ function Filters() {
           value={service}
           onChange={(value) => updateParam("service", value)}
           placeholder="Service"
+          className="w-40 md:w-40 lg:w-56"
         />
         <FilterAutoComplete
           label="Where do you need it?"
@@ -105,6 +106,7 @@ function Filters() {
           value={location}
           onChange={(value) => updateParam("location", value)}
           placeholder="Location"
+          className="w-40 md:w-40 lg:w-56"
         />
       </div>
       <div className="flex items-start justify-start gap-5">
