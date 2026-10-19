@@ -19,7 +19,7 @@ export default function PriceFilter({ value, onChange }: PriceFilterProps) {
         minimumFractionDigits: 0,
         maximumFractionDigits: 0,
       }}
-      maxValue={5000}
+      maxValue={3000}
       minValue={0}
       step={5}
       orientation="vertical"

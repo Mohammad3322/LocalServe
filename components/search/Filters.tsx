@@ -35,7 +35,7 @@ function Filters() {
 
   const priceFromUrl = searchParams.get("price");
 
-  const DEFAULT_PRICE = [0, 5000] as [number, number];
+  const DEFAULT_PRICE = [0, 3000] as [number, number];
 
   const confirmedPrice = priceFromUrl
     ? (priceFromUrl.split("-").map(Number) as [number, number])
