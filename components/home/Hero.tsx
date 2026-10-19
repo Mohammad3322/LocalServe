@@ -23,7 +23,7 @@ export function Hero() {
             Trusted local professionals
           </div> */}
 
-          <div className="self-start rounded-4xl rounded-br-none p-5">
+          <div className="rounded-4xl rounded-br-none p-5">
             <h1 className="text-surface text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
               Find trusted professionals
             </h1>

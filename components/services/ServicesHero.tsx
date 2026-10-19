@@ -2,22 +2,32 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { services } from "@/lib/data/seed/generate";
 import SearchForm from "../ui/SearchForm";
 import { Key } from "@heroui/react";
-
-const servicesSet = [...new Set(services.map((s) => s.title))];
 
 export function ServicesHero() {
   const router = useRouter();
   const [service, setService] = useState<Key | null>("");
 
+  // function handleSearch() {
+  //   if (!service) {
+  //     router.push(`/services`);
+  //   } else {
+  //     const StringService = service.toString();
+  //     const params = new URLSearchParams({ service: StringService });
+  //     router.push(`/services?${params.toString()}#services`);
+  //   }
+  // }
   function handleSearch() {
-    const trimmed = service?.toString().trim();
-    if (!trimmed) return;
+    const params = new URLSearchParams();
 
-    const params = new URLSearchParams({ service: trimmed });
-    router.push(`/services?${params.toString()}#services`);
+    if (service) {
+      params.set("service", service.toString());
+    }
+
+    const query = params.toString();
+
+    router.push(query ? `/services?${query}#serviceResults` : "/services");
   }
 
   return (
@@ -36,7 +46,6 @@ export function ServicesHero() {
           <div className="mx-auto mt-8 flex max-w-xl flex-col items-end justify-end gap-3 sm:flex-row">
             <SearchForm
               type="services"
-              servicesSet={servicesSet}
               service={service}
               setService={setService}
               handleSearch={handleSearch}

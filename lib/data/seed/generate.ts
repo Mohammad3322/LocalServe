@@ -435,6 +435,7 @@ function buildSeedData(): SeedData {
       const priceVariance = between(-4, 4) * 500;
 
       services.push({
+        key: template.key,
         id: serviceId,
         slug: template.slug,
         providerId: id,

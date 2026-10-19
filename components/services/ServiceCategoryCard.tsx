@@ -6,7 +6,7 @@ type ServiceCategoryCardProps = {
   title: string;
   description: string;
   slug: string;
-  services: string[];
+  servicesList: string[];
 };
 
 const icons = {
@@ -19,7 +19,7 @@ export function ServiceCategoryCard({
   title,
   description,
   slug,
-  services,
+  servicesList,
 }: ServiceCategoryCardProps) {
   const Icon = icons[slug as keyof typeof icons] ?? ShieldCheck;
 
@@ -33,25 +33,27 @@ export function ServiceCategoryCard({
           <Icon className="size-6" />
         </div>
 
-        <h3 className="text-text-primary mt-5 text-xl font-semibold">
-          {title}
-        </h3>
+        <div className="flex h-full flex-col">
+          <h3 className="text-text-primary mt-5 text-xl font-semibold">
+            {title}
+          </h3>
 
-        <p className="text-text-secondary mt-2 text-sm leading-6">
-          {description}
-        </p>
+          <p className="text-text-secondary mt-2 text-sm leading-6">
+            {description}
+          </p>
 
-        <ul className="mt-6 space-y-3">
-          {services.map((service) => (
-            <li
-              key={service}
-              className="text-text-secondary flex items-start gap-2 text-sm"
-            >
-              <CheckCircle2 className="text-brand-600 mt-0.5 size-4 shrink-0" />
-              <span>{service}</span>
-            </li>
-          ))}
-        </ul>
+          <ul className="mt-6 space-y-3">
+            {servicesList.map((service) => (
+              <li
+                key={service}
+                className="text-text-secondary flex items-start gap-2 text-sm"
+              >
+                <CheckCircle2 className="text-brand-600 mt-0.5 size-4 shrink-0" />
+                <span>{service}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
 
         <Link
           href={`/services/${slug}`}

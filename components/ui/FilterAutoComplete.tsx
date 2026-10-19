@@ -13,14 +13,16 @@ import { useState } from "react";
 
 type FilterAutoCompleteProps = {
   List: string[];
+  objectList?: { id: string; title: string; category: string }[];
   value: Key | null;
-  onChange: (value: Key | null) => void;
+  onChange?: (value: Key | null) => void;
   label?: string;
   placeholder: string;
 };
 
 export function FilterAutoComplete({
   List,
+  objectList,
   value,
   onChange,
   label,
@@ -44,7 +46,7 @@ export function FilterAutoComplete({
       value={value}
       onChange={onChange}
     >
-      <Label className="text-surface text-center font-semibold">{label}</Label>
+      <Label className="text-surface text-start font-semibold">{label}</Label>
       <Autocomplete.Trigger>
         <Autocomplete.Value />
         <Autocomplete.ClearButton />
@@ -71,12 +73,23 @@ export function FilterAutoComplete({
               </EmptyState>
             )}
           >
-            {List.map((item) => (
-              <ListBox.Item key={item} id={item} textValue={item}>
-                <Label>{item}</Label>
-                <ListBox.ItemIndicator />
-              </ListBox.Item>
-            ))}
+            {objectList
+              ? objectList.map((item) => (
+                  <ListBox.Item
+                    key={item.id}
+                    id={item.id}
+                    textValue={item.title}
+                  >
+                    <Label>{item.title}</Label>
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))
+              : List.map((item) => (
+                  <ListBox.Item key={item} id={item} textValue={item}>
+                    <Label>{item}</Label>
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
           </ListBox>
         </Autocomplete.Filter>
       </Autocomplete.Popover>

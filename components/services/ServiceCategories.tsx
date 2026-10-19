@@ -2,6 +2,7 @@ import { serviceCategories } from "@/lib/data/seed/categories";
 import { ServiceCategoryCard } from "./ServiceCategoryCard";
 import { services } from "@/lib/data/seed/generate";
 import { SearchServiceResults } from "./SearchServiceResults";
+import { servicesSet } from "@/lib/data/seed/sevicesSet";
 
 type ServiceCategoriesProps = {
   serviceQuery?: string;
@@ -9,9 +10,7 @@ type ServiceCategoriesProps = {
 
 export function ServiceCategories({ serviceQuery }: ServiceCategoriesProps) {
   const filteredServices = serviceQuery
-    ? services.filter((s) =>
-        s.title.toLowerCase().includes(serviceQuery.toLowerCase()),
-      )
+    ? services.filter((s) => s.key.includes(serviceQuery.toLowerCase()))
     : null;
 
   if (serviceQuery && filteredServices) {
@@ -33,9 +32,18 @@ export function ServiceCategories({ serviceQuery }: ServiceCategoriesProps) {
         </div>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-3">
-          {serviceCategories.map((category) => (
-            <ServiceCategoryCard key={category.slug} {...category} />
-          ))}
+          {serviceCategories.map((category) => {
+            const servicesList = servicesSet
+              .filter((s) => s.category === category.id)
+              .map((s) => s.title);
+            return (
+              <ServiceCategoryCard
+                key={category.slug}
+                servicesList={servicesList}
+                {...category}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

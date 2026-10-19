@@ -2,10 +2,11 @@ import MyButton from "./MyButton";
 import { Search } from "lucide-react";
 import { Key } from "@heroui/react";
 import SearchInput from "./SearchInput";
+import { servicesSet } from "@/lib/data/seed/sevicesSet";
+import { FilterAutoComplete } from "./FilterAutoComplete";
 
 type SearchFormProps = {
   type?: "services";
-  servicesSet: string[];
   service: Key | null;
   setService: (value: Key | null) => void;
   handleSearch: () => void;
@@ -13,22 +14,21 @@ type SearchFormProps = {
 
 function SearchForm({
   type,
-  servicesSet,
   service,
   setService,
-
   handleSearch,
 }: SearchFormProps) {
+  const servicesTitels = servicesSet.map((service) => service.title);
+
   return (
     <div className="flex w-full flex-col items-center justify-center gap-5 md:flex-row md:items-end">
-      <SearchInput
-        label="What service do you need?"
-        labelSize="lg"
-        List={servicesSet}
-        inputValue={service?.toString()}
-        onInputChange={setService}
-        placeholder="Search Sevice"
-        className="max-w-96"
+      <FilterAutoComplete
+        label="What sevice do you need?"
+        List={servicesTitels}
+        objectList={servicesSet}
+        value={service}
+        onChange={setService}
+        placeholder="Service"
       />
 
       {/* Submit */}

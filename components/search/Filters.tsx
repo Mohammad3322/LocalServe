@@ -3,10 +3,12 @@
 import { Checkbox, Key } from "@heroui/react";
 import { FilterAutoComplete } from "../ui/FilterAutoComplete";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { locations, services } from "@/lib/data/seed/generate";
+import { locations } from "@/lib/data/seed/generate";
 import PriceFilter from "../ui/PriceFilter";
 import { useState } from "react";
 import MyModal from "../ui/MyModal";
+import { FunnelX } from "lucide-react";
+import { servicesSet } from "@/lib/data/seed/sevicesSet";
 
 function Filters() {
   const router = useRouter();
@@ -15,15 +17,13 @@ function Filters() {
 
   const category = searchParams.get("category") ?? "";
 
-  const servicesSet = category
-    ? [
-        ...new Set(
-          services
-            .filter((service) => service.category === category)
-            .map((s) => s.title),
-        ),
-      ]
-    : [...new Set(services.map((s) => s.title))];
+  const servicesList = category
+    ? servicesSet
+        .filter((service) => service.category === category)
+        .map((s) => s)
+    : servicesSet.map((s) => s);
+
+  const servicesTitels = servicesList.map((service) => service.title);
 
   const service = searchParams.get("service") ?? null;
 
@@ -35,7 +35,7 @@ function Filters() {
 
   const priceFromUrl = searchParams.get("price");
 
-  const DEFAULT_PRICE = [0, 2000] as [number, number];
+  const DEFAULT_PRICE = [0, 5000] as [number, number];
 
   const confirmedPrice = priceFromUrl
     ? (priceFromUrl.split("-").map(Number) as [number, number])
@@ -44,8 +44,6 @@ function Filters() {
   const [isPriceModalOpen, setIsPriceModalOpen] = useState(false);
 
   const [tempPrice, setTempPrice] = useState<number[]>(confirmedPrice);
-
-  //   const [localPrice, setLocalPrice] = useState<number[]>(defaultRange);
 
   function updateParam(key: string, value: Key | null) {
     const params = new URLSearchParams(searchParams.toString());
@@ -78,24 +76,25 @@ function Filters() {
     updateParam(key, value ? "true" : null);
   }
 
-  //   function clearFilters() {
-  //     const params = new URLSearchParams(searchParams.toString());
+  function clearFilters() {
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("service");
+    params.delete("location");
+    params.delete("price");
+    params.delete("availability");
 
-  //     params.delete("category");
-  //     params.delete("price");
-  //     params.delete("availability");
+    params.set("page", "1");
 
-  //     params.set("page", "1");
-
-  //     router.push(`${pathname}?${params.toString()}`);
-  //   }
+    router.push(`${pathname}?${params.toString()}`);
+  }
 
   return (
     <div className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-end">
       <div className="flex justify-center gap-5">
         <FilterAutoComplete
-          label="Where do you need it?"
-          List={servicesSet}
+          label="What sevice do you need?"
+          List={servicesTitels}
+          objectList={servicesList}
           value={service}
           onChange={(value) => updateParam("service", value)}
           placeholder="Service"
@@ -110,7 +109,7 @@ function Filters() {
       </div>
       <div className="flex justify-center gap-5">
         <div className="flex flex-col gap-1">
-          <label className="text-surface text-center text-sm font-semibold">
+          <label className="text-surface text-sm font-semibold">
             Price range
           </label>
           <MyModal
@@ -142,6 +141,13 @@ function Filters() {
             </Checkbox.Content>
           </Checkbox>
         </div>
+      </div>
+      <div
+        onClick={clearFilters}
+        className="hover:bg-brand-500 flex flex-col items-end justify-end rounded-2xl p-1 transition-colors"
+      >
+        <label className="text-surface text-sm font-semibold">Clrear</label>
+        <FunnelX className="text-surface size-9" />
       </div>
     </div>
   );

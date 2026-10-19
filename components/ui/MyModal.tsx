@@ -17,7 +17,7 @@ export default function MyModal({
   onConfirm,
   onReset,
 
-  confirmLabel = "Open Modal",
+  confirmLabel = "Price Rang",
 }: PriceFilterModalProps) {
   return (
     <Modal>

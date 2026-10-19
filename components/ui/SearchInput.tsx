@@ -1,9 +1,10 @@
 import { ComboBox, Label, ListBox } from "@heroui/react";
 import MyInput from "./MyInput";
 import { DatabaseSearch, MapPinSearch } from "lucide-react";
+import { ServicesSet } from "@/lib/validation/servicesSet.schema";
 
 type SearchInputProps = {
-  List: string[];
+  servicesSet: ServicesSet[];
   inputValue: string | undefined;
   onInputChange: ((value: string) => void) | undefined;
   label: string;
@@ -14,7 +15,7 @@ type SearchInputProps = {
 };
 
 function SearchInput({
-  List,
+  servicesSet,
   inputValue,
   onInputChange,
   label,
@@ -56,9 +57,9 @@ function SearchInput({
 
         <ComboBox.Popover>
           <ListBox>
-            {List.map((item) => (
-              <ListBox.Item key={item} id={item} textValue={item}>
-                <Label>{item}</Label>
+            {servicesSet.map((item) => (
+              <ListBox.Item key={item.id} id={item.id} textValue={item.title}>
+                <Label>{item.title}</Label>
 
                 <ListBox.ItemIndicator />
               </ListBox.Item>

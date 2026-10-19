@@ -22,7 +22,7 @@ function getMatchingServiceIds(params: SearchParams): Set<string> {
   const matched = services.filter((service) => {
     // Filter by Service (title)
     if (params.service) {
-      if (!service.title.toLowerCase().includes(params.service)) return false;
+      if (!service.key.toLowerCase().includes(params.service)) return false;
     }
     // Filter by Category
     if (params.category) {
