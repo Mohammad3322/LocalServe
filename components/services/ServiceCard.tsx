@@ -12,7 +12,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
   const priceInDollars = Math.round(service.priceCents / 100);
 
   const searchParams = new URLSearchParams({
-    service: service.title,
+    service: service.key,
     category: service.category,
     price: `${priceInDollars}-${priceInDollars}`,
   });
