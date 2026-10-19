@@ -90,9 +90,9 @@ function Filters() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-end">
-      <div className="flex justify-center gap-5">
+      <div className="flex items-end justify-center gap-5">
         <FilterAutoComplete
-          label="What sevice do you need?"
+          label="Choose Service"
           List={servicesTitels}
           objectList={servicesList}
           value={service}
@@ -107,47 +107,49 @@ function Filters() {
           placeholder="Location"
         />
       </div>
-      <div className="flex justify-center gap-5">
-        <div className="flex flex-col gap-1">
-          <label className="text-surface text-sm font-semibold">
-            Price range
-          </label>
-          <MyModal
-            isOpen={isPriceModalOpen}
-            onOpenChange={handleOpenPriceModal}
-            onConfirm={handleConfirmPrice}
-            onReset={handleResetPrice}
-            confirmLabel={priceButtonLabel}
-          >
-            <PriceFilter value={tempPrice} onChange={setTempPrice} />
-          </MyModal>
-        </div>
+      <div className="flex items-start justify-start gap-5">
+        <div className="flex justify-center gap-5">
+          <div className="flex flex-col gap-1">
+            <label className="text-surface text-sm font-semibold">
+              Price range
+            </label>
+            <MyModal
+              isOpen={isPriceModalOpen}
+              onOpenChange={handleOpenPriceModal}
+              onConfirm={handleConfirmPrice}
+              onReset={handleResetPrice}
+              confirmLabel={priceButtonLabel}
+            >
+              <PriceFilter value={tempPrice} onChange={setTempPrice} />
+            </MyModal>
+          </div>
 
-        <div>
-          <Checkbox
-            id="available"
-            isSelected={availability}
-            onChange={(isSelected) =>
-              updateBooleanParam("availability", isSelected)
-            }
-          >
-            <Checkbox.Content className="flex flex-col gap-1">
-              <span className="text-surface text-sm font-semibold">
-                Available
-              </span>
-              <Checkbox.Control className="size-8">
-                <Checkbox.Indicator />
-              </Checkbox.Control>
-            </Checkbox.Content>
-          </Checkbox>
+          <div className="flex flex-col gap-1">
+            <Checkbox
+              id="available"
+              isSelected={availability}
+              onChange={(isSelected) =>
+                updateBooleanParam("availability", isSelected)
+              }
+            >
+              <Checkbox.Content className="flex flex-col gap-1">
+                <span className="text-surface text-sm font-semibold">
+                  Available
+                </span>
+                <Checkbox.Control className="size-8">
+                  <Checkbox.Indicator />
+                </Checkbox.Control>
+              </Checkbox.Content>
+            </Checkbox>
+          </div>
         </div>
-      </div>
-      <div
-        onClick={clearFilters}
-        className="hover:bg-brand-500 flex flex-col items-end justify-end rounded-2xl p-1 transition-colors"
-      >
-        <label className="text-surface text-sm font-semibold">Clrear</label>
-        <FunnelX className="text-surface size-9" />
+        <div
+          onClick={clearFilters}
+          className="hover:bg-brand-500 flex flex-col items-start justify-start rounded-2xl transition-colors"
+        >
+          <label className="text-surface text-sm font-semibold">Clrear</label>
+          <FunnelX className="text-surface size-9" />
+        </div>
       </div>
     </div>
   );
