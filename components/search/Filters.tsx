@@ -90,7 +90,7 @@ function Filters() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-5 md:flex-row md:items-end">
-      <div className="flex items-end justify-center gap-5">
+      <div className="flex items-end justify-center gap-5 p-1">
         <FilterAutoComplete
           label="Choose Service"
           List={servicesTitels}
@@ -109,7 +109,7 @@ function Filters() {
       </div>
       <div className="flex items-start justify-start gap-5">
         <div className="flex justify-center gap-5">
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 p-1">
             <label className="text-surface text-sm font-semibold">
               Price range
             </label>
@@ -124,7 +124,7 @@ function Filters() {
             </MyModal>
           </div>
 
-          <div className="flex flex-col gap-1">
+          <div className="flex flex-col gap-1 p-1">
             <Checkbox
               id="available"
               isSelected={availability}
@@ -145,7 +145,7 @@ function Filters() {
         </div>
         <div
           onClick={clearFilters}
-          className="hover:bg-brand-500 flex flex-col items-start justify-start rounded-2xl transition-colors"
+          className="hover:bg-brand-500 flex cursor-pointer flex-col items-start justify-start rounded-2xl p-1 transition-colors"
         >
           <label className="text-surface text-sm font-semibold">Clrear</label>
           <FunnelX className="text-surface size-9" />
