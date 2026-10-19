@@ -1,7 +1,6 @@
 import MyButton from "./MyButton";
 import { Search } from "lucide-react";
 import { Key } from "@heroui/react";
-import SearchInput from "./SearchInput";
 import { servicesSet } from "@/lib/data/seed/sevicesSet";
 import { FilterAutoComplete } from "./FilterAutoComplete";
 
