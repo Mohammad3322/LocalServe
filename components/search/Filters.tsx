@@ -147,7 +147,7 @@ function Filters() {
           onClick={clearFilters}
           className="hover:bg-brand-500 flex cursor-pointer flex-col items-start justify-start rounded-2xl p-1 transition-colors"
         >
-          <label className="text-surface text-sm font-semibold">Clrear</label>
+          <label className="text-surface text-sm font-semibold">Clear</label>
           <FunnelX className="text-surface size-9" />
         </div>
       </div>

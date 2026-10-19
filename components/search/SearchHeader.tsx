@@ -27,8 +27,8 @@ export function SearchHeader() {
   }
 
   return (
-    <section className="border-border bg-brand-700 border-b">
-      <div className="md:flex-column mx-auto flex w-full max-w-7xl flex-col items-center justify-center gap-3 px-4 pb-6 sm:px-6 lg:px-8">
+    <section className="border-border flex flex-col items-center justify-center gap-5 border-b">
+      <div className="md:flex-column bg-brand-700 mx-auto flex w-full flex-col items-center justify-center gap-3 px-4 pt-3 pb-3 sm:px-6 lg:px-8">
         {/* <div className="flex flex-col justify-center space-y-2 text-center">
           <h1 className="text-surface mt-4 text-2xl font-semibold sm:text-3xl">
             Find a Professional
@@ -43,9 +43,10 @@ export function SearchHeader() {
           onSelect={handelSelectCategory}
           selectedCategory={selectedCategory}
         />
-        <Filters />
-        <div className="flex flex-col gap-5"></div>
       </div>
+      {/* <div className="bg-brand-700 w-fit rounded-4xl px-5 py-2">
+        <Filters />
+      </div> */}
     </section>
   );
 }

@@ -7,6 +7,7 @@ import { searchProviders } from "@/lib/services/search";
 import { searchParamsSchema } from "@/lib/validation/search.schema";
 import { Pagination } from "./Pagination";
 import ProviderCard from "../ui/ProviderCard";
+import Filters from "./Filters";
 
 const sortOptions = [
   {
@@ -58,24 +59,28 @@ export function SearchResults() {
 
   return (
     <section id="searchResults" className="w-full">
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-        <div>
+      <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-32">
           <h2 className="text-text-primary text-lg font-semibold">
             Search Results
           </h2>
 
           <p className="text-text-secondary mt-1 text-sm">
-            {searchResult.total} professionals found
+            {searchResult.total} professionals
           </p>
         </div>
 
+        <div className="bg-brand-700 w-fit rounded-4xl px-5 py-2">
+          <Filters />
+        </div>
+
         <Select
-          className="w-full sm:w-56"
+          className="bg-brand-700 w-full rounded-3xl px-3 py-2.5 sm:w-56"
           value={selectedSort}
           onChange={updateSort}
           aria-label="Sort search results"
         >
-          <Label>Sort by</Label>
+          <Label className="text-surface font-semibold">Sort by</Label>
 
           <Select.Trigger>
             <Select.Value />
