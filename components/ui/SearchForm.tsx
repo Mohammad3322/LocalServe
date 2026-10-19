@@ -21,7 +21,7 @@ function SearchForm({
   const servicesTitels = servicesSet.map((service) => service.title);
 
   return (
-    <div className="flex w-full flex-col items-center justify-center gap-5 md:flex-row md:items-end">
+    <div className="flex w-full flex-col items-end justify-center gap-5 md:flex-row md:items-end">
       <FilterAutoComplete
         label="What sevice do you need?"
         List={servicesTitels}
