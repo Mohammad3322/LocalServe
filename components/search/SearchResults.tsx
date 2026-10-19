@@ -59,7 +59,41 @@ export function SearchResults() {
 
   return (
     <section id="searchResults" className="w-full">
-      <div className="mb-12 flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+      <div className="mb-12 flex flex-col items-center gap-4 lg:flex-row-reverse lg:items-end lg:justify-center">
+        <div className="flex w-full flex-col items-center justify-center gap-3 lg:flex-row lg:gap-5">
+          <div className="bg-brand-700 w-fit rounded-4xl px-5 py-2">
+            <Filters />
+          </div>
+          <Select
+            className="bg-brand-700 w-full rounded-3xl px-3 py-2.5 md:w-56"
+            value={selectedSort}
+            onChange={updateSort}
+            aria-label="Sort search results"
+          >
+            <Label className="text-surface font-semibold">Sort by</Label>
+
+            <Select.Trigger>
+              <Select.Value />
+              <Select.Indicator />
+            </Select.Trigger>
+
+            <Select.Popover>
+              <ListBox>
+                {sortOptions.map((option) => (
+                  <ListBox.Item
+                    key={option.id}
+                    id={option.id}
+                    textValue={option.label}
+                  >
+                    <Label>{option.label}</Label>
+                    <ListBox.ItemIndicator />
+                  </ListBox.Item>
+                ))}
+              </ListBox>
+            </Select.Popover>
+          </Select>
+        </div>
+
         <div className="min-w-32">
           <h2 className="text-text-primary text-lg font-semibold">
             Search Results
@@ -69,39 +103,6 @@ export function SearchResults() {
             {searchResult.total} professionals
           </p>
         </div>
-
-        <div className="bg-brand-700 w-fit rounded-4xl px-5 py-2">
-          <Filters />
-        </div>
-
-        <Select
-          className="bg-brand-700 w-full rounded-3xl px-3 py-2.5 sm:w-56"
-          value={selectedSort}
-          onChange={updateSort}
-          aria-label="Sort search results"
-        >
-          <Label className="text-surface font-semibold">Sort by</Label>
-
-          <Select.Trigger>
-            <Select.Value />
-            <Select.Indicator />
-          </Select.Trigger>
-
-          <Select.Popover>
-            <ListBox>
-              {sortOptions.map((option) => (
-                <ListBox.Item
-                  key={option.id}
-                  id={option.id}
-                  textValue={option.label}
-                >
-                  <Label>{option.label}</Label>
-                  <ListBox.ItemIndicator />
-                </ListBox.Item>
-              ))}
-            </ListBox>
-          </Select.Popover>
-        </Select>
       </div>
 
       <div className="grid grid-cols-1 gap-5 space-y-4 md:grid-cols-2 lg:grid-cols-3">

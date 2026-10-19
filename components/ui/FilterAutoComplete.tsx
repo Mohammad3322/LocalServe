@@ -40,7 +40,7 @@ export function FilterAutoComplete({
 
   return (
     <Autocomplete
-      className="w-[256px] max-w-40 md:max-w-80 lg:max-w-96"
+      className="w-40 md:w-40 lg:max-w-60"
       placeholder={placeholder}
       selectionMode="single"
       value={value}

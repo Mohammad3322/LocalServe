@@ -3,7 +3,6 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import CategoriesBar from "../ui/CategoriesBar";
-import Filters from "./Filters";
 
 export function SearchHeader() {
   const router = useRouter();
@@ -44,9 +43,6 @@ export function SearchHeader() {
           selectedCategory={selectedCategory}
         />
       </div>
-      {/* <div className="bg-brand-700 w-fit rounded-4xl px-5 py-2">
-        <Filters />
-      </div> */}
     </section>
   );
 }
