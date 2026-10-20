@@ -4,13 +4,15 @@
 
 | Check                                  | Current information                                             |
 | -------------------------------------- | --------------------------------------------------------------- |
-| Jest                                   | 20 suites and 162 tests. All passed after the availability fix. |
-| Playwright                             | 4 tests across 2 specs. `_tmp-overflow.spec.ts` is not counted.  |
+| Jest                                   | 19 suites and 145 tests. All passing (last verified 2026-10-20). |
+| Playwright                             | 4 tests across 2 specs. All passing (last verified 2026-10-20).  |
 | TypeScript, lint, and production build | no errors or warns.                                             |
 
 The current browser tests cover the full booking journey and slot-conflict
-recovery. The temporary overflow diagnostic is not a mobile booking test, so
-the mobile journey is still a required.
+recovery. There is still no mobile journey, so that remains a required gap.
+Three defects are still open (see [bug reports](./bug-reports.md)): the category
+tiles and Clear control are not keyboard reachable, changing category does not
+reset the current page number, and a misspelled module filename.
 
 ## Current SEO implementation
 

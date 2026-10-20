@@ -7,7 +7,7 @@
 | Stack         | Next.js 16.3.5, React 19.2.8, TypeScript 5     |
 | Unit / UI     | Jest 30 + React Testing Library (jsdom)        |
 | Browser tests | Playwright 1.63 (Chromium)                     |
-| Node          | v24.18.0                                       |
+| Node          | v24.21.0                                       |
 | Machine       | Windows, PowerShell                            |
 
 ---
@@ -50,7 +50,7 @@ I cover the parts a user actually touches:
 | Type          | What it is for                         | Tool                          | Count                 |
 | ------------- | -------------------------------------- | ----------------------------- | --------------------- |
 | Static checks | Catch problems before anything runs    | `tsc`, `eslint`, `next build` | 3 gates               |
-| Jest          | Domain logic, UI behaviour, real flows | Jest + RTL                    | 20 suites / 162 tests |
+| Jest          | Domain logic, UI behaviour, real flows | Jest + RTL                    | 19 suites / 145 tests |
 | E2E           | Full journeys in a real browser        | Playwright                    | 2 specs / 4 tests     |
 | Manual        | What automation cannot check           | `docs/test-cases.md`          | 43 cases              |
 
@@ -58,8 +58,8 @@ I cover the parts a user actually touches:
 
 | Area             | What I check                                                  |
 | ---------------- | ------------------------------------------------------------- |
-| Home search      | Two inputs, suggestions, submit goes to `/search`             |
-| Search results   | Category / rating / availability filters, sort, paginate      |
+| Home search      | One service input, suggestions, submit goes to `/search?service=…` |
+| Search results   | Category tiles, service / location / price / availability filters, sort, paginate |
 | Provider profile | Header, services, reviews, availability, book button          |
 | Availability     | Slots per provider, disabled days, empty and error states     |
 | Booking wizard   | Each step, validation, review, confirmation                   |
@@ -79,7 +79,7 @@ I cover the parts a user actually touches:
 | Width  | Device       | Checked by                              |
 | ------ | ------------ | --------------------------------------- |
 | 360px  | Small phone  | Manual only                             |
-| 390px  | Phone        | Manual, plus a throwaway overflow check |
+| 390px  | Phone        | Manual only                             |
 | 768px  | Tablet       | Manual only                             |
 | 1024px | Small laptop | Manual only                             |
 | 1280px | Desktop      | Playwright default viewport             |
@@ -88,16 +88,18 @@ I cover the parts a user actually touches:
 
 What I did:
 
-- Gave the two search fields different accessible names (they shared one before).
+- Gave the service and location filter controls different accessible names
+  (they shared one before).
 - Made each calendar day announce a full date, not just the day number.
 - Set `aria-disabled` on days with no slots so they cannot be picked.
-- Checked the sort and filter controls work from the keyboard.
+- Checked the main sort and filter inputs work from the keyboard. The category
+  tiles and the Clear control do not; that gap is open in bug reports.
 
 ## 8. SEO checks
 
 | Check                                     | Result                                       |
 | ----------------------------------------- | -------------------------------------------- |
-| Public pages render on the server         | Pass — home, services, about, FAQ are static |
+| Public pages render on the server         | Pass — home, about, FAQ, search are prerendered; services and profiles render per request |
 | Each provider page has its own metadata   | Done with `generateMetadata`                 |
 | Each service page has its own metadata    | Done with `generateMetadata`                 |
 | `sitemap.xml` exists                      | Done in `app/sitemap.ts`                     |
@@ -110,7 +112,7 @@ What I did:
 
 Honestly, I have nothing here yet.
 
-## 11. When I start and stop
+## 10. When I start and stop
 
 I start testing a change when:
 

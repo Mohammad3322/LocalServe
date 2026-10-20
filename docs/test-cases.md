@@ -11,7 +11,7 @@ Covers navigation, search, filters, provider profiles, availability, booking, fa
 
 | ID    | Steps                                        | Expected                                                                                      | Status |
 | ----- | -------------------------------------------- | --------------------------------------------------------------------------------------------- | ------ |
-| TC-01 | Open `/`.                                    | Homepage shows hero, popular services, featured providers, how it works, FAQ preview and CTA. | Pass   |
+| TC-01 | Open `/`.                                    | Homepage shows hero, popular services, featured providers, how it works, trust section, FAQ preview and CTA. | Pass   |
 | TC-02 | Click **Services** in the header.            | Goes to `/services` and lists every service.                                                  | Pass   |
 | TC-03 | Click a service in the directory.            | Goes to the service page and the slug resolves.                                               | Pass   |
 | TC-04 | Click a provider card.                       | Goes to the public provider page.                                                             | Pass   |
@@ -23,13 +23,13 @@ Covers navigation, search, filters, provider profiles, availability, booking, fa
 
 | ID    | Steps                                    | Expected                                       | Status |
 | ----- | ---------------------------------------- | ---------------------------------------------- | ------ |
-| TC-06 | On `/`, search a service and a location. | Goes to `/search` with both in the URL.        | Pass   |
-| TC-07 | Search only a service.                   | `service` is in the URL, no `location`.        | Pass   |
-| TC-08 | Search only a location.                  | `location` is in the URL, no `service`.        | Pass   |
-| TC-09 | Submit with both fields empty.           | Goes to bare `/search`.                        | Pass   |
+| TC-06 | On `/`, choose a service and search.         | Goes to `/search?service=…` with the choice in the URL.   | Pass   |
+| TC-07 | Pick a service from the suggestions.         | `service` carries the service id, not the label.          | Pass   |
+| TC-08 | On `/search`, set only a location filter.    | `location` is in the URL and results narrow to that area. | Pass   |
+| TC-09 | Submit with no service chosen.               | Goes to bare `/search`.                                  | Pass   |
 | TC-10 | Search a service that matches nothing.   | Shows a clear empty state.                     | Pass   |
-| TC-11 | Pick a category filter.                  | Results narrow, `category` appears in the URL. | Pass   |
-| TC-12 | Set minimum rating to 4.                 | Only providers rated 4+ remain.                | Pass   |
+| TC-11 | Pick a category tile on `/search`.          | Results narrow, `category` appears in the URL. | Pass   |
+| TC-12 | Set a price range on `/search`.             | Only providers within the range remain, `price` in the URL. | Pass   |
 | TC-13 | Hide unavailable providers.              | Filter applies and appears in the URL.         | Pass   |
 | TC-14 | Change the sort order.                   | Results reorder, `sort` updates in the URL.    | Pass   |
 | TC-15 | Copy a filtered URL into a new tab.      | Same results render from the URL alone.        | Pass   |
@@ -99,7 +99,7 @@ Covers navigation, search, filters, provider profiles, availability, booking, fa
 
 | ID    | Steps                                                      | Expected                                                 | Status |
 | ----- | ---------------------------------------------------------- | -------------------------------------------------------- | ------ |
-| TC-40 | Tab to the search inputs on the homepage.                  | Service and location are announced with different names. | Pass   |
+| TC-40 | Tab to the filter controls on `/search`.      | Service and location are announced with different names. | Pass   |
 | TC-41 | Tab to the sort control on `/search` and use the keyboard. | Receives focus, can be applied with Enter.               | Pass   |
 
 ---

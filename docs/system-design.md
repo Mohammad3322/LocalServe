@@ -27,24 +27,25 @@ store. It is a working project demo, not a production booking service.
 | NFR-01 | Keep public pages fast                       |
 | NFR-02 | Provide crawlable public metadata and routes |
 | NFR-03 | Support responsive layouts                   |
-| NFR-05 | Recover from common request failures         |
-| NFR-06 | Keep availability data fresh                 |
-| NFR-07 | Limit unnecessary client JavaScript          |
-| NFR-08 | Handle customer details appropriately        |
+| NFR-04 | Recover from common request failures         |
+| NFR-05 | Keep availability data fresh                 |
+| NFR-06 | Limit unnecessary client JavaScript          |
+| NFR-07 | Handle customer details appropriately        |
 
 ## Main routes
 
 | Route                                     | Purpose                                                      |
 | ----------------------------------------- | ------------------------------------------------------------ |
 | `/`                                       | Landing page and search form                                 |
-| `/services` and `/services/[serviceSlug]` | Browse service categories                                    |
+| `/about` and `/faq`                       | Static marketing pages                                       |
+| `/services` and `/services/[categorySlug]` | Browse service categories                                   |
 | `/search`                                 | Filter and sort provider results                             |
 | `/providers/[providerSlug]`               | Read a provider profile, reviews, services, and availability |
 | `/book/[providerId]`                      | Choose a service, date, and time                             |
 | `/book/[providerId]/details`              | Enter customer details                                       |
 | `/book/[providerId]/review`               | Review and submit a booking                                  |
 | `/booking/confirmation/[bookingId]`       | Show a booking confirmation                                  |
-| `/api/provider/search`                    | Return matching providers                                    |
+| `/api/providers/search`                   | Return matching providers (not called by the current UI)     |
 | `/api/availability`                       | Return current availability for a provider                   |
 | `/api/bookings`                           | Validate and create a booking                                |
 | `/api/bookings/[bookingId]`               | Look up a booking for confirmation                           |
@@ -71,10 +72,12 @@ does not need to know how the seed arrays are generated.
 
 ### Search and public pages
 
-The home search builds URL query parameters and navigates to `/search`. Search
-filters and sorting are represented in the URL, so the current result view can
-be shared or restored by using browser navigation. The search API validates
-those parameters before calling the search service.
+The home search builds a URL query parameter and navigates to `/search`. Search
+filters, sorting, and pagination are represented in the URL, so the current
+result view can be shared or restored with browser navigation. The search page
+parses those parameters with a Zod schema and calls the search service directly
+in the browser; the `/api/providers/search` handler validates the same
+parameters for API clients but is not called by the current UI.
 
 Public provider and service pages read from the generated seed data on the
 server. Provider profiles use dynamic metadata and LocalBusiness structured
@@ -134,8 +137,9 @@ cross-instance slot lock. A production version would need persistent storage,
 an atomic availability check, authentication/authorization where required, and
 monitoring.
 
-The accessibility and responsive-design defects found during QA are all
-recorded and fixed in [bug reports](./bug-reports.md). The gaps that remain are
-unverifiable rather than unfixed: no accessibility audit has been run, there is
-no mobile end-to-end journey, and performance has not been measured against a
-budget.
+The accessibility and responsive-design defects found during QA are recorded in
+[bug reports](./bug-reports.md). Most are fixed; the ones still open (keyboard-
+inaccessible category tiles and Clear control, a stale page number after a
+category change, a misspelled module filename) are listed there. Further gaps:
+no accessibility audit has been run, there is no mobile end-to-end journey, and
+performance has not been measured against a budget.

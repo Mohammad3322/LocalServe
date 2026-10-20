@@ -8,7 +8,7 @@ data, so these decisions are for a portfolio demo and not a production service.
 
 ### Search filters belong in the URL
 
-Search, location, category, rating, availability, sort order, and page are
+Service, location, category, price, availability, sort order, and page are
 represented as query parameters. That makes a result page easier to share and
 means Back and Forward can restore the view.
 
@@ -46,11 +46,11 @@ components.
 
 ## QA retrospective
 
-1. **Which testing method found the most defects?**The booking
+1. **Which testing method found the most defects?** The booking
    conflict E2E test did expose an important cross-page issue, and the Jest
    tests now cover metadata and request details.
 2. **Which booking defect was hardest to reproduce?** `BUG-004`: "Choose
-   Another Time" discarded the chosen service
+   Another Time" discarded the chosen service.
 3. **Which requirement was hardest to test?** Availability freshness. The slot
    response should not be reused from cache, so both the API response and the
    browser request need the right cache behavior.
@@ -67,5 +67,5 @@ components.
    to use.
 8. **What would change with real payments or accounts?** I would add durable
    server-side storage, account authorization, payment provider integration,
-   and tests for duplicate submissions, payment failures,and access to
+   and tests for duplicate submissions, payment failures, and access to
    booking details.
