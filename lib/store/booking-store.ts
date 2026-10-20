@@ -4,7 +4,7 @@ import type {
   BookingResponse,
   CustomerDetails,
 } from "@/lib/validation/booking.schema";
-import { persist } from "zustand/middleware";
+import { createJSONStorage, persist } from "zustand/middleware";
 
 type BookingState = {
   providerId?: string;
@@ -70,6 +70,7 @@ export const useBookingStore = create<BookingState>()(
     }),
     {
       name: "booking-storage",
+      storage: createJSONStorage(() => sessionStorage),
     },
   ),
 );
