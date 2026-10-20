@@ -118,7 +118,7 @@ export function BookingDateTime({
     router.push(`/book/${provider.id}/details`);
   };
 
-  const backUrl = `/book/${provider.id}`;
+  const backUrl = `/providers/${provider.slug}`;
 
   if (!selectedService) {
     return (
