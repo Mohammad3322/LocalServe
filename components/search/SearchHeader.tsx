@@ -17,6 +17,7 @@ export function SearchHeader() {
     const param = new URLSearchParams(searchParams.toString());
     if (category.trim()) {
       param.set("category", category.trim());
+      param.set("page", "1");
       param.delete("service");
     } else {
       param.delete("category");

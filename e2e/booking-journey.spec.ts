@@ -1,15 +1,11 @@
 import { expect, test } from "@playwright/test";
 
-const pickComboBox = async (
+const pickService = async (
   page: import("@playwright/test").Page,
-  index: number,
-  value: string,
+  name: string,
 ) => {
-  const input = page.locator("input").nth(index);
-
-  await input.click();
-  await input.fill(value);
-  await input.press("Enter");
+  await page.locator('[data-slot="autocomplete-trigger"]').first().click();
+  await page.getByRole("option", { name }).click();
 };
 
 test("a visitor can search, pick a slot and receive a confirmed booking", async ({
@@ -18,12 +14,11 @@ test("a visitor can search, pick a slot and receive a confirmed booking", async 
   //  Search from the homepage
   await page.goto("/");
 
-  await pickComboBox(page, 0, "Solar Panel Installation");
-  await pickComboBox(page, 1, "Paris");
+  await pickService(page, "Solar Panel Installation");
 
-  await page.getByRole("button", { name: "Search" }).click();
+  await page.getByRole("button", { name: "Search for providers" }).click();
 
-  await expect(page).toHaveURL(/\/search\?/);
+  await expect(page).toHaveURL(/\/search\?service=/);
   await expect(
     page.getByRole("heading", { name: "Search Results" }),
   ).toBeVisible();
@@ -45,7 +40,7 @@ test("a visitor can search, pick a slot and receive a confirmed booking", async 
   await page.getByRole("link", { name: "Book Service" }).first().click();
 
   await expect(page).toHaveURL(/\/book\/.+\?service=/);
-  await expect(page.getByText("Loading availability...")).toBeHidden({
+  await expect(page.getByText("Loading available dates...")).toBeHidden({
     timeout: 30_000,
   });
 

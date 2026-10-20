@@ -22,7 +22,7 @@ function SearchForm({
   return (
     <div className="flex w-full flex-col items-end justify-center gap-5 md:flex-row md:items-end">
       <FilterAutoComplete
-        label="What sevice do you need?"
+        label="What service do you need?"
         List={servicesTitels}
         objectList={servicesSet}
         value={service}

@@ -46,8 +46,8 @@ describe("formatStringToDate", () => {
     expect(result?.toString()).toBe("2026-09-28");
   });
 
-  it("returns null for an empty value", () => {
-    expect(formatStringToDate("")).toBeNull();
+  it("returns undefined for an empty value", () => {
+    expect(formatStringToDate("")).toBeUndefined();
   });
 });
 

@@ -35,7 +35,7 @@ describe("SearchResults", () => {
     renderSearch("service=Solar");
 
     expect(
-      screen.getByText(new RegExp(`${expected.total} professionals? found`)),
+      screen.getByText(new RegExp(`${expected.total} professionals?`)),
     ).toBeInTheDocument();
 
     expect(
@@ -46,7 +46,7 @@ describe("SearchResults", () => {
   it("shows an empty state when no providers match", () => {
     renderSearch("location=Atlantis");
 
-    expect(screen.getByText(/0 professionals? found/)).toBeInTheDocument();
+    expect(screen.getByText(/0 professionals?/)).toBeInTheDocument();
 
     expect(
       screen.queryByRole("link", { name: /view profile/i }),
@@ -61,7 +61,7 @@ describe("SearchResults", () => {
     renderSearch("page=2");
 
     expect(
-      screen.getByText(new RegExp(`${expected.total} professionals? found`)),
+      screen.getByText(new RegExp(`${expected.total} professionals?`)),
     ).toBeInTheDocument();
 
     if (expected.items.length > 0) {

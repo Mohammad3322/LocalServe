@@ -11,23 +11,12 @@ jest.mock("next/navigation", () => ({
   useSearchParams: () => new URLSearchParams(currentSearch),
 }));
 
-const serviceInput = () => screen.getAllByRole("combobox")[0];
-const locationInput = () => screen.getAllByRole("combobox")[1];
+const pushedUrl = () => push.mock.calls.at(-1)![0] as string;
 
-const searchButton = () => screen.getByRole("button", { name: /search/i });
-
-const typeInto = async (
-  user: ReturnType<typeof userEvent.setup>,
-  input: () => HTMLElement,
-  text: string,
-) => {
-  await user.type(input(), text);
-  await user.keyboard("{Escape}");
-};
+const pushedPath = () => pushedUrl().split("?")[0];
 
 const pushedQuery = () => {
-  const pushed = push.mock.calls[0][0] as string;
-  const query = pushed.split("?")[1]?.split("#")[0] ?? "";
+  const query = pushedUrl().split("?")[1]?.split("#")[0] ?? "";
 
   return new URLSearchParams(query);
 };
@@ -38,32 +27,66 @@ beforeEach(() => {
 });
 
 describe("SearchHeader", () => {
-  it("submits the search while preserving filters and resetting pagination", async () => {
-    const user = userEvent.setup();
-    currentSearch = "page=4&sort=rating&rating=4";
-
+  it("offers every category alongside All", () => {
     render(<SearchHeader />);
-    await typeInto(user, serviceInput, "Solar");
-    await typeInto(user, locationInput, "Paris");
-    await user.click(searchButton());
 
-    const params = pushedQuery();
-    expect(params.get("service")).toBe("Solar");
-    expect(params.get("location")).toBe("Paris");
-    expect(params.get("page")).toBe("1");
-    expect(params.get("sort")).toBe("rating");
-    expect(params.get("rating")).toBe("4");
-    expect(push).toHaveBeenCalledWith(
-      expect.stringMatching(/^\/search\?.+#searchResults$/),
-    );
+    expect(
+      screen.getByRole("heading", { name: "All" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Solar Energy" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Security & Surveillance" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Electronic Services" }),
+    ).toBeInTheDocument();
   });
 
-  it("gives each search field an accessible name", () => {
+  it("selects a category, drops the service filter and keeps the other criteria", async () => {
+    const user = userEvent.setup();
+    currentSearch = "location=Paris&service=cctv-installation&page=3";
+
+    render(<SearchHeader />);
+    await user.click(screen.getByRole("heading", { name: "Solar Energy" }));
+
+    expect(push).toHaveBeenCalledTimes(1);
+    expect(pushedPath()).toBe("/search");
+
+    const params = pushedQuery();
+
+    expect(params.get("category")).toBe("solar-energy");
+    expect(params.get("service")).toBeNull();
+    expect(params.get("location")).toBe("Paris");
+  });
+
+  it("removes the category when All is selected", async () => {
+    const user = userEvent.setup();
+    currentSearch = "category=solar-energy&location=Paris";
+
+    render(<SearchHeader />);
+    await user.click(screen.getByRole("heading", { name: "All" }));
+
+    expect(pushedPath()).toBe("/search");
+
+    const params = pushedQuery();
+
+    expect(params.get("category")).toBeNull();
+    expect(params.get("location")).toBe("Paris");
+  });
+
+  it("highlights the category that is already in the URL", () => {
+    currentSearch = "category=security-surveillance";
+
     render(<SearchHeader />);
 
-    const [serviceBox, locationBox] = screen.getAllByRole("combobox");
-
-    expect(serviceBox).toHaveAccessibleName("What service do you need?");
-    expect(locationBox).toHaveAccessibleName("Where do you need it?");
+    expect(
+      screen.getByRole("heading", { name: "Security & Surveillance" })
+        .parentElement,
+    ).toHaveClass("bg-brand-500");
+    expect(
+      screen.getByRole("heading", { name: "Solar Energy" }).parentElement,
+    ).not.toHaveClass("bg-brand-500");
   });
 });
