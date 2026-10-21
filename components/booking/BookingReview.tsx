@@ -48,7 +48,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
   const customerName = customer?.customerName;
   const customerEmail = customer?.customerEmail;
   const customerPhone = customer?.customerPhone;
-  const notes = customer?.notes;
+  const customerNotes = customer?.customerNotes;
 
   useEffect(() => {
     if (!serviceId || !date || !time || !customer) {
@@ -92,7 +92,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
         customerName: customer.customerName,
         customerEmail: customer.customerEmail,
         customerPhone: customerPhone || undefined,
-        notes: notes || undefined,
+        customerNotes: customerNotes || undefined,
       });
 
       setConfirmedBooking(booking);
@@ -268,7 +268,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
                 </Card.Content>
               </Card>
 
-              {notes && (
+              {customerNotes && (
                 <Card
                   variant="default"
                   className="border-border bg-surface border shadow-sm"
@@ -279,7 +279,7 @@ export function BookingReview({ provider }: BookingReviewProps) {
                     </p>
 
                     <p className="text-text-primary mt-3 text-sm leading-6 whitespace-pre-wrap">
-                      {notes}
+                      {customerNotes}
                     </p>
                   </Card.Content>
                 </Card>

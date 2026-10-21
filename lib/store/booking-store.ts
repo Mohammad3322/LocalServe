@@ -12,6 +12,11 @@ type BookingState = {
   date?: string;
   time?: string;
 
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  customerNotes?: string;
+
   customer?: CustomerDetails;
 
   confirmedBooking?: BookingResponse;
@@ -22,6 +27,11 @@ type BookingState = {
     date: string;
     time: string;
   }) => void;
+
+  setCustomerName: (customerName: string) => void;
+  setCustomerEmail: (customerEmail: string) => void;
+  setCustomerPhone: (customerPhone: string) => void;
+  setCustomerNotes: (customerNotes: string) => void;
 
   setCustomer: (customer: CustomerDetails) => void;
 
@@ -37,7 +47,14 @@ export const useBookingStore = create<BookingState>()(
       serviceId: undefined,
       date: undefined,
       time: undefined,
+
+      customerName: undefined,
+      customerEmail: undefined,
+      customerPhone: undefined,
+      customerNotes: undefined,
+
       customer: undefined,
+
       confirmedBooking: undefined,
 
       setAppointment: (data) =>
@@ -46,6 +63,25 @@ export const useBookingStore = create<BookingState>()(
           serviceId: data.serviceId,
           date: data.date,
           time: data.time,
+        }),
+
+      setCustomerName: (customerName) =>
+        set({
+          customerName,
+        }),
+
+      setCustomerEmail: (customerEmail) =>
+        set({
+          customerEmail,
+        }),
+
+      setCustomerPhone: (customerPhone) =>
+        set({
+          customerPhone,
+        }),
+      setCustomerNotes: (customerNotes) =>
+        set({
+          customerNotes,
         }),
 
       setCustomer: (customer) =>
@@ -64,6 +100,10 @@ export const useBookingStore = create<BookingState>()(
           serviceId: undefined,
           date: undefined,
           time: undefined,
+          customerName: undefined,
+          customerEmail: undefined,
+          customerPhone: undefined,
+          customerNotes: undefined,
           customer: undefined,
           confirmedBooking: undefined,
         }),

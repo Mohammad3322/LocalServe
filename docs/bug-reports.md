@@ -16,7 +16,7 @@ application unusable; **High** — primary acquisition or booking workflow broke
 | BUG-006 | Both search fields shared one accessible name               | Medium   | **Fixed** |
 | BUG-007 | No `sitemap.xml` and no `robots.txt`                        | Medium   | **Fixed** |
 | BUG-008 | Booking wizard pages are indexable                          | Low      | **Fixed** |
-| BUG-009 | Changing category keeps the current page number             | Medium   | **Open**  |
+| BUG-009 | Changing category keeps the current page number             | Medium   | **Fixed** |
 | BUG-010 | Category tiles and Clear control are not keyboard reachable | Medium   | **Open**  |
 | BUG-011 | Misspelled module filename `lib/data/seed/sevicesSet.ts`    | Low      | **Open**  |
 

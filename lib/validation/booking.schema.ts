@@ -7,7 +7,7 @@ export const customerDetailsSchema = z.object({
 
   customerPhone: z.string().trim().optional(),
 
-  notes: z
+  customerNotes: z
     .string()
     .trim()
     .max(500, "Notes cannot exceed 500 characters")
@@ -26,13 +26,13 @@ export const createBookingSchema = z.object({
 
   time: z.string().min(1),
 
-  customerName: z.string().trim().min(2, "Name must be at least 2 characters"),
+  customerName: z.string().min(2, "Name must be at least 2 characters").trim(),
 
   customerEmail: z.email("Please enter a valid email address"),
 
   customerPhone: z.string().trim().optional(),
 
-  notes: z
+  customerNotes: z
     .string()
     .trim()
     .max(500, "Notes cannot exceed 500 characters")
@@ -61,7 +61,7 @@ export const bookingResponseSchema = z.object({
 
   customerPhone: z.string().optional(),
 
-  notes: z.string().optional(),
+  customerNotes: z.string().optional(),
 
   status: z.enum(["confirmed", "pending"]),
 });

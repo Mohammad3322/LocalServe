@@ -23,21 +23,20 @@ type BookingDetailsProps = {
 export function BookingDetails({ provider }: BookingDetailsProps) {
   const router = useRouter();
 
-  const { serviceId, date, time, customer, setCustomer } = useBookingStore();
-
-  const [customerName, setCustomerName] = useState(
-    customer?.customerName ?? "",
-  );
-
-  const [customerEmail, setCustomerEmail] = useState(
-    customer?.customerEmail ?? "",
-  );
-
-  const [customerPhone, setCustomerPhone] = useState(
-    customer?.customerPhone ?? "",
-  );
-
-  const [notes, setNotes] = useState(customer?.notes ?? "");
+  const {
+    serviceId,
+    date,
+    time,
+    setCustomer,
+    customerName,
+    customerEmail,
+    customerPhone,
+    customerNotes,
+    setCustomerName,
+    setCustomerEmail,
+    setCustomerPhone,
+    setCustomerNotes,
+  } = useBookingStore();
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -89,7 +88,7 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
       customerName,
       customerEmail,
       customerPhone: customerPhone || undefined,
-      notes: notes || undefined,
+      customerNotes: customerNotes || undefined,
     });
 
     if (!result.success) {
@@ -212,14 +211,14 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
 
                     {errors.customerPhone && (
                       <p className="mt-1.5 text-sm text-red-600">
-                        {errors.customerPhone}
+                        {errors.customerPhone.length / 500}
                       </p>
                     )}
                   </div>
 
                   <div>
                     <Label
-                      htmlFor="notes"
+                      htmlFor="customerNotes"
                       className="text-text-primary mb-2 block text-sm font-medium"
                     >
                       Additional Notes
@@ -229,24 +228,22 @@ export function BookingDetails({ provider }: BookingDetailsProps) {
                     </Label>
 
                     <TextArea
-                      id="notes"
+                      id="customerNotes"
                       placeholder="Anything the professional should know?"
-                      value={notes}
-                      onChange={(event) => setNotes(event.target.value)}
+                      value={customerNotes}
+                      onChange={(event) => setCustomerNotes(event.target.value)}
                       rows={5}
                       maxLength={500}
                     />
 
                     <div className="mt-1.5 flex justify-between gap-4">
-                      {errors.notes ? (
-                        <p className="text-sm text-red-600">{errors.notes}</p>
+                      {errors.customerNotes ? (
+                        <p className="text-sm text-red-600">
+                          {errors.customerNotes}
+                        </p>
                       ) : (
                         <span />
                       )}
-
-                      <span className="text-text-secondary shrink-0 text-xs">
-                        {notes.length}/500
-                      </span>
                     </div>
                   </div>
                 </div>

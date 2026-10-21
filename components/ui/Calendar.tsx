@@ -1,4 +1,3 @@
-"use client";
 import type { DateValue } from "@internationalized/date";
 import { Calendar } from "@heroui/react";
 import { isWeekend } from "@internationalized/date";

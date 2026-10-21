@@ -1,5 +1,3 @@
-"use client";
-
 import { Label, Slider } from "@heroui/react";
 
 type PriceFilterProps = {

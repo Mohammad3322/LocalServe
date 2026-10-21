@@ -89,7 +89,6 @@ export function searchProviders(params: SearchParams): SearchResult {
   }
 
   // matchedService & effectivePrice
-
   const enriched = results.map((provider) => {
     const matchedService =
       hasServiceFilters && matchingServiceIds
@@ -112,11 +111,6 @@ export function searchProviders(params: SearchParams): SearchResult {
       break;
     case "price-high":
       enriched.sort((a, b) => b.effectivePrice - a.effectivePrice);
-      break;
-    case "availability":
-      enriched.sort(
-        (a, b) => Number(b.provider.available) - Number(a.provider.available),
-      );
       break;
   }
 

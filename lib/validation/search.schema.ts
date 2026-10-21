@@ -30,7 +30,7 @@ export const searchParamsSchema = z
     availability: z.enum(["true", "false"]).optional().catch(undefined),
 
     sort: z
-      .enum(["rating", "price-low", "price-high", "availability"])
+      .enum(["rating", "price-low", "price-high"])
       .default("rating")
       .catch("rating"),
 

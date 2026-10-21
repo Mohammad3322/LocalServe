@@ -105,9 +105,9 @@ export async function POST(request: Request) {
             customerPhone: booking.customerPhone,
           }
         : {}),
-      ...(booking.notes
+      ...(booking.customerNotes
         ? {
-            notes: booking.notes,
+            customerNotes: booking.customerNotes,
           }
         : {}),
       status: "confirmed",

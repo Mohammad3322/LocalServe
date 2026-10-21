@@ -49,19 +49,32 @@ beforeEach(() => {
 describe("BookingDetails", () => {
   it("blocks submission when required customer details are missing", async () => {
     const user = userEvent.setup();
+
     withAppointment();
+
+    useBookingStore.setState({
+      customerName: "",
+      customerEmail: "",
+      customerPhone: "",
+      customerNotes: "",
+    });
+
     render(<BookingDetails provider={provider} />);
 
     await user.click(
-      screen.getByRole("button", { name: /continue to review/i }),
+      screen.getByRole("button", {
+        name: /continue to review/i,
+      }),
     );
 
     expect(
       await screen.findByText("Name must be at least 2 characters"),
     ).toBeInTheDocument();
+
     expect(
       screen.getByText("Please enter a valid email address"),
     ).toBeInTheDocument();
+
     expect(push).not.toHaveBeenCalled();
   });
 
